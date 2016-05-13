@@ -19,6 +19,10 @@
 @implementation SDDTestMachineBuilder
 
 - (void)performTestWithDSL:(NSString*)dsl expectedFlows:(NSString*)expectedFlows customActions:(void (^)(SDDEventsPool*))customActions {
+    [self performTestWithDSL:dsl expectedFlows:expectedFlows initialArgument:nil customActions:customActions];
+}
+
+- (void)performTestWithDSL:(NSString*)dsl expectedFlows:(NSString*)expectedFlows initialArgument:(id)argument customActions:(void (^)(SDDEventsPool*))customActions {
     self.flows = [[SDDMockFlows alloc] init];
     
     SDDEventsPool* epool = [[SDDEventsPool alloc] init];
@@ -29,7 +33,7 @@
                                                       queue:[SDDDirectExecutionQueue new]
                                ];
     
-    [scheduler startWithEventsPool:epool];
+    [scheduler startWithEventsPool:epool initialArgument:argument];
     
     if (customActions != NULL)
         customActions(epool);
@@ -51,9 +55,19 @@
 - (void)m4 { [self.flows addFlow:@"4"]; }
 - (void)m5 { [self.flows addFlow:@"5"]; }
 - (void)m6 { [self.flows addFlow:@"6"]; }
+- (void)p1 { [self.flows addFlow:@"α"]; }
+- (void)p2 { [self.flows addFlow:@"β"]; }
+- (void)p3 { [self.flows addFlow:@"γ"]; }
+- (void)p4 { [self.flows addFlow:@"δ"]; }
+
+- (void)times2:(NSNumber*)number { [self.flows addFlow:[@([number integerValue] * 2) description]]; }
+- (void)times3:(NSNumber*)number { [self.flows addFlow:[@([number integerValue] * 3) description]]; }
+- (void)times4:(NSNumber*)number { [self.flows addFlow:[@([number integerValue] * 4) description]]; }
+
 
 - (BOOL)yes { return YES; }
 - (BOOL)no  { return NO;  }
+- (BOOL)isOdd:(NSNumber*)number { return [number integerValue] & 1; }
 
 - (void)testSingleRootState {
     NSString* const dsl = SDDOCLanguage
@@ -157,6 +171,43 @@
     [self performTestWithDSL:dsl expectedFlows:@"ab2c3b21" customActions:^(SDDEventsPool* p) {
         [p scheduleEvent:@"Foward"];
         [p scheduleEvent:@"Back"];
+    }];
+}
+
+
+- (NSString*)Figure2_1 {
+    return  SDDOCLanguage
+    (
+     [E e:me x:m5 ~[B]
+        [B e:mb x:m2]
+        [D e:md x:m4
+            [A e:ma x:m1]
+            [C e:mc x:m3]
+        ]
+     ]
+     
+     [B]->[A]: E1
+     [D]->[B]: E2
+     [A]->[C]: E3
+     [B]->[C]: E4
+     );
+}
+
+- (void)testMultipleTransitions {
+    [self performTestWithDSL:[self Figure2_1] expectedFlows:@"eb2da1c34b2dc345" customActions:^(SDDEventsPool* p) {
+        [p scheduleEvent:@"E1"];
+        [p scheduleEvent:@"E3"];
+        [p scheduleEvent:@"E2"];
+        [p scheduleEvent:@"E4"];
+    }];
+}
+
+- (void)testMultipleTransitions2 {
+    [self performTestWithDSL:[self Figure2_1] expectedFlows:@"eb2da14b2dc345" customActions:^(SDDEventsPool* p) {
+        [p scheduleEvent:@"E1"];
+        [p scheduleEvent:@"E2"];
+        [p scheduleEvent:@"E3"];
+        [p scheduleEvent:@"E4"];
     }];
 }
 
@@ -453,181 +504,152 @@
     }];
 }
 
+- (void)testTransitWithSinglePostAction {
+    NSString* const dsl = SDDOCLanguage
+    (
+     [A ~[B]
+      [B e:mb x:m2]
+      [C e:mc x:m3]
+      ]
 
-//- (void)testDriveWithArgumentedMethod {
-//    NSString* const dsl = SDDOCLanguage
-//    (
-//     ~[s1 e:]
-//      [s2 e: o2]
-//     
-//     [s1]->[s2]: EventWithArgument (@flagValueIsEqualWithArgument)
-//     );
-//    
-//    NSMutableArray* flows = [NSMutableArray array];
-//    self.flagValue = @100;
-//    SDDEventsPool* pachine = [[SDDMachineBuilder new] machineWithContext:self
-//                                                                DSL:dsl
-//                                                           routines:@{
-//                                                                      @"o2": ^(id _) { [flows addObject:@"2"]; }
-//                                                                      }
-//                                                         conditions:nil];
-//    
-//    [machine run];
-//    [machine scheduleEvent:@"EventWithArgument" argument:@(100)];
-//    
-//    XCTAssertEqualObjects([flows componentsJoinedByString:@""], @"2");
-//}
+     [B]->[C]: Event / p1
+     );
 
-//- (void)testPerformingActionWhenTransited {
-//    NSString* const dsl = SDDOCLanguage
-//    (
-//     ~[s1 e:]
-//      [s2 e:]
-//     
-//     [s1]->[s2]: ActionEvent / @mdownEventAction
-//     );
-//
-//    [self performTestWithDSL:dsl expectedFlows:@"EAction" customActions:^(SDDEventsPool* pachine) {
-//        [machine scheduleEvent:@"ActionEvent"];
-//    }];
-//}
-//
-//- (void)testPerformPostActionCombinedWithPositiveCondition {
-//    NSString* const dsl = SDDOCLanguage
-//    (
-//     ~[s1 e:]
-//     [s2 e:]
-//     
-//     [s1]->[s2]: ActionEvent (@shouldGo) / @mdownEventAction
-//     );
-//    
-//    [self performTestWithDSL:dsl expectedFlows:@"EAction" customActions:^(SDDEventsPool* pachine) {
-//        [machine scheduleEvent:@"ActionEvent"];
-//    }];
-//}
-//
-//- (void)testPerformPostActionCombinedWithNegativeCondition {
-//    NSString* const dsl = SDDOCLanguage
-//    (
-//     ~[s1 e:]
-//     [s2 e:]
-//     
-//     [s1]->[s2]: ActionEvent (@shouldNotGo) / @mdownEventAction
-//     );
-//    
-//    [self performTestWithDSL:dsl expectedFlows:@"" customActions:^(SDDEventsPool* pachine) {
-//        [machine scheduleEvent:@"ActionEvent"];
-//    }];
-//}
-//
-//- (void)mdownArgument:(NSString*)arg {
-//    [self.currentFlows addObject:arg];
-//}
-//
-//- (void)testPostActionWithArgument {
-//    NSString* const dsl = SDDOCLanguage
-//    (
-//     ~[s1 e:]
-//     [s2 e:]
-//     
-//     [s1]->[s2]: ActionEvent / @mdownArgument
-//     );
-//    
-//    [self performTestWithDSL:dsl expectedFlows:@"U1ik22" customActions:^(SDDEventsPool* pachine) {
-//        [machine scheduleEvent:@"ActionEvent" argument:@"U1ik22"];
-//    }];
-//}
-//
-//- (void)testArgumentConditionIsYES {
-//    NSString* const dsl = SDDOCLanguage
-//    (
-//     ~[s1 e:]
-//      [s2 e:]
-//     
-//     [s1]->[s2]: Event (arg.shouldyes) / @mdownEventAction
-//    );
-//    
-//    [self performTestWithDSL:dsl expectedFlows:@"EAction" customActions:^(SDDMachine *m) {
-//        SDDTestMockArgument* argument = [[SDDTestMockArgument alloc] init];
-//        argument.shouldyes = YES;
-//        [m scheduleEvent:@"Event" argument:argument];
-//    }];
-//}
-//
-//- (void)testArgumentConditionIsNO {
-//    NSString* const dsl = SDDOCLanguage
-//    (
-//     ~[s1 e:]
-//     [s2 e:]
-//     
-//     [s1]->[s2]: Event (arg.shouldyes) / @mdownEventAction
-//     );
-//    
-//    [self performTestWithDSL:dsl expectedFlows:@"" customActions:^(SDDMachine *m) {
-//        SDDTestMockArgument* argument = [[SDDTestMockArgument alloc] init];
-//        argument.shouldyes = NO;
-//        [m scheduleEvent:@"Event" argument:argument];
-//    }];
-//}
-//
-//- (void)testConditionWithNegateForYES {
-//    NSString* const dsl = SDDOCLanguage
-//    (
-//     ~[s1 e:]
-//     [s2 e:]
-//     
-//     [s1]->[s2]: Event (!@shouldGo) / @mdownEventAction
-//     );
-//    
-//    [self performTestWithDSL:dsl expectedFlows:@"" customActions:^(SDDMachine *m) {
-//        [m scheduleEvent:@"Event"];
-//    }];
-//}
-//
-//- (void)testConditionWithNegateForNO {
-//    NSString* const dsl = SDDOCLanguage
-//    (
-//     ~[s1 e:]
-//     [s2 e:]
-//     
-//     [s1]->[s2]: Event (!@shouldNotGo) / @mdownEventAction
-//     );
-//    
-//    [self performTestWithDSL:dsl expectedFlows:@"EAction" customActions:^(SDDMachine *m) {
-//        [m scheduleEvent:@"Event"];
-//    }];
-//}
-//
-//- (void)testArgumentConditionWithNegateForYES {
-//    NSString* const dsl = SDDOCLanguage
-//    (
-//     ~[s1 e:]
-//     [s2 e:]
-//     
-//     [s1]->[s2]: Event (!arg.shouldyes) / @mdownEventAction
-//     );
-//    
-//    [self performTestWithDSL:dsl expectedFlows:@"" customActions:^(SDDMachine *m) {
-//        SDDTestMockArgument* argument = [[SDDTestMockArgument alloc] init];
-//        argument.shouldyes = YES;
-//        [m scheduleEvent:@"Event" argument:argument];
-//    }];
-//}
-//
-//- (void)testArgumentConditionWithNegateForNO {
-//    NSString* const dsl = SDDOCLanguage
-//    (
-//     ~[s1 e:]
-//     [s2 e:]
-//     
-//     [s1]->[s2]: Event (!arg.shouldyes) / @mdownEventAction
-//     );
-//    
-//    [self performTestWithDSL:dsl expectedFlows:@"EAction" customActions:^(SDDMachine *m) {
-//        SDDTestMockArgument* argument = [[SDDTestMockArgument alloc] init];
-//        argument.shouldyes = NO;
-//        [m scheduleEvent:@"Event" argument:argument];
-//    }];
-//}
-//
+    [self performTestWithDSL:dsl expectedFlows:@"b2cα3" customActions:^(SDDEventsPool* p) {
+        [p scheduleEvent:@"Event"];
+    }];
+}
+
+- (void)testTransitWithMultiplePostActions {
+    NSString* const dsl = SDDOCLanguage
+    (
+     [A ~[B]
+      [B e:mb x:m2]
+      [C e:mc x:m3]
+      ]
+     
+     [B]->[C]: Event / p1 p2
+     );
+    
+    [self performTestWithDSL:dsl expectedFlows:@"b2cαβ3" customActions:^(SDDEventsPool* p) {
+        [p scheduleEvent:@"Event"];
+    }];
+}
+
+- (void)testTransitWithMultiplePostActionsAndEvents {
+    NSString* const dsl = SDDOCLanguage
+    (
+     [A ~[B]
+      [B e:mb x:m2]
+      [C e:mc x:m3]
+      ]
+     
+     [B]->[C]: Event1 / p1 p2
+     [C]->[B]: Event2 / p3
+     );
+    
+    [self performTestWithDSL:dsl expectedFlows:@"b2cαβ3bγ2" customActions:^(SDDEventsPool* p) {
+        [p scheduleEvent:@"Event1"];
+        [p scheduleEvent:@"Event2"];
+    }];
+}
+
+- (void)testTransitionWithNegativeConditionAndPostActions {
+    NSString* const dsl = SDDOCLanguage
+    (
+     [A ~[B]
+      [B e:mb x:m2]
+      [C e:mc x:m3]
+      ]
+     
+     [B]->[C]: Trigger (no) / p1
+     );
+    
+    [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:^(SDDEventsPool* p) {
+        [p scheduleEvent:@"Trigger"];
+    }];
+}
+
+- (void)testTransitionWithPositiveConditionAndPostActions {
+    NSString* const dsl = SDDOCLanguage
+    (
+     [A ~[B]
+      [B e:mb x:m2]
+      [C e:mc x:m3]
+      ]
+     
+     [B]->[C]: Trigger (yes) / p3
+     );
+    
+    [self performTestWithDSL:dsl expectedFlows:@"b2cγ3" customActions:^(SDDEventsPool* p) {
+        [p scheduleEvent:@"Trigger"];
+    }];
+}
+
+- (void)testEventWithArgument {
+    NSString* const dsl = SDDOCLanguage
+    (
+     [A ~[B]
+      [B e:mb times2 x:p2]
+      [C e:mc times3 x:p3]
+      ]
+     
+     [B]->[C]: Trigger / times4
+     );
+    
+    NSNumber* seven = @7;
+    NSNumber* nine  = @9;
+    [self performTestWithDSL:dsl expectedFlows:@"b18βc2128γ" initialArgument:nine customActions:^(SDDEventsPool* p) {
+        [p scheduleEvent:@"Trigger" withParam:seven];
+    }];
+}
+
+- (void)testConditionWithArgumentResultingPositive {
+    NSString* const dsl = SDDOCLanguage
+    (
+     [A ~[B]
+      [B e:mb x:m2]
+      [C e:mc x:m3]
+      ]
+     
+     [B]->[C]: Event (isOdd)
+     );
+    
+    [self performTestWithDSL:dsl expectedFlows:@"b2c3" customActions:^(SDDEventsPool* p) {
+        [p scheduleEvent:@"Event" withParam:@1];
+    }];
+}
+
+- (void)testConditionWithArgumentResultingNegative {
+    NSString* const dsl = SDDOCLanguage
+    (
+     [A ~[B]
+      [B e:mb x:m2]
+      [C e:mc x:m3]
+      ]
+     
+     [B]->[C]: Event (isOdd)
+     );
+    
+    [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:^(SDDEventsPool* p) {
+        [p scheduleEvent:@"Event" withParam:@2];
+    }];
+}
+
+- (void)testAugmentedConditionAndSimpleCondition {
+    NSString* const dsl = SDDOCLanguage
+    (
+     [A ~[B]
+      [B e:mb x:m2]
+      [C e:mc x:m3]
+      ]
+     
+     [B]->[C]: Event (isOdd | yes)
+     );
+    
+    [self performTestWithDSL:dsl expectedFlows:@"b2c3" customActions:^(SDDEventsPool* p) {
+        [p scheduleEvent:@"Event" withParam:@2];
+    }];
+}
+
 @end

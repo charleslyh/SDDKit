@@ -163,7 +163,7 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     [transitions addObject:trans];
 }
 
-- (void)onEvent:(SDDEvent *)event withParam:(id)param {
+- (void)onEvent:(SDDEvent *)event withParam:(id)argument {
     /* 假设
      <a>
      [A]->[B]: E1 / generates E2
@@ -187,7 +187,7 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
             
             NSArray* transitions = jtable[event];
             for (SDDTransition* t in transitions) {
-                if (t.condition(param)) {
+                if (t.condition(argument)) {
                     trans = t;
                     break;
                 }
@@ -200,8 +200,8 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
         
         SDDState* newState = trans.targetState;
         if (newState) {
-            [self activateState:newState triggerState:trigger];
-            trans.postAct(param);
+            [self activateState:newState triggerState:trigger withArgument:argument];
+            trans.postAct(argument);
         }
     }];
 }
@@ -244,7 +244,7 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     return path;
 }
 
-- (void)activateState:(SDDState *)state triggerState:(SDDState *)triggerState {
+- (void)activateState:(SDDState *)state triggerState:(SDDState *)triggerState withArgument:(id)argument {
     NSArray* currentPath = [self pathOfState:_currentState];
     NSArray* nextPath    = [self pathOfState:state];
     
@@ -275,21 +275,26 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     
     for (int i=lastSolidIdx+1; i < nextPath.count; ++i) {
         SDDState* s = nextPath[i];
-        [s activate:nil];
+        [s activate:argument];
     }
     
     _currentState = nextPath.lastObject;
 }
 
 - (void)startWithEventsPool:(SDDEventsPool*)epool {
+    [self startWithEventsPool:epool initialArgument:nil];
+}
+
+- (void)startWithEventsPool:(nonnull SDDEventsPool*)epool initialArgument:(id)argument {
     NSAssert(_currentState==nil, @"不允许重复执行SDDScheduler的[%@]方法", NSStringFromSelector(_cmd));
     NSAssert(_rootState != nil, @"[%@] rootState不允许为nil", NSStringFromSelector(_cmd));
     NSAssert([_states containsObject:_rootState], @"[%@] rootState必须为已添加的状态之一", NSStringFromSelector(_cmd));
     
     _epool = epool;
     [_epool addSubscriber:self];
-    [self activateState:_rootState triggerState:nil];
+    [self activateState:_rootState triggerState:nil withArgument:argument];
 }
+
 
 - (void)stop {
     NSAssert(_currentState!=nil, @"执行[SDDSchdeuler stop]之前，请确保其已经运行");

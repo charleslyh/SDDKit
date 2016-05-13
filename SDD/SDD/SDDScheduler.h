@@ -42,5 +42,6 @@ typedef void (^SDDDeactivation)();
   postAction:(nullable SDDAction)postAction;
 
 - (void)startWithEventsPool:(nonnull SDDEventsPool*)epool;
+- (void)startWithEventsPool:(nonnull SDDEventsPool*)epool initialArgument:(nullable id)argument;
 - (void)stop;
 @end

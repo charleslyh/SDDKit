@@ -305,7 +305,7 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
 }
 
 // [E d:[B] [D [A][C]] [B]]
-// [B]->[D]: α
+// [B]->[A]: α
 // [D]->[B]: β
 // [A]->[C]: γ
 // [B]->[C]: δ
@@ -334,7 +334,7 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
 }
 
 // [E d:[B] [D [A][C]] [B]]
-// [B]->[D]: α
+// [B]->[A]: α
 // [D]->[B]: β
 // [A]->[C]: γ
 // [B]->[C]: δ

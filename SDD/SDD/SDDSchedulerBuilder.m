@@ -100,7 +100,7 @@ void SDDSchedulerAddState(void* contextObj, sdd_state* raw_state) {
                 SDDAugmentedAction(context, augmentedSel, argument);
             } else {
                 [[NSException exceptionWithName:@"SDDSchedulerBuilderException"
-                                         reason:[NSString stringWithFormat:@"无法在上下文:%@ 对象中找到 %@ 方法", pcontext.runtimeContext, act]
+                                         reason:[NSString stringWithFormat:@"无法在上下文:%@ 对象中找到 %@ 方法", context, act]
                                        userInfo:@{
                                                   @"context": context,
                                                   @"action":  act,
