@@ -1,0 +1,298 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		562CA53D1CE5EB1F00861684 /* SDD.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 562CA53C1CE5EB1F00861684 /* SDD.h */; };
+		562CA5541CE5EB4D00861684 /* sdd_array.c in Sources */ = {isa = PBXBuildFile; fileRef = 562CA5451CE5EB4D00861684 /* sdd_array.c */; };
+		562CA5551CE5EB4D00861684 /* sdd_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 562CA5471CE5EB4D00861684 /* sdd_builder.c */; };
+		562CA5561CE5EB4D00861684 /* sdd_builder.tab.c in Sources */ = {isa = PBXBuildFile; fileRef = 562CA5491CE5EB4D00861684 /* sdd_builder.tab.c */; };
+		562CA5571CE5EB4D00861684 /* sdd_builder.yy.c in Sources */ = {isa = PBXBuildFile; fileRef = 562CA54B1CE5EB4D00861684 /* sdd_builder.yy.c */; };
+		562CA5581CE5EB4D00861684 /* sdd_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 562CA54C1CE5EB4D00861684 /* sdd_parser.c */; };
+		562CA5591CE5EB4D00861684 /* SDDEventsPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA54F1CE5EB4D00861684 /* SDDEventsPool.m */; };
+		562CA55A1CE5EB4D00861684 /* SDDScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA5511CE5EB4D00861684 /* SDDScheduler.m */; };
+		562CA55B1CE5EB4D00861684 /* SDDSchedulerBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA5531CE5EB4D00861684 /* SDDSchedulerBuilder.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		562CA5371CE5EB1F00861684 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				562CA53D1CE5EB1F00861684 /* SDD.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		562CA5391CE5EB1F00861684 /* libSDD.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSDD.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		562CA53C1CE5EB1F00861684 /* SDD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDD.h; sourceTree = "<group>"; };
+		562CA5451CE5EB4D00861684 /* sdd_array.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_array.c; sourceTree = "<group>"; };
+		562CA5461CE5EB4D00861684 /* sdd_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdd_array.h; sourceTree = "<group>"; };
+		562CA5471CE5EB4D00861684 /* sdd_builder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_builder.c; sourceTree = "<group>"; };
+		562CA5481CE5EB4D00861684 /* sdd_builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdd_builder.h; sourceTree = "<group>"; };
+		562CA5491CE5EB4D00861684 /* sdd_builder.tab.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_builder.tab.c; sourceTree = "<group>"; };
+		562CA54A1CE5EB4D00861684 /* sdd_builder.tab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdd_builder.tab.h; sourceTree = "<group>"; };
+		562CA54B1CE5EB4D00861684 /* sdd_builder.yy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_builder.yy.c; sourceTree = "<group>"; };
+		562CA54C1CE5EB4D00861684 /* sdd_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_parser.c; sourceTree = "<group>"; };
+		562CA54D1CE5EB4D00861684 /* sdd_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdd_parser.h; sourceTree = "<group>"; };
+		562CA54E1CE5EB4D00861684 /* SDDEventsPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDEventsPool.h; sourceTree = "<group>"; };
+		562CA54F1CE5EB4D00861684 /* SDDEventsPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDEventsPool.m; sourceTree = "<group>"; };
+		562CA5501CE5EB4D00861684 /* SDDScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDScheduler.h; sourceTree = "<group>"; };
+		562CA5511CE5EB4D00861684 /* SDDScheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDScheduler.m; sourceTree = "<group>"; };
+		562CA5521CE5EB4D00861684 /* SDDSchedulerBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDSchedulerBuilder.h; sourceTree = "<group>"; };
+		562CA5531CE5EB4D00861684 /* SDDSchedulerBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDSchedulerBuilder.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		562CA5361CE5EB1F00861684 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		562CA5301CE5EB1F00861684 = {
+			isa = PBXGroup;
+			children = (
+				562CA53B1CE5EB1F00861684 /* SDD */,
+				562CA53A1CE5EB1F00861684 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		562CA53A1CE5EB1F00861684 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				562CA5391CE5EB1F00861684 /* libSDD.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		562CA53B1CE5EB1F00861684 /* SDD */ = {
+			isa = PBXGroup;
+			children = (
+				562CA5451CE5EB4D00861684 /* sdd_array.c */,
+				562CA5461CE5EB4D00861684 /* sdd_array.h */,
+				562CA5471CE5EB4D00861684 /* sdd_builder.c */,
+				562CA5481CE5EB4D00861684 /* sdd_builder.h */,
+				562CA5491CE5EB4D00861684 /* sdd_builder.tab.c */,
+				562CA54A1CE5EB4D00861684 /* sdd_builder.tab.h */,
+				562CA54B1CE5EB4D00861684 /* sdd_builder.yy.c */,
+				562CA54C1CE5EB4D00861684 /* sdd_parser.c */,
+				562CA54D1CE5EB4D00861684 /* sdd_parser.h */,
+				562CA54E1CE5EB4D00861684 /* SDDEventsPool.h */,
+				562CA54F1CE5EB4D00861684 /* SDDEventsPool.m */,
+				562CA5501CE5EB4D00861684 /* SDDScheduler.h */,
+				562CA5511CE5EB4D00861684 /* SDDScheduler.m */,
+				562CA5521CE5EB4D00861684 /* SDDSchedulerBuilder.h */,
+				562CA5531CE5EB4D00861684 /* SDDSchedulerBuilder.m */,
+				562CA53C1CE5EB1F00861684 /* SDD.h */,
+			);
+			path = SDD;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		562CA5381CE5EB1F00861684 /* SDD */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 562CA5421CE5EB1F00861684 /* Build configuration list for PBXNativeTarget "SDD" */;
+			buildPhases = (
+				562CA5351CE5EB1F00861684 /* Sources */,
+				562CA5361CE5EB1F00861684 /* Frameworks */,
+				562CA5371CE5EB1F00861684 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SDD;
+			productName = SDD;
+			productReference = 562CA5391CE5EB1F00861684 /* libSDD.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		562CA5311CE5EB1F00861684 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = Flash;
+				TargetAttributes = {
+					562CA5381CE5EB1F00861684 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 562CA5341CE5EB1F00861684 /* Build configuration list for PBXProject "SDD" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 562CA5301CE5EB1F00861684;
+			productRefGroup = 562CA53A1CE5EB1F00861684 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				562CA5381CE5EB1F00861684 /* SDD */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		562CA5351CE5EB1F00861684 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				562CA5561CE5EB4D00861684 /* sdd_builder.tab.c in Sources */,
+				562CA5581CE5EB4D00861684 /* sdd_parser.c in Sources */,
+				562CA55B1CE5EB4D00861684 /* SDDSchedulerBuilder.m in Sources */,
+				562CA55A1CE5EB4D00861684 /* SDDScheduler.m in Sources */,
+				562CA5591CE5EB4D00861684 /* SDDEventsPool.m in Sources */,
+				562CA5571CE5EB4D00861684 /* sdd_builder.yy.c in Sources */,
+				562CA5541CE5EB4D00861684 /* sdd_array.c in Sources */,
+				562CA5551CE5EB4D00861684 /* sdd_builder.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		562CA5401CE5EB1F00861684 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		562CA5411CE5EB1F00861684 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		562CA5431CE5EB1F00861684 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		562CA5441CE5EB1F00861684 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		562CA5341CE5EB1F00861684 /* Build configuration list for PBXProject "SDD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				562CA5401CE5EB1F00861684 /* Debug */,
+				562CA5411CE5EB1F00861684 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		562CA5421CE5EB1F00861684 /* Build configuration list for PBXNativeTarget "SDD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				562CA5431CE5EB1F00861684 /* Debug */,
+				562CA5441CE5EB1F00861684 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 562CA5311CE5EB1F00861684 /* Project object */;
+}
