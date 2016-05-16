@@ -54,22 +54,22 @@
                 while ([_istream hasBytesAvailable]) {
                     len = [_istream read:buffer maxLength:sizeof(buffer)];
                     if (len > 0) {
-                        NSString *output = [[NSString alloc] initWithBytes:buffer length:len encoding:NSASCIIStringEncoding];
+                        NSData *data = [NSData dataWithBytes:buffer length:len];
+                        NSDictionary *object = [NSJSONSerialization JSONObjectWithData:data
+                                                                               options:NSJSONReadingMutableLeaves error:nil];
                         
-                        if (nil != output) {
-                            NSLog(@"server said: %@", output);
+                        if (nil != object) {
+                            NSLog(@"Server said: %@", object);
+                            NSString *protocol = object[@"protocol"];
                             
-                            NSArray* components = [output componentsSeparatedByString:@":"];
-                            if (components.count == 2) {
-                                NSString *protocol = components[0];
-                                NSString *content  = [components[1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                                if ([protocol isEqualToString:@"dsl"]) {
-                                    [self.delegate peer:self didReceiveDSL:content];
-                                } else if ([protocol isEqualToString:@"activate"]) {
-                                    [self.delegate peer:self didActivateStateNamed:content];
-                                } else if ([protocol isEqualToString:@"deactivate"]) {
-                                    [self.delegate peer:self didDeactivateStateNamed:content];
-                                }
+                            if ([protocol isEqualToString:@"dsl"]) {
+                                [self.delegate peer:self didReceiveDSL:object[@"value"]];
+                            } else if ([protocol isEqualToString:@"activate"]) {
+                                [self.delegate peer:self didActivateState:object[@"state"] atDSL:object[@"root"]];
+                            } else if ([protocol isEqualToString:@"deactivate"]) {
+                                [self.delegate peer:self didDeactivateState:object[@"state"] atDSL:object[@"root"]];
+                            } else if ([protocol isEqualToString:@"event"]) {
+                                [self.delegate peer:self didReceiveEvent:object[@"value"]];
                             }
                         }
                     }

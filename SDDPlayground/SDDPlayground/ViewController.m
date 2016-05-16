@@ -17,36 +17,89 @@ NSString * SDDPGStringNameFromRawState(sdd_state *s) {
 }
 
 
-@interface SDDPGParserContext : NSObject
+@interface SDDSchedulerPresenter : NSObject
 @property NSString *rootName;
 @property NSMutableDictionary *descendants;
+@property NSMutableDictionary *aliveFlags;
 @end
 
-@implementation SDDPGParserContext
+@implementation SDDSchedulerPresenter
 
 - (instancetype)init {
     if (self = [super init]) {
         _descendants = [NSMutableDictionary dictionary];
+        _aliveFlags  = [NSMutableDictionary dictionary];
     }
     return self;
 }
+
+- (void)deactivateState:(NSString *)stateName {
+    _aliveFlags[stateName] = @NO;
+}
+
+- (void)activateState:(NSString *)stateName {
+    _aliveFlags[stateName] = @YES;
+}
+
+- (BOOL)isAliveState:(NSString *)name {
+    return _aliveFlags[name] != nil && [_aliveFlags[name] boolValue];
+}
+
+- (NSAttributedString *)statesText {
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] init];
+    [self buildStatesText:text withStateNamed:_rootName];
+    return text;
+}
+
+- (void)buildStatesText:(NSMutableAttributedString *)text withStateNamed:(NSString *)stateName {
+    [text appendAttributedString:[[NSAttributedString alloc] initWithString:@"["]];
+    
+    NSColor *color = [self isAliveState:stateName] ? [NSColor redColor] : [NSColor blackColor];
+    static NSFont *font;
+    if (!font) {
+        font = [NSFont fontWithName:@"Menlo" size:14];
+    }
+    
+    
+    [text appendAttributedString:[[NSAttributedString alloc] initWithString:stateName
+                                                                 attributes:@{
+                                                                              NSForegroundColorAttributeName: color,
+                                                                              NSFontAttributeName: font,
+                                                                              }]];
+    
+    NSArray *subStates = _descendants[stateName];
+    if (subStates.count > 0) {
+        [text appendAttributedString:[[NSAttributedString alloc] initWithString:@"  "]];
+    }
+    
+    for (NSString *name in subStates) {
+        [self buildStatesText:text withStateNamed:name];
+        
+        if (name != subStates.lastObject) {
+            [text appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
+        }
+    }
+    
+    [text appendAttributedString:[[NSAttributedString alloc] initWithString:@"]"]];
+}
+
 
 @end
 
 
 
 void SDDPGHandleState(void *contextObj, sdd_state *state) {
-    SDDPGParserContext *context = (__bridge SDDPGParserContext *)contextObj;
+    SDDSchedulerPresenter *presenter = (__bridge SDDSchedulerPresenter *)contextObj;
     
     NSString *name = SDDPGStringNameFromRawState(state);
-    context.descendants[name] = [NSMutableArray array];
+    presenter.descendants[name] = [NSMutableArray array];
 };
 
 void SDDPGHandleDescendants(void *contextObj, sdd_state *parent, sdd_array *descendants) {
-    SDDPGParserContext *context = (__bridge SDDPGParserContext *)contextObj;
+    SDDSchedulerPresenter *presenter = (__bridge SDDSchedulerPresenter *)contextObj;
     
     NSString *parentName = SDDPGStringNameFromRawState(parent);
-    NSMutableArray *subNames = context.descendants[parentName];
+    NSMutableArray *subNames = presenter.descendants[parentName];
     for (int i=0; i<sdd_array_count(descendants); ++i) {
         sdd_state *subState = sdd_array_at(descendants, i, sdd_yes);
         [subNames addObject:SDDPGStringNameFromRawState(subState)];
@@ -56,14 +109,17 @@ void SDDPGHandleDescendants(void *contextObj, sdd_state *parent, sdd_array *desc
 void SDDPGHandleTransition(void *contextObj, sdd_transition *t) {}
 
 void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
-    SDDPGParserContext *context = (__bridge SDDPGParserContext *)contextObj;
+    SDDSchedulerPresenter *presenter = (__bridge SDDSchedulerPresenter *)contextObj;
     
-    context.rootName = SDDPGStringNameFromRawState(root);
+    presenter.rootName = SDDPGStringNameFromRawState(root);
 }
 
 
-@interface ViewController()<SDDServiceDelegate, SDDServicePeerDelegate>
+@interface ViewController()<SDDServiceDelegate, SDDServicePeerDelegate, NSTableViewDataSource, NSTabViewDelegate>
+@property (weak) IBOutlet NSTableView *historiesTableView;
 @property IBOutlet NSTextView *stockMessagesView;
+
+@property NSMutableArray *histories;
 @end
 
 @implementation ViewController {
@@ -72,6 +128,8 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     NSString     *_rootName;
     NSDictionary *_descendants;
     NSMutableDictionary *_aliveFlags;
+    
+    NSMutableDictionary *_presenters;
 }
 
 - (void)service:(SDDService *)service didReceiveConnection:(SDDServicePeer *)connection {
@@ -80,17 +138,21 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    _presenters = [NSMutableDictionary dictionary];
     
     _service = [[SDDService alloc] init];
     _service.delegate = self;
     [_service start];
+    
+    _histories = [NSMutableArray array];
 }
 
 - (void)peer:(SDDServicePeer *)peer didReceiveDSL:(NSString *)dsl {
-    SDDPGParserContext *context = [[SDDPGParserContext alloc] init];
+    SDDSchedulerPresenter *presenter = [[SDDSchedulerPresenter alloc] init];
     
     sdd_parser_callback callback;
-    callback.context           = (__bridge void *)context;
+    callback.context           = (__bridge void *)presenter;
     callback.stateHandler      = &SDDPGHandleState;
     callback.clusterHandler    = &SDDPGHandleDescendants;
     callback.transitionHandler = &SDDPGHandleTransition;
@@ -98,55 +160,65 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 
     sdd_parse([dsl UTF8String], &callback);
     
-    _rootName    = context.rootName;
-    _descendants = context.descendants;
-    _aliveFlags  = [NSMutableDictionary dictionary];
+    _presenters[presenter.rootName] = presenter;
     
     [self syncTextView];
 }
 
-- (BOOL)isAliveState:(NSString *)name {
-    return _aliveFlags[name] != nil && [_aliveFlags[name] boolValue];
-}
-
-- (void)peer:(SDDServicePeer *)peer didActivateStateNamed:(NSString *)stateName {
-    _aliveFlags[stateName] = @YES;
+- (void)peer:(SDDServicePeer *)peer didActivateState:(NSString *)stateName atDSL:(NSString *)dslName {
+    [_presenters[dslName] activateState:stateName];
+    [_histories addObject:[NSString stringWithFormat:@"[A] %@.%@", dslName, stateName]];
+    
+    [self syncHistoriesTableView];
     [self syncTextView];
 }
 
-- (void)peer:(SDDServicePeer *)peer didDeactivateStateNamed:(NSString *)stateName {
-    _aliveFlags[stateName] = @NO;
+- (void)peer:(SDDServicePeer *)peer didDeactivateState:(NSString *)stateName atDSL:(NSString *)dslName {
+    [_presenters[dslName] deactivateState:stateName];
+    [_histories addObject:[NSString stringWithFormat:@"[D] %@.%@", dslName, stateName]];
+    
+    [self syncHistoriesTableView];
     [self syncTextView];
 }
 
-- (void)buildStatesText:(NSMutableAttributedString *)text withStateNamed:(NSString *)stateName {
-    [text appendAttributedString:[[NSAttributedString alloc] initWithString:@"["]];
+- (void)peer:(SDDServicePeer *)peer didReceiveEvent:(NSString *)event {
+    [_histories addObject:[NSString stringWithFormat:@"[E] %@", event]];
     
-    NSColor *color = [self isAliveState:stateName] ? [NSColor redColor] : [NSColor blackColor];
-    
-    [text appendAttributedString:[[NSAttributedString alloc] initWithString:stateName
-                                                                 attributes:@{
-                                                                              NSForegroundColorAttributeName: color
-                                                                              }]];
-    
-    NSArray *subStates = _descendants[stateName];
-    if (subStates.count > 0) {
-        [text appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
-    }
-    
-    for (NSString *name in subStates) {
-        [self buildStatesText:text withStateNamed:name];
-    }
-    
-    [text appendAttributedString:[[NSAttributedString alloc] initWithString:@"]"]];
+    [self syncHistoriesTableView];
+}
+
+- (void)syncHistoriesTableView {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_historiesTableView reloadData];
+    });
 }
 
 - (void)syncTextView {
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSMutableAttributedString *text = [[NSMutableAttributedString alloc] init];
-        [self buildStatesText:text withStateNamed:_rootName];
-        [self.stockMessagesView.textStorage setAttributedString:text];
+        [self.stockMessagesView.textStorage setAttributedString:[[NSAttributedString alloc] init]];
+        for (NSString *key in _presenters.allKeys) {
+            SDDSchedulerPresenter *presenter = _presenters[key];
+
+            NSAttributedString *text = [presenter statesText];
+            
+            [self.stockMessagesView.textStorage appendAttributedString:text];
+            [self.stockMessagesView.textStorage appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+        }
     });
+}
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+    return _histories.count;
+}
+
+- (NSView *)tableView:(NSTableView *)tableView
+   viewForTableColumn:(NSTableColumn *)tableColumn
+                  row:(NSInteger)row
+{
+    NSTableCellView *cellView = [tableView makeViewWithIdentifier:@"HistoryCellView" owner:self];
+    cellView.textField.stringValue = _histories[row];
+    
+    return cellView;
 }
 
 @end

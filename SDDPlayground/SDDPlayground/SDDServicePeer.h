@@ -12,8 +12,9 @@
 
 @protocol SDDServicePeerDelegate <NSObject>
 - (void)peer:(SDDServicePeer *)peer didReceiveDSL:(NSString *)dsl;
-- (void)peer:(SDDServicePeer *)peer didActivateStateNamed:(NSString *)stateName;
-- (void)peer:(SDDServicePeer *)peer didDeactivateStateNamed:(NSString *)stateName;
+- (void)peer:(SDDServicePeer *)peer didActivateState:(NSString *)stateName atDSL:(NSString *)dslName;
+- (void)peer:(SDDServicePeer *)peer didDeactivateState:(NSString *)stateName atDSL:(NSString *)dslName;
+- (void)peer:(SDDServicePeer *)peer didReceiveEvent:(NSString *)event;
 @end
 
 
