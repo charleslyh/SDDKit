@@ -9,10 +9,35 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>SDDOSX.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>SDDX.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>562CA5381CE5EB1F00861684</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5696AA4B1CE8CBF800CAB7CC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5696AA5A1CE8CC6800CAB7CC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5696AA6A1CE8CE2B00CAB7CC</key>
 		<dict>
 			<key>primary</key>
 			<true/>

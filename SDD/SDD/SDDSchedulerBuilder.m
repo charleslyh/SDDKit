@@ -229,6 +229,10 @@ void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
     [pcontext.scheduler when:event satisfied:condition transitFrom:fromState to:toState postAction:postAction];
 }
 
+void SDDSchedulerBuilderHandleCompletion(void *contextObj, sdd_state *root_state) {
+    
+}
+
 @implementation SDDSchedulerBuilder {
     NSString* _namespace;
     __weak id _context;
@@ -255,6 +259,7 @@ void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
     callback.stateHandler      = &SDDSchedulerAddState;
     callback.clusterHandler    = &SDDSchedulerSetDescendants;
     callback.transitionHandler = &SDDSchedulerMakeTransition;
+    callback.completionHandler = &SDDSchedulerBuilderHandleCompletion;
     
     sdd_parse([dsl cStringUsingEncoding:NSUTF8StringEncoding] , &callback);
     return scheduler;

@@ -63,7 +63,7 @@ typedef union YYSTYPE
     char stval[256];
 }
 /* Line 1529 of yacc.c.  */
-#line 67 "sdd_builder.tab.h"
+#line 67 "y.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

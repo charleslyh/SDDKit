@@ -27,7 +27,7 @@ typedef void (^SDDDeactivation)();
 #pragma mark -
 
 @interface SDDScheduler : NSObject
-- (nullable instancetype)init DEPRECATED_ATTRIBUTE;
+- (nullable instancetype)init UNAVAILABLE_ATTRIBUTE;
 - (nonnull instancetype)initWithOperationQueue:(nonnull NSOperationQueue*)queue;
 
 - (void)addState:(nonnull SDDState*)state;

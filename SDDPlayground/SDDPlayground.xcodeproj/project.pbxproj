@@ -1,0 +1,434 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5696AA0C1CE72F7900CAB7CC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA0B1CE72F7900CAB7CC /* AppDelegate.m */; };
+		5696AA0F1CE72F7900CAB7CC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA0E1CE72F7900CAB7CC /* main.m */; };
+		5696AA121CE72F7900CAB7CC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA111CE72F7900CAB7CC /* ViewController.m */; };
+		5696AA141CE72F7900CAB7CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5696AA131CE72F7900CAB7CC /* Assets.xcassets */; };
+		5696AA171CE72F7900CAB7CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5696AA151CE72F7900CAB7CC /* Main.storyboard */; };
+		5696AA221CE72F7900CAB7CC /* SDDPlaygroundTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA211CE72F7900CAB7CC /* SDDPlaygroundTests.m */; };
+		5696AA2E1CE7672E00CAB7CC /* TCPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA2D1CE7672E00CAB7CC /* TCPServer.m */; };
+		5696AA311CE768D600CAB7CC /* SDDService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA301CE768D600CAB7CC /* SDDService.m */; };
+		5696AA341CE76A5300CAB7CC /* SDDServicePeer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA331CE76A5300CAB7CC /* SDDServicePeer.m */; };
+		5696AA741CE8CE5000CAB7CC /* SDDX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5696AA731CE8CE5000CAB7CC /* SDDX.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5696AA1E1CE72F7900CAB7CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5696A9FF1CE72F7900CAB7CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5696AA061CE72F7900CAB7CC;
+			remoteInfo = SDDPlayground;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		5696AA071CE72F7900CAB7CC /* SDDPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDDPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5696AA0A1CE72F7900CAB7CC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		5696AA0B1CE72F7900CAB7CC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		5696AA0E1CE72F7900CAB7CC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		5696AA101CE72F7900CAB7CC /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		5696AA111CE72F7900CAB7CC /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		5696AA131CE72F7900CAB7CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5696AA161CE72F7900CAB7CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		5696AA181CE72F7900CAB7CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5696AA1D1CE72F7900CAB7CC /* SDDPlaygroundTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SDDPlaygroundTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5696AA211CE72F7900CAB7CC /* SDDPlaygroundTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDDPlaygroundTests.m; sourceTree = "<group>"; };
+		5696AA231CE72F7900CAB7CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5696AA2C1CE7672E00CAB7CC /* TCPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPServer.h; sourceTree = "<group>"; };
+		5696AA2D1CE7672E00CAB7CC /* TCPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPServer.m; sourceTree = "<group>"; };
+		5696AA2F1CE768D600CAB7CC /* SDDService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDService.h; sourceTree = "<group>"; };
+		5696AA301CE768D600CAB7CC /* SDDService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDService.m; sourceTree = "<group>"; };
+		5696AA321CE76A5300CAB7CC /* SDDServicePeer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDServicePeer.h; sourceTree = "<group>"; };
+		5696AA331CE76A5300CAB7CC /* SDDServicePeer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDServicePeer.m; sourceTree = "<group>"; };
+		5696AA731CE8CE5000CAB7CC /* SDDX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDDX.framework; path = "../../../../Library/Developer/Xcode/DerivedData/SDDKit-caodxadizwyqrsgjbwppiasvwxxv/Build/Products/Debug/SDDX.framework"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5696AA041CE72F7900CAB7CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5696AA741CE8CE5000CAB7CC /* SDDX.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5696AA1A1CE72F7900CAB7CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5696A9FE1CE72F7900CAB7CC = {
+			isa = PBXGroup;
+			children = (
+				5696AA731CE8CE5000CAB7CC /* SDDX.framework */,
+				5696AA091CE72F7900CAB7CC /* SDDPlayground */,
+				5696AA201CE72F7900CAB7CC /* SDDPlaygroundTests */,
+				5696AA081CE72F7900CAB7CC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5696AA081CE72F7900CAB7CC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5696AA071CE72F7900CAB7CC /* SDDPlayground.app */,
+				5696AA1D1CE72F7900CAB7CC /* SDDPlaygroundTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5696AA091CE72F7900CAB7CC /* SDDPlayground */ = {
+			isa = PBXGroup;
+			children = (
+				5696AA2C1CE7672E00CAB7CC /* TCPServer.h */,
+				5696AA2D1CE7672E00CAB7CC /* TCPServer.m */,
+				5696AA321CE76A5300CAB7CC /* SDDServicePeer.h */,
+				5696AA331CE76A5300CAB7CC /* SDDServicePeer.m */,
+				5696AA2F1CE768D600CAB7CC /* SDDService.h */,
+				5696AA301CE768D600CAB7CC /* SDDService.m */,
+				5696AA0A1CE72F7900CAB7CC /* AppDelegate.h */,
+				5696AA0B1CE72F7900CAB7CC /* AppDelegate.m */,
+				5696AA101CE72F7900CAB7CC /* ViewController.h */,
+				5696AA111CE72F7900CAB7CC /* ViewController.m */,
+				5696AA131CE72F7900CAB7CC /* Assets.xcassets */,
+				5696AA151CE72F7900CAB7CC /* Main.storyboard */,
+				5696AA181CE72F7900CAB7CC /* Info.plist */,
+				5696AA0D1CE72F7900CAB7CC /* Supporting Files */,
+			);
+			path = SDDPlayground;
+			sourceTree = "<group>";
+		};
+		5696AA0D1CE72F7900CAB7CC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5696AA0E1CE72F7900CAB7CC /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5696AA201CE72F7900CAB7CC /* SDDPlaygroundTests */ = {
+			isa = PBXGroup;
+			children = (
+				5696AA211CE72F7900CAB7CC /* SDDPlaygroundTests.m */,
+				5696AA231CE72F7900CAB7CC /* Info.plist */,
+			);
+			path = SDDPlaygroundTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5696AA061CE72F7900CAB7CC /* SDDPlayground */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5696AA261CE72F7900CAB7CC /* Build configuration list for PBXNativeTarget "SDDPlayground" */;
+			buildPhases = (
+				5696AA031CE72F7900CAB7CC /* Sources */,
+				5696AA041CE72F7900CAB7CC /* Frameworks */,
+				5696AA051CE72F7900CAB7CC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SDDPlayground;
+			productName = SDDPlayground;
+			productReference = 5696AA071CE72F7900CAB7CC /* SDDPlayground.app */;
+			productType = "com.apple.product-type.application";
+		};
+		5696AA1C1CE72F7900CAB7CC /* SDDPlaygroundTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5696AA291CE72F7900CAB7CC /* Build configuration list for PBXNativeTarget "SDDPlaygroundTests" */;
+			buildPhases = (
+				5696AA191CE72F7900CAB7CC /* Sources */,
+				5696AA1A1CE72F7900CAB7CC /* Frameworks */,
+				5696AA1B1CE72F7900CAB7CC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5696AA1F1CE72F7900CAB7CC /* PBXTargetDependency */,
+			);
+			name = SDDPlaygroundTests;
+			productName = SDDPlaygroundTests;
+			productReference = 5696AA1D1CE72F7900CAB7CC /* SDDPlaygroundTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5696A9FF1CE72F7900CAB7CC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = Flash;
+				TargetAttributes = {
+					5696AA061CE72F7900CAB7CC = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					5696AA1C1CE72F7900CAB7CC = {
+						CreatedOnToolsVersion = 7.3.1;
+						TestTargetID = 5696AA061CE72F7900CAB7CC;
+					};
+				};
+			};
+			buildConfigurationList = 5696AA021CE72F7900CAB7CC /* Build configuration list for PBXProject "SDDPlayground" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 5696A9FE1CE72F7900CAB7CC;
+			productRefGroup = 5696AA081CE72F7900CAB7CC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5696AA061CE72F7900CAB7CC /* SDDPlayground */,
+				5696AA1C1CE72F7900CAB7CC /* SDDPlaygroundTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5696AA051CE72F7900CAB7CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5696AA141CE72F7900CAB7CC /* Assets.xcassets in Resources */,
+				5696AA171CE72F7900CAB7CC /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5696AA1B1CE72F7900CAB7CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5696AA031CE72F7900CAB7CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5696AA2E1CE7672E00CAB7CC /* TCPServer.m in Sources */,
+				5696AA121CE72F7900CAB7CC /* ViewController.m in Sources */,
+				5696AA0F1CE72F7900CAB7CC /* main.m in Sources */,
+				5696AA0C1CE72F7900CAB7CC /* AppDelegate.m in Sources */,
+				5696AA311CE768D600CAB7CC /* SDDService.m in Sources */,
+				5696AA341CE76A5300CAB7CC /* SDDServicePeer.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5696AA191CE72F7900CAB7CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5696AA221CE72F7900CAB7CC /* SDDPlaygroundTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5696AA1F1CE72F7900CAB7CC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5696AA061CE72F7900CAB7CC /* SDDPlayground */;
+			targetProxy = 5696AA1E1CE72F7900CAB7CC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		5696AA151CE72F7900CAB7CC /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5696AA161CE72F7900CAB7CC /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		5696AA241CE72F7900CAB7CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5696AA251CE72F7900CAB7CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		5696AA271CE72F7900CAB7CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../SDD/**";
+				INFOPLIST_FILE = SDDPlayground/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDKit.SDDPlayground;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		5696AA281CE72F7900CAB7CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../SDD/**";
+				INFOPLIST_FILE = SDDPlayground/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDKit.SDDPlayground;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		5696AA2A1CE72F7900CAB7CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SDDPlaygroundTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDKit.SDDPlaygroundTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SDDPlayground.app/Contents/MacOS/SDDPlayground";
+			};
+			name = Debug;
+		};
+		5696AA2B1CE72F7900CAB7CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SDDPlaygroundTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDKit.SDDPlaygroundTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SDDPlayground.app/Contents/MacOS/SDDPlayground";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5696AA021CE72F7900CAB7CC /* Build configuration list for PBXProject "SDDPlayground" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5696AA241CE72F7900CAB7CC /* Debug */,
+				5696AA251CE72F7900CAB7CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5696AA261CE72F7900CAB7CC /* Build configuration list for PBXNativeTarget "SDDPlayground" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5696AA271CE72F7900CAB7CC /* Debug */,
+				5696AA281CE72F7900CAB7CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5696AA291CE72F7900CAB7CC /* Build configuration list for PBXNativeTarget "SDDPlaygroundTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5696AA2A1CE72F7900CAB7CC /* Debug */,
+				5696AA2B1CE72F7900CAB7CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5696A9FF1CE72F7900CAB7CC /* Project object */;
+}

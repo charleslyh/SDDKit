@@ -85,6 +85,6 @@ void sdd_parse(const char *dsl, sdd_parser_callback* callback) {
 	yyparse(); 
 	yy_delete_buffer(dsl_buffer);
 
-	SDDDumpParser(&__secret_builder, "Status");
+	// SDDDumpParser(&__secret_builder, "Status");
 	SDDBuilderDestroy(&__secret_builder);
 }

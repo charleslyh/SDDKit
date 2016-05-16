@@ -4,20 +4,20 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>SDDExamples.xcscheme</key>
+		<key>SDDPlayground.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>5673C57C1C5EFBB900482DBA</key>
+		<key>5696AA061CE72F7900CAB7CC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5673C5951C5EFBB900482DBA</key>
+		<key>5696AA1C1CE72F7900CAB7CC</key>
 		<dict>
 			<key>primary</key>
 			<true/>

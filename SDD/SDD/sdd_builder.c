@@ -243,7 +243,6 @@ void SDDBuilderMakeState(SDDBuilder* builder, int mode) {
 
     callback->stateHandler(callback->context, state);
 
-    const char* type;
     sprintf(text, "[%-8s ", state->name);
     if (mode == 1) {
 	    sdd_array* cluster = sdd_array_pop(builder->clusters);
@@ -359,6 +358,14 @@ void SDDBuilderMakeTransition(SDDBuilder* builder) {
 	free((void*)from);
 	free((void*)event);
 	free((void*)post_acts);
+}
+
+void SDDBuilderMakeDSL(SDDBuilder* builder, int mode) {
+	sdd_state* root_state = (sdd_state*)sdd_array_pop(builder->states);
+	builder->callback->completionHandler(builder->callback->context, root_state);
+
+	sdd_state_release(root_state);
+	free((void*)root_state);
 }
 
 void yyerror(char *msg) {

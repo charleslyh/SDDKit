@@ -251,7 +251,7 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     BOOL fullMatch   = (currentPath.count == nextPath.count) && (currentPath.lastObject == nextPath.lastObject);
     BOOL leafRefresh = triggerState == currentPath.lastObject;
     
-    int lastSolidIdx;
+    NSInteger lastSolidIdx;
     if (fullMatch) {
         if (leafRefresh) {
             lastSolidIdx = (currentPath.count - 1) - 1;
@@ -259,8 +259,8 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
             lastSolidIdx = [currentPath indexOfObject:triggerState];
         }
     } else {
-        int lastEqualIdx = -1;
-        for (int j=0, last = MIN(currentPath.count, nextPath.count); j<last ; ++j) {
+        NSInteger lastEqualIdx = -1;
+        for (NSInteger j=0, last = MIN(currentPath.count, nextPath.count); j<last ; ++j) {
             if (currentPath[j] == nextPath[j]) {
                 lastEqualIdx = j;
             }
@@ -273,7 +273,7 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
         [s deactivate];
     }
     
-    for (int i=lastSolidIdx+1; i < nextPath.count; ++i) {
+    for (NSInteger i=lastSolidIdx+1; i < nextPath.count; ++i) {
         SDDState* s = nextPath[i];
         [s activate:argument];
     }

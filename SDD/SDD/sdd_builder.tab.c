@@ -1376,12 +1376,12 @@ yyreduce:
     {
         case 2:
 #line 26 "sdd.y"
-    {}
+    { SDDBuilderMakeDSL(&__secret_builder, 0); }
     break;
 
   case 3:
 #line 27 "sdd.y"
-    {}
+    { SDDBuilderMakeDSL(&__secret_builder, 1); }
     break;
 
   case 6:

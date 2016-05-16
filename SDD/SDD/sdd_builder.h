@@ -55,6 +55,9 @@ void SDDBuilderMakePostActions(SDDBuilder* builder, int empty);
 
 void SDDBuilderMakeTransition(SDDBuilder* builder);
 
+// mode: 0 - no transitions, 1- with transitions
+void SDDBuilderMakeDSL(SDDBuilder* builder, int mode);
+
 
 void SDDDumpParser(SDDBuilder* builder, const char* tag);
 

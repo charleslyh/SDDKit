@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5673C57C1C5EFBB900482DBA"
-               BuildableName = "SDDExamples.app"
-               BlueprintName = "SDDExamples"
-               ReferencedContainer = "container:SDDExamples.xcodeproj">
+               BlueprintIdentifier = "5696AA061CE72F7900CAB7CC"
+               BuildableName = "SDDPlayground.app"
+               BlueprintName = "SDDPlayground"
+               ReferencedContainer = "container:SDDPlayground.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,20 +32,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5673C5951C5EFBB900482DBA"
-               BuildableName = "SDDExamplesTests.xctest"
-               BlueprintName = "SDDExamplesTests"
-               ReferencedContainer = "container:SDDExamples.xcodeproj">
+               BlueprintIdentifier = "5696AA1C1CE72F7900CAB7CC"
+               BuildableName = "SDDPlaygroundTests.xctest"
+               BlueprintName = "SDDPlaygroundTests"
+               ReferencedContainer = "container:SDDPlayground.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5673C57C1C5EFBB900482DBA"
-            BuildableName = "SDDExamples.app"
-            BlueprintName = "SDDExamples"
-            ReferencedContainer = "container:SDDExamples.xcodeproj">
+            BlueprintIdentifier = "5696AA061CE72F7900CAB7CC"
+            BuildableName = "SDDPlayground.app"
+            BlueprintName = "SDDPlayground"
+            ReferencedContainer = "container:SDDPlayground.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -65,10 +65,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5673C57C1C5EFBB900482DBA"
-            BuildableName = "SDDExamples.app"
-            BlueprintName = "SDDExamples"
-            ReferencedContainer = "container:SDDExamples.xcodeproj">
+            BlueprintIdentifier = "5696AA061CE72F7900CAB7CC"
+            BuildableName = "SDDPlayground.app"
+            BlueprintName = "SDDPlayground"
+            ReferencedContainer = "container:SDDPlayground.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -84,10 +84,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5673C57C1C5EFBB900482DBA"
-            BuildableName = "SDDExamples.app"
-            BlueprintName = "SDDExamples"
-            ReferencedContainer = "container:SDDExamples.xcodeproj">
+            BlueprintIdentifier = "5696AA061CE72F7900CAB7CC"
+            BuildableName = "SDDPlayground.app"
+            BlueprintName = "SDDPlayground"
+            ReferencedContainer = "container:SDDPlayground.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
