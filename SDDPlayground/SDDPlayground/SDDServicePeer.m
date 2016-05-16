@@ -60,16 +60,18 @@
                         
                         if (nil != object) {
                             NSLog(@"Server said: %@", object);
-                            NSString *protocol = object[@"protocol"];
+                            NSString *protocol = object[@"proto"];
                             
-                            if ([protocol isEqualToString:@"dsl"]) {
-                                [self.delegate peer:self didReceiveDSL:object[@"value"]];
+                            if ([protocol isEqualToString:@"start"]) {
+                                [self.delegate peer:self didStartSchedulerWithDSL:object[@"dsl"]];
                             } else if ([protocol isEqualToString:@"activate"]) {
-                                [self.delegate peer:self didActivateState:object[@"state"] atDSL:object[@"root"]];
+                                [self.delegate peer:self didActivateState:object[@"state"] forSchedulerNamed:object[@"scheduler"]];
                             } else if ([protocol isEqualToString:@"deactivate"]) {
-                                [self.delegate peer:self didDeactivateState:object[@"state"] atDSL:object[@"root"]];
+                                [self.delegate peer:self didDeactivateState:object[@"state"] forSchedulerNamed:object[@"scheduler"]];
                             } else if ([protocol isEqualToString:@"event"]) {
                                 [self.delegate peer:self didReceiveEvent:object[@"value"]];
+                            } else if ([protocol isEqualToString:@"stop"]) {
+                                [self.delegate peer:self didStopSchedulerNamed:object[@"scheduler"]];
                             }
                         }
                     }

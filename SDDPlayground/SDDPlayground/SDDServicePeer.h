@@ -11,9 +11,11 @@
 @class SDDServicePeer;
 
 @protocol SDDServicePeerDelegate <NSObject>
-- (void)peer:(SDDServicePeer *)peer didReceiveDSL:(NSString *)dsl;
-- (void)peer:(SDDServicePeer *)peer didActivateState:(NSString *)stateName atDSL:(NSString *)dslName;
-- (void)peer:(SDDServicePeer *)peer didDeactivateState:(NSString *)stateName atDSL:(NSString *)dslName;
+- (void)peer:(SDDServicePeer *)peer didStartSchedulerWithDSL:(NSString *)dsl;
+- (void)peer:(SDDServicePeer *)peer didStopSchedulerNamed:(NSString *)schedulerName;
+
+- (void)peer:(SDDServicePeer *)peer didActivateState:(NSString *)stateName forSchedulerNamed:(NSString *)schedulerName;
+- (void)peer:(SDDServicePeer *)peer didDeactivateState:(NSString *)stateName forSchedulerNamed:(NSString *)schedulerName;
 - (void)peer:(SDDServicePeer *)peer didReceiveEvent:(NSString *)event;
 @end
 

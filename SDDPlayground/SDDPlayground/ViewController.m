@@ -148,7 +148,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     _histories = [NSMutableArray array];
 }
 
-- (void)peer:(SDDServicePeer *)peer didReceiveDSL:(NSString *)dsl {
+- (void)peer:(SDDServicePeer *)peer didStartSchedulerWithDSL:(NSString *)dsl {
     SDDSchedulerPresenter *presenter = [[SDDSchedulerPresenter alloc] init];
     
     sdd_parser_callback callback;
@@ -157,33 +157,42 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     callback.clusterHandler    = &SDDPGHandleDescendants;
     callback.transitionHandler = &SDDPGHandleTransition;
     callback.completionHandler = &SDDPGHandleRootState;
-
     sdd_parse([dsl UTF8String], &callback);
     
     _presenters[presenter.rootName] = presenter;
     
     [self syncTextView];
+
+    [_histories addObject:[NSString stringWithFormat:@"[L] %@", presenter.rootName]];
+    [self syncHistoriesTableView];
 }
 
-- (void)peer:(SDDServicePeer *)peer didActivateState:(NSString *)stateName atDSL:(NSString *)dslName {
-    [_presenters[dslName] activateState:stateName];
-    [_histories addObject:[NSString stringWithFormat:@"[A] %@.%@", dslName, stateName]];
-    
-    [self syncHistoriesTableView];
+- (void)peer:(SDDServicePeer *)peer didStopSchedulerNamed:(NSString *)schedulerName {
+    [_presenters removeObjectForKey:schedulerName];
     [self syncTextView];
+    
+    [_histories addObject:[NSString stringWithFormat:@"[S] %@", schedulerName]];
+    [self syncHistoriesTableView];
 }
 
-- (void)peer:(SDDServicePeer *)peer didDeactivateState:(NSString *)stateName atDSL:(NSString *)dslName {
-    [_presenters[dslName] deactivateState:stateName];
-    [_histories addObject:[NSString stringWithFormat:@"[D] %@.%@", dslName, stateName]];
-    
-    [self syncHistoriesTableView];
+- (void)peer:(SDDServicePeer *)peer didActivateState:(NSString *)stateName forSchedulerNamed:(NSString *)schedulerName {
+    [_presenters[schedulerName] activateState:stateName];
     [self syncTextView];
+    
+    [_histories addObject:[NSString stringWithFormat:@"[A] %@.%@", schedulerName, stateName]];
+    [self syncHistoriesTableView];
+}
+
+- (void)peer:(SDDServicePeer *)peer didDeactivateState:(NSString *)stateName forSchedulerNamed:(NSString *)schedulerName {
+    [_presenters[schedulerName] deactivateState:stateName];
+    [self syncTextView];
+
+    [_histories addObject:[NSString stringWithFormat:@"[D] %@.%@", schedulerName, stateName]];
+    [self syncHistoriesTableView];
 }
 
 - (void)peer:(SDDServicePeer *)peer didReceiveEvent:(NSString *)event {
     [_histories addObject:[NSString stringWithFormat:@"[E] %@", event]];
-    
     [self syncHistoriesTableView];
 }
 
