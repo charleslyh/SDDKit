@@ -13,9 +13,6 @@
 		5696AA141CE72F7900CAB7CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5696AA131CE72F7900CAB7CC /* Assets.xcassets */; };
 		5696AA171CE72F7900CAB7CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5696AA151CE72F7900CAB7CC /* Main.storyboard */; };
 		5696AA221CE72F7900CAB7CC /* SDDPlaygroundTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA211CE72F7900CAB7CC /* SDDPlaygroundTests.m */; };
-		5696AA2E1CE7672E00CAB7CC /* TCPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA2D1CE7672E00CAB7CC /* TCPServer.m */; };
-		5696AA311CE768D600CAB7CC /* SDDService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA301CE768D600CAB7CC /* SDDService.m */; };
-		5696AA341CE76A5300CAB7CC /* SDDServicePeer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA331CE76A5300CAB7CC /* SDDServicePeer.m */; };
 		5696AA741CE8CE5000CAB7CC /* SDDX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5696AA731CE8CE5000CAB7CC /* SDDX.framework */; };
 /* End PBXBuildFile section */
 
@@ -42,12 +39,6 @@
 		5696AA1D1CE72F7900CAB7CC /* SDDPlaygroundTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SDDPlaygroundTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5696AA211CE72F7900CAB7CC /* SDDPlaygroundTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDDPlaygroundTests.m; sourceTree = "<group>"; };
 		5696AA231CE72F7900CAB7CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5696AA2C1CE7672E00CAB7CC /* TCPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPServer.h; sourceTree = "<group>"; };
-		5696AA2D1CE7672E00CAB7CC /* TCPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPServer.m; sourceTree = "<group>"; };
-		5696AA2F1CE768D600CAB7CC /* SDDService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDService.h; sourceTree = "<group>"; };
-		5696AA301CE768D600CAB7CC /* SDDService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDService.m; sourceTree = "<group>"; };
-		5696AA321CE76A5300CAB7CC /* SDDServicePeer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDServicePeer.h; sourceTree = "<group>"; };
-		5696AA331CE76A5300CAB7CC /* SDDServicePeer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDServicePeer.m; sourceTree = "<group>"; };
 		5696AA731CE8CE5000CAB7CC /* SDDX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDDX.framework; path = "../../../../Library/Developer/Xcode/DerivedData/SDDKit-caodxadizwyqrsgjbwppiasvwxxv/Build/Products/Debug/SDDX.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -92,12 +83,6 @@
 		5696AA091CE72F7900CAB7CC /* SDDPlayground */ = {
 			isa = PBXGroup;
 			children = (
-				5696AA2C1CE7672E00CAB7CC /* TCPServer.h */,
-				5696AA2D1CE7672E00CAB7CC /* TCPServer.m */,
-				5696AA321CE76A5300CAB7CC /* SDDServicePeer.h */,
-				5696AA331CE76A5300CAB7CC /* SDDServicePeer.m */,
-				5696AA2F1CE768D600CAB7CC /* SDDService.h */,
-				5696AA301CE768D600CAB7CC /* SDDService.m */,
 				5696AA0A1CE72F7900CAB7CC /* AppDelegate.h */,
 				5696AA0B1CE72F7900CAB7CC /* AppDelegate.m */,
 				5696AA101CE72F7900CAB7CC /* ViewController.h */,
@@ -226,12 +211,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5696AA2E1CE7672E00CAB7CC /* TCPServer.m in Sources */,
 				5696AA121CE72F7900CAB7CC /* ViewController.m in Sources */,
 				5696AA0F1CE72F7900CAB7CC /* main.m in Sources */,
 				5696AA0C1CE72F7900CAB7CC /* AppDelegate.m in Sources */,
-				5696AA311CE768D600CAB7CC /* SDDService.m in Sources */,
-				5696AA341CE76A5300CAB7CC /* SDDServicePeer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,7 +333,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../SDD/**";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = SDDPlayground/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDKit.SDDPlayground;
@@ -364,7 +346,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../SDD/**";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = SDDPlayground/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDKit.SDDPlayground;

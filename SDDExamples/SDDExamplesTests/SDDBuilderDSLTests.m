@@ -7,9 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "SDDSchedulerBuilder.h"
-#import "SDDEventsPool.h"
-#import "SDDScheduler.h"
+#import <SDDI/SDDI.h>
 #import "SDDMockFlows.h"
 
 @interface SDDTestMachineBuilder : XCTestCase
@@ -26,9 +24,8 @@
     self.flows = [[SDDMockFlows alloc] init];
     
     SDDEventsPool* epool = [[SDDEventsPool alloc] init];
-    SDDSchedulerBuilder* builder = [[SDDSchedulerBuilder alloc] initWithNamespace:@""];
+    SDDSchedulerBuilder* builder = [[SDDSchedulerBuilder alloc] initWithNamespace:@"" logger:nil];
     SDDScheduler* scheduler = [builder schedulerWithContext:self
-                                                 eventsPool:epool
                                                         dsl:dsl
                                                       queue:[SDDDirectExecutionQueue new]
                                ];
@@ -176,7 +173,7 @@
 
 
 - (NSString*)Figure2_1 {
-    return  SDDOCLanguage
+    return SDDOCLanguage
     (
      [E e:me x:m5 ~[B]
         [B e:mb x:m2]

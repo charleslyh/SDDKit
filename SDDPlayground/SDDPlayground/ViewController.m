@@ -6,10 +6,8 @@
 //  Copyright © 2016年 Flash. All rights reserved.
 //
 
+#import <SDDX/SDDX.h>
 #import "ViewController.h"
-#import "SDDService.h"
-#import "SDDServicePeer.h"
-#import "SDDX.h"
 
 
 NSString * SDDPGStringNameFromRawState(sdd_state *s) {
@@ -148,7 +146,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     _histories = [NSMutableArray array];
 }
 
-- (void)peer:(SDDServicePeer *)peer didStartSchedulerWithDSL:(NSString *)dsl {
+- (void)peer:(SDDServicePeer *)peer willStartSchedulerWithDSL:(NSString *)dsl {
     SDDSchedulerPresenter *presenter = [[SDDSchedulerPresenter alloc] init];
     
     sdd_parser_callback callback;

@@ -20,3 +20,6 @@ FOUNDATION_EXPORT const unsigned char SDDXVersionString[];
 
 #import "sdd_array.h"
 #import "sdd_parser.h"
+
+#import "SDDService.h"
+#import "SDDServicePeer.h"

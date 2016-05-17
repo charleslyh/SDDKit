@@ -7,15 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		562CA53D1CE5EB1F00861684 /* SDD.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 562CA53C1CE5EB1F00861684 /* SDD.h */; };
-		562CA5591CE5EB4D00861684 /* SDDEventsPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA54F1CE5EB4D00861684 /* SDDEventsPool.m */; };
-		562CA55A1CE5EB4D00861684 /* SDDScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA5511CE5EB4D00861684 /* SDDScheduler.m */; };
-		562CA55B1CE5EB4D00861684 /* SDDSchedulerBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA5531CE5EB4D00861684 /* SDDSchedulerBuilder.m */; };
-		5696AA411CE8C79B00CAB7CC /* sdd_array.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA381CE8C79B00CAB7CC /* sdd_array.c */; };
-		5696AA421CE8C79B00CAB7CC /* sdd_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA3A1CE8C79B00CAB7CC /* sdd_builder.c */; };
-		5696AA431CE8C79B00CAB7CC /* sdd_builder.tab.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA3C1CE8C79B00CAB7CC /* sdd_builder.tab.c */; };
-		5696AA441CE8C79B00CAB7CC /* sdd_builder.yy.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA3E1CE8C79B00CAB7CC /* sdd_builder.yy.c */; };
-		5696AA451CE8C79B00CAB7CC /* sdd_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA3F1CE8C79B00CAB7CC /* sdd_parser.c */; };
 		5696AA6E1CE8CE2B00CAB7CC /* SDDX.h in Headers */ = {isa = PBXBuildFile; fileRef = 5696AA6D1CE8CE2B00CAB7CC /* SDDX.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5696AA751CE8CE8A00CAB7CC /* sdd_array.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA381CE8C79B00CAB7CC /* sdd_array.c */; };
 		5696AA761CE8CE8A00CAB7CC /* sdd_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA3A1CE8C79B00CAB7CC /* sdd_builder.c */; };
@@ -25,26 +16,36 @@
 		5696AA7A1CE8CE8A00CAB7CC /* SDDEventsPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA54F1CE5EB4D00861684 /* SDDEventsPool.m */; };
 		5696AA7B1CE8CE8A00CAB7CC /* SDDScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA5511CE5EB4D00861684 /* SDDScheduler.m */; };
 		5696AA7C1CE8CE8A00CAB7CC /* SDDSchedulerBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA5531CE5EB4D00861684 /* SDDSchedulerBuilder.m */; };
-		5696AA7D1CE8CEBA00CAB7CC /* SDDEventsPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 562CA54E1CE5EB4D00861684 /* SDDEventsPool.h */; };
-		5696AA7E1CE8CEBA00CAB7CC /* SDDScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 562CA5501CE5EB4D00861684 /* SDDScheduler.h */; };
-		5696AA7F1CE8CEBA00CAB7CC /* SDDSchedulerBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 562CA5521CE5EB4D00861684 /* SDDSchedulerBuilder.h */; };
+		5696AA7D1CE8CEBA00CAB7CC /* SDDEventsPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 562CA54E1CE5EB4D00861684 /* SDDEventsPool.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5696AA7E1CE8CEBA00CAB7CC /* SDDScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 562CA5501CE5EB4D00861684 /* SDDScheduler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5696AA7F1CE8CEBA00CAB7CC /* SDDSchedulerBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 562CA5521CE5EB4D00861684 /* SDDSchedulerBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		56AD9AAE1CEADE8A003EC9B7 /* SDDI.h in Headers */ = {isa = PBXBuildFile; fileRef = 56AD9AAD1CEADE8A003EC9B7 /* SDDI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		56AD9AB31CEADE9E003EC9B7 /* sdd_array.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA381CE8C79B00CAB7CC /* sdd_array.c */; };
+		56AD9AB41CEADE9E003EC9B7 /* sdd_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA3A1CE8C79B00CAB7CC /* sdd_builder.c */; };
+		56AD9AB51CEADE9E003EC9B7 /* sdd_builder.tab.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA3C1CE8C79B00CAB7CC /* sdd_builder.tab.c */; };
+		56AD9AB61CEADE9E003EC9B7 /* sdd_builder.yy.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA3E1CE8C79B00CAB7CC /* sdd_builder.yy.c */; };
+		56AD9AB71CEADE9E003EC9B7 /* sdd_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA3F1CE8C79B00CAB7CC /* sdd_parser.c */; };
+		56AD9AB81CEADE9E003EC9B7 /* SDDEventsPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA54F1CE5EB4D00861684 /* SDDEventsPool.m */; };
+		56AD9AB91CEADE9E003EC9B7 /* SDDScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA5511CE5EB4D00861684 /* SDDScheduler.m */; };
+		56AD9ABA1CEADE9E003EC9B7 /* SDDSchedulerBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA5531CE5EB4D00861684 /* SDDSchedulerBuilder.m */; };
+		56AD9ABB1CEADEA9003EC9B7 /* sdd_array.h in Headers */ = {isa = PBXBuildFile; fileRef = 5696AA391CE8C79B00CAB7CC /* sdd_array.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		56AD9ABC1CEADEA9003EC9B7 /* sdd_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 5696AA401CE8C79B00CAB7CC /* sdd_parser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		56AD9ABD1CEADEA9003EC9B7 /* SDDEventsPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 562CA54E1CE5EB4D00861684 /* SDDEventsPool.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		56AD9ABE1CEADEA9003EC9B7 /* SDDScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 562CA5501CE5EB4D00861684 /* SDDScheduler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		56AD9ABF1CEADEA9003EC9B7 /* SDDSchedulerBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 562CA5521CE5EB4D00861684 /* SDDSchedulerBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		56AD9AC01CEADEC3003EC9B7 /* sdd_array.h in Headers */ = {isa = PBXBuildFile; fileRef = 5696AA391CE8C79B00CAB7CC /* sdd_array.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		56AD9AC11CEADED6003EC9B7 /* sdd_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 5696AA401CE8C79B00CAB7CC /* sdd_parser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		56AD9AD71CEB2EC8003EC9B7 /* SDDISocketReporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 56AD9AD51CEB2EC8003EC9B7 /* SDDISocketReporter.h */; };
+		56AD9AD81CEB2EC8003EC9B7 /* SDDISocketReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 56AD9AD61CEB2EC8003EC9B7 /* SDDISocketReporter.m */; };
+		56AD9ADF1CEB2F44003EC9B7 /* SDDService.h in Headers */ = {isa = PBXBuildFile; fileRef = 56AD9AD91CEB2F44003EC9B7 /* SDDService.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		56AD9AE01CEB2F44003EC9B7 /* SDDService.m in Sources */ = {isa = PBXBuildFile; fileRef = 56AD9ADA1CEB2F44003EC9B7 /* SDDService.m */; };
+		56AD9AE11CEB2F44003EC9B7 /* SDDServicePeer.h in Headers */ = {isa = PBXBuildFile; fileRef = 56AD9ADB1CEB2F44003EC9B7 /* SDDServicePeer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		56AD9AE21CEB2F44003EC9B7 /* SDDServicePeer.m in Sources */ = {isa = PBXBuildFile; fileRef = 56AD9ADC1CEB2F44003EC9B7 /* SDDServicePeer.m */; };
+		56AD9AE31CEB2F44003EC9B7 /* TCPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 56AD9ADD1CEB2F44003EC9B7 /* TCPServer.h */; };
+		56AD9AE41CEB2F44003EC9B7 /* TCPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 56AD9ADE1CEB2F44003EC9B7 /* TCPServer.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		562CA5371CE5EB1F00861684 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
-			files = (
-				562CA53D1CE5EB1F00861684 /* SDD.h in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		562CA5391CE5EB1F00861684 /* libSDD.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSDD.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		562CA53C1CE5EB1F00861684 /* SDD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDD.h; sourceTree = "<group>"; };
 		562CA54E1CE5EB4D00861684 /* SDDEventsPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDEventsPool.h; sourceTree = "<group>"; };
 		562CA54F1CE5EB4D00861684 /* SDDEventsPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDEventsPool.m; sourceTree = "<group>"; };
@@ -64,17 +65,28 @@
 		5696AA6B1CE8CE2B00CAB7CC /* SDDX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SDDX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5696AA6D1CE8CE2B00CAB7CC /* SDDX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDDX.h; sourceTree = "<group>"; };
 		5696AA6F1CE8CE2B00CAB7CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56AD9AAB1CEADE8A003EC9B7 /* SDDI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SDDI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		56AD9AAD1CEADE8A003EC9B7 /* SDDI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDDI.h; sourceTree = "<group>"; };
+		56AD9AAF1CEADE8A003EC9B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56AD9AD51CEB2EC8003EC9B7 /* SDDISocketReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDISocketReporter.h; sourceTree = "<group>"; };
+		56AD9AD61CEB2EC8003EC9B7 /* SDDISocketReporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDISocketReporter.m; sourceTree = "<group>"; };
+		56AD9AD91CEB2F44003EC9B7 /* SDDService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDService.h; sourceTree = "<group>"; };
+		56AD9ADA1CEB2F44003EC9B7 /* SDDService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDService.m; sourceTree = "<group>"; };
+		56AD9ADB1CEB2F44003EC9B7 /* SDDServicePeer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDServicePeer.h; sourceTree = "<group>"; };
+		56AD9ADC1CEB2F44003EC9B7 /* SDDServicePeer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDServicePeer.m; sourceTree = "<group>"; };
+		56AD9ADD1CEB2F44003EC9B7 /* TCPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPServer.h; sourceTree = "<group>"; };
+		56AD9ADE1CEB2F44003EC9B7 /* TCPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPServer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		562CA5361CE5EB1F00861684 /* Frameworks */ = {
+		5696AA671CE8CE2B00CAB7CC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5696AA671CE8CE2B00CAB7CC /* Frameworks */ = {
+		56AD9AA71CEADE8A003EC9B7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -89,6 +101,7 @@
 			children = (
 				562CA53B1CE5EB1F00861684 /* SDD */,
 				5696AA6C1CE8CE2B00CAB7CC /* SDDX */,
+				56AD9AAC1CEADE8A003EC9B7 /* SDDI */,
 				562CA53A1CE5EB1F00861684 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -96,8 +109,8 @@
 		562CA53A1CE5EB1F00861684 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				562CA5391CE5EB1F00861684 /* libSDD.a */,
 				5696AA6B1CE8CE2B00CAB7CC /* SDDX.framework */,
+				56AD9AAB1CEADE8A003EC9B7 /* SDDI.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -128,10 +141,27 @@
 		5696AA6C1CE8CE2B00CAB7CC /* SDDX */ = {
 			isa = PBXGroup;
 			children = (
+				56AD9AD91CEB2F44003EC9B7 /* SDDService.h */,
+				56AD9ADA1CEB2F44003EC9B7 /* SDDService.m */,
+				56AD9ADB1CEB2F44003EC9B7 /* SDDServicePeer.h */,
+				56AD9ADC1CEB2F44003EC9B7 /* SDDServicePeer.m */,
+				56AD9ADD1CEB2F44003EC9B7 /* TCPServer.h */,
+				56AD9ADE1CEB2F44003EC9B7 /* TCPServer.m */,
 				5696AA6D1CE8CE2B00CAB7CC /* SDDX.h */,
 				5696AA6F1CE8CE2B00CAB7CC /* Info.plist */,
 			);
 			path = SDDX;
+			sourceTree = "<group>";
+		};
+		56AD9AAC1CEADE8A003EC9B7 /* SDDI */ = {
+			isa = PBXGroup;
+			children = (
+				56AD9AD51CEB2EC8003EC9B7 /* SDDISocketReporter.h */,
+				56AD9AD61CEB2EC8003EC9B7 /* SDDISocketReporter.m */,
+				56AD9AAD1CEADE8A003EC9B7 /* SDDI.h */,
+				56AD9AAF1CEADE8A003EC9B7 /* Info.plist */,
+			);
+			path = SDDI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,32 +172,34 @@
 			buildActionMask = 2147483647;
 			files = (
 				5696AA7F1CE8CEBA00CAB7CC /* SDDSchedulerBuilder.h in Headers */,
+				56AD9AE31CEB2F44003EC9B7 /* TCPServer.h in Headers */,
 				5696AA6E1CE8CE2B00CAB7CC /* SDDX.h in Headers */,
+				56AD9AC01CEADEC3003EC9B7 /* sdd_array.h in Headers */,
+				56AD9AC11CEADED6003EC9B7 /* sdd_parser.h in Headers */,
+				56AD9ADF1CEB2F44003EC9B7 /* SDDService.h in Headers */,
 				5696AA7D1CE8CEBA00CAB7CC /* SDDEventsPool.h in Headers */,
+				56AD9AE11CEB2F44003EC9B7 /* SDDServicePeer.h in Headers */,
 				5696AA7E1CE8CEBA00CAB7CC /* SDDScheduler.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		56AD9AA81CEADE8A003EC9B7 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				56AD9ABF1CEADEA9003EC9B7 /* SDDSchedulerBuilder.h in Headers */,
+				56AD9ABC1CEADEA9003EC9B7 /* sdd_parser.h in Headers */,
+				56AD9ABB1CEADEA9003EC9B7 /* sdd_array.h in Headers */,
+				56AD9AAE1CEADE8A003EC9B7 /* SDDI.h in Headers */,
+				56AD9ABD1CEADEA9003EC9B7 /* SDDEventsPool.h in Headers */,
+				56AD9AD71CEB2EC8003EC9B7 /* SDDISocketReporter.h in Headers */,
+				56AD9ABE1CEADEA9003EC9B7 /* SDDScheduler.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		562CA5381CE5EB1F00861684 /* SDD */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 562CA5421CE5EB1F00861684 /* Build configuration list for PBXNativeTarget "SDD" */;
-			buildPhases = (
-				562CA5351CE5EB1F00861684 /* Sources */,
-				562CA5361CE5EB1F00861684 /* Frameworks */,
-				562CA5371CE5EB1F00861684 /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = SDD;
-			productName = SDD;
-			productReference = 562CA5391CE5EB1F00861684 /* libSDD.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 		5696AA6A1CE8CE2B00CAB7CC /* SDDX */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5696AA701CE8CE2B00CAB7CC /* Build configuration list for PBXNativeTarget "SDDX" */;
@@ -186,6 +218,24 @@
 			productReference = 5696AA6B1CE8CE2B00CAB7CC /* SDDX.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		56AD9AAA1CEADE8A003EC9B7 /* SDDI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 56AD9AB21CEADE8A003EC9B7 /* Build configuration list for PBXNativeTarget "SDDI" */;
+			buildPhases = (
+				56AD9AA61CEADE8A003EC9B7 /* Sources */,
+				56AD9AA71CEADE8A003EC9B7 /* Frameworks */,
+				56AD9AA81CEADE8A003EC9B7 /* Headers */,
+				56AD9AA91CEADE8A003EC9B7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SDDI;
+			productName = SDDI;
+			productReference = 56AD9AAB1CEADE8A003EC9B7 /* SDDI.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -195,10 +245,10 @@
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = Flash;
 				TargetAttributes = {
-					562CA5381CE5EB1F00861684 = {
+					5696AA6A1CE8CE2B00CAB7CC = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
-					5696AA6A1CE8CE2B00CAB7CC = {
+					56AD9AAA1CEADE8A003EC9B7 = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
 				};
@@ -215,8 +265,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				562CA5381CE5EB1F00861684 /* SDD */,
 				5696AA6A1CE8CE2B00CAB7CC /* SDDX */,
+				56AD9AAA1CEADE8A003EC9B7 /* SDDI */,
 			);
 		};
 /* End PBXProject section */
@@ -229,36 +279,47 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXSourcesBuildPhase section */
-		562CA5351CE5EB1F00861684 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
+		56AD9AA91CEADE8A003EC9B7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				562CA55B1CE5EB4D00861684 /* SDDSchedulerBuilder.m in Sources */,
-				5696AA441CE8C79B00CAB7CC /* sdd_builder.yy.c in Sources */,
-				5696AA411CE8C79B00CAB7CC /* sdd_array.c in Sources */,
-				5696AA431CE8C79B00CAB7CC /* sdd_builder.tab.c in Sources */,
-				5696AA451CE8C79B00CAB7CC /* sdd_parser.c in Sources */,
-				562CA55A1CE5EB4D00861684 /* SDDScheduler.m in Sources */,
-				562CA5591CE5EB4D00861684 /* SDDEventsPool.m in Sources */,
-				5696AA421CE8C79B00CAB7CC /* sdd_builder.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
 		5696AA661CE8CE2B00CAB7CC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				5696AA7A1CE8CE8A00CAB7CC /* SDDEventsPool.m in Sources */,
+				56AD9AE41CEB2F44003EC9B7 /* TCPServer.m in Sources */,
 				5696AA7C1CE8CE8A00CAB7CC /* SDDSchedulerBuilder.m in Sources */,
 				5696AA751CE8CE8A00CAB7CC /* sdd_array.c in Sources */,
 				5696AA761CE8CE8A00CAB7CC /* sdd_builder.c in Sources */,
 				5696AA781CE8CE8A00CAB7CC /* sdd_builder.yy.c in Sources */,
 				5696AA791CE8CE8A00CAB7CC /* sdd_parser.c in Sources */,
 				5696AA7B1CE8CE8A00CAB7CC /* SDDScheduler.m in Sources */,
+				56AD9AE21CEB2F44003EC9B7 /* SDDServicePeer.m in Sources */,
 				5696AA771CE8CE8A00CAB7CC /* sdd_builder.tab.c in Sources */,
+				56AD9AE01CEB2F44003EC9B7 /* SDDService.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		56AD9AA61CEADE8A003EC9B7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				56AD9AB81CEADE9E003EC9B7 /* SDDEventsPool.m in Sources */,
+				56AD9ABA1CEADE9E003EC9B7 /* SDDSchedulerBuilder.m in Sources */,
+				56AD9AB31CEADE9E003EC9B7 /* sdd_array.c in Sources */,
+				56AD9AB41CEADE9E003EC9B7 /* sdd_builder.c in Sources */,
+				56AD9AB61CEADE9E003EC9B7 /* sdd_builder.yy.c in Sources */,
+				56AD9AB71CEADE9E003EC9B7 /* sdd_parser.c in Sources */,
+				56AD9AB91CEADE9E003EC9B7 /* SDDScheduler.m in Sources */,
+				56AD9AD81CEB2EC8003EC9B7 /* SDDISocketReporter.m in Sources */,
+				56AD9AB51CEADE9E003EC9B7 /* sdd_builder.tab.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +364,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -341,29 +403,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		562CA5431CE5EB1F00861684 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-			};
-			name = Debug;
-		};
-		562CA5441CE5EB1F00861684 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 			};
 			name = Release;
 		};
@@ -415,6 +458,48 @@
 			};
 			name = Release;
 		};
+		56AD9AB01CEADE8A003EC9B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = SDDI/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDKit.SDDI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		56AD9AB11CEADE8A003EC9B7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = SDDI/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDKit.SDDI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -427,15 +512,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		562CA5421CE5EB1F00861684 /* Build configuration list for PBXNativeTarget "SDD" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				562CA5431CE5EB1F00861684 /* Debug */,
-				562CA5441CE5EB1F00861684 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		5696AA701CE8CE2B00CAB7CC /* Build configuration list for PBXNativeTarget "SDDX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -443,6 +519,16 @@
 				5696AA721CE8CE2B00CAB7CC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		56AD9AB21CEADE8A003EC9B7 /* Build configuration list for PBXNativeTarget "SDDI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				56AD9AB01CEADE8A003EC9B7 /* Debug */,
+				56AD9AB11CEADE8A003EC9B7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

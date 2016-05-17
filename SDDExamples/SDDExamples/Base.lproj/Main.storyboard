@@ -1,81 +1,109 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YZs-hy-Qe5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YZs-hy-Qe5">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
-            <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zdu-Ee-GL9">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="Trigger Button"/>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="141" y="100" width="119" height="30"/>
-                                </variation>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="zdu-Ee-GL9"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=compact">
-                            <mask key="subviews">
-                                <include reference="zdu-Ee-GL9"/>
-                            </mask>
-                        </variation>
-                    </view>
-                    <connections>
-                        <outlet property="triggerBtn" destination="zdu-Ee-GL9" id="aTz-T8-BnY"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2217" y="297"/>
-        </scene>
-        <!--View Controller-->
         <scene sceneID="jgZ-wS-Iox">
             <objects>
-                <viewController id="iBh-oq-WO3" sceneMemberID="viewController">
+                <viewController id="iBh-oq-WO3" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hLI-NX-1ln"/>
                         <viewControllerLayoutGuide type="bottom" id="FLP-cz-n5k"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="U1A-W5-0oB">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ROg-DM-HXJ">
+                            <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ROg-DM-HXJ">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="177" y="385" width="46" height="30"/>
-                                </variation>
+                                <state key="normal" title="E1"/>
                                 <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="O5B-Y5-ZGA"/>
+                                    <action selector="didTouchButton:" destination="iBh-oq-WO3" eventType="touchUpInside" id="9M9-KR-tV5"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgY-1x-g74">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="E2"/>
+                                <connections>
+                                    <action selector="didTouchButton:" destination="iBh-oq-WO3" eventType="touchUpInside" id="G52-MO-ukB"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R1S-KT-Lg4">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="E3"/>
+                                <connections>
+                                    <action selector="didTouchButton:" destination="iBh-oq-WO3" eventType="touchUpInside" id="q76-Qx-eX8"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xBm-Mm-LJA">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="E4"/>
+                                <connections>
+                                    <action selector="didTouchButton:" destination="iBh-oq-WO3" eventType="touchUpInside" id="SuO-9g-Ph4"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="R1S-KT-Lg4" firstAttribute="leading" secondItem="hgY-1x-g74" secondAttribute="trailing" constant="8" id="2Wa-dY-Sfp"/>
+                            <constraint firstItem="ROg-DM-HXJ" firstAttribute="width" secondItem="xBm-Mm-LJA" secondAttribute="width" id="6qz-aI-9qr"/>
+                            <constraint firstItem="hgY-1x-g74" firstAttribute="centerY" secondItem="ROg-DM-HXJ" secondAttribute="centerY" id="9Jj-qF-ZBb"/>
+                            <constraint firstItem="ROg-DM-HXJ" firstAttribute="width" secondItem="hgY-1x-g74" secondAttribute="width" id="IaZ-Sw-1AV"/>
+                            <constraint firstItem="ROg-DM-HXJ" firstAttribute="width" secondItem="R1S-KT-Lg4" secondAttribute="width" id="K4r-DC-ag2"/>
+                            <constraint firstItem="xBm-Mm-LJA" firstAttribute="leading" secondItem="R1S-KT-Lg4" secondAttribute="trailing" constant="8" id="QbX-8r-Sod"/>
+                            <constraint firstItem="ROg-DM-HXJ" firstAttribute="centerY" secondItem="U1A-W5-0oB" secondAttribute="centerY" id="VG8-RS-LIR"/>
+                            <constraint firstItem="R1S-KT-Lg4" firstAttribute="centerY" secondItem="ROg-DM-HXJ" secondAttribute="centerY" id="fVJ-IT-Isg"/>
+                            <constraint firstItem="ROg-DM-HXJ" firstAttribute="leading" secondItem="U1A-W5-0oB" secondAttribute="leadingMargin" id="iSZ-bS-wJQ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="xBm-Mm-LJA" secondAttribute="trailing" id="lqw-CF-nqQ"/>
+                            <constraint firstItem="xBm-Mm-LJA" firstAttribute="centerY" secondItem="ROg-DM-HXJ" secondAttribute="centerY" id="t84-wm-BoA"/>
+                            <constraint firstItem="hgY-1x-g74" firstAttribute="leading" secondItem="ROg-DM-HXJ" secondAttribute="trailing" constant="8" id="wSf-my-qKG"/>
+                        </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="ROg-DM-HXJ"/>
+                                <exclude reference="hgY-1x-g74"/>
+                                <exclude reference="R1S-KT-Lg4"/>
+                                <exclude reference="xBm-Mm-LJA"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="6qz-aI-9qr"/>
+                                <exclude reference="IaZ-Sw-1AV"/>
+                                <exclude reference="K4r-DC-ag2"/>
+                                <exclude reference="VG8-RS-LIR"/>
+                                <exclude reference="iSZ-bS-wJQ"/>
+                                <exclude reference="9Jj-qF-ZBb"/>
+                                <exclude reference="wSf-my-qKG"/>
+                                <exclude reference="2Wa-dY-Sfp"/>
+                                <exclude reference="fVJ-IT-Isg"/>
+                                <exclude reference="QbX-8r-Sod"/>
+                                <exclude reference="lqw-CF-nqQ"/>
+                                <exclude reference="t84-wm-BoA"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="subviews">
                                 <include reference="ROg-DM-HXJ"/>
+                                <include reference="hgY-1x-g74"/>
+                                <include reference="R1S-KT-Lg4"/>
+                                <include reference="xBm-Mm-LJA"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="6qz-aI-9qr"/>
+                                <include reference="IaZ-Sw-1AV"/>
+                                <include reference="K4r-DC-ag2"/>
+                                <include reference="VG8-RS-LIR"/>
+                                <include reference="iSZ-bS-wJQ"/>
+                                <include reference="9Jj-qF-ZBb"/>
+                                <include reference="wSf-my-qKG"/>
+                                <include reference="2Wa-dY-Sfp"/>
+                                <include reference="fVJ-IT-Isg"/>
+                                <include reference="QbX-8r-Sod"/>
+                                <include reference="lqw-CF-nqQ"/>
+                                <include reference="t84-wm-BoA"/>
                             </mask>
                         </variation>
                     </view>

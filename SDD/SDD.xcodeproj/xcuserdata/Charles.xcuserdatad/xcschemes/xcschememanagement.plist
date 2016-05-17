@@ -4,18 +4,17 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>SDD.xcscheme</key>
+		<key>SDDI.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
-			<integer>0</integer>
-		</dict>
-		<key>SDDOSX.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
+			<integer>5</integer>
 		</dict>
 		<key>SDDX.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
@@ -38,6 +37,11 @@
 			<true/>
 		</dict>
 		<key>5696AA6A1CE8CE2B00CAB7CC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>56AD9AAA1CEADE8A003EC9B7</key>
 		<dict>
 			<key>primary</key>
 			<true/>

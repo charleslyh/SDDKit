@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class SDDService, SDDServicePeer;
+@protocol SDDPGSignal;
 
 @protocol SDDServiceDelegate <NSObject>
 - (void)service:(SDDService *)service didReceiveConnection:(SDDServicePeer *)connection;
@@ -16,6 +17,7 @@
 
 @interface SDDService : NSObject
 @property (weak) id<SDDServiceDelegate> delegate;
+@property NSArray<id<SDDPGSignal>>* supportedSignals;
 
 - (void)start;
 - (void)stop;

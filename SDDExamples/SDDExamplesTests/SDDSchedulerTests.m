@@ -8,7 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import <objc/runtime.h>
-#import "SDDScheduler.h"
+#import <SDDI/SDDI.h>
 #import "SDDMockFlows.h"
 
 @interface SDDState (Name)
@@ -58,7 +58,7 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     
     _flows = [[SDDMockFlows alloc] init];
     _epool = [SDDEventsPool defaultPool];
-    _scheduler = [[SDDScheduler alloc] initWithOperationQueue:[SDDDirectExecutionQueue new]];
+    _scheduler = [[SDDScheduler alloc] initWithOperationQueue:[SDDDirectExecutionQueue new] logger:nil];
 
     A = [self makeStateWithFlows:_flows name:@"A" preFlow:@"a" postLFow:@"1"];
     B = [self makeStateWithFlows:_flows name:@"B" preFlow:@"b" postLFow:@"2"];

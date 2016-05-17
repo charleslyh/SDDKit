@@ -15,8 +15,7 @@
 		5673C5901C5EFBB900482DBA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5673C58E1C5EFBB900482DBA /* LaunchScreen.storyboard */; };
 		5673C59B1C5EFBB900482DBA /* SDDSchedulerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C59A1C5EFBB900482DBA /* SDDSchedulerTests.m */; };
 		5673C5B11C5EFC3F00482DBA /* SDDBuilderDSLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5B01C5EFC3F00482DBA /* SDDBuilderDSLTests.m */; };
-		5673C5F01C603C3600482DBA /* libSDD.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5673C5EF1C603C3600482DBA /* libSDD.a */; };
-		5673C5F11C603C4000482DBA /* libSDD.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5673C5EF1C603C3600482DBA /* libSDD.a */; };
+		56AD9AD41CEB1E22003EC9B7 /* SDDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56AD9AD31CEB1E22003EC9B7 /* SDDI.framework */; };
 		56E788391CE4BDE20049D3CA /* SDDMockFlows.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E788381CE4BDE20049D3CA /* SDDMockFlows.m */; };
 /* End PBXBuildFile section */
 
@@ -45,7 +44,7 @@
 		5673C59A1C5EFBB900482DBA /* SDDSchedulerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDDSchedulerTests.m; sourceTree = "<group>"; };
 		5673C59C1C5EFBB900482DBA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5673C5B01C5EFC3F00482DBA /* SDDBuilderDSLTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDBuilderDSLTests.m; sourceTree = "<group>"; };
-		5673C5EF1C603C3600482DBA /* libSDD.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDD.a; path = "../../../../Library/Developer/Xcode/DerivedData/SDD-dhtmftwuromvuefkgqdbewjlibxt/Build/Products/Debug-iphoneos/libSDD.a"; sourceTree = "<group>"; };
+		56AD9AD31CEB1E22003EC9B7 /* SDDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDDI.framework; path = "../../../../Library/Developer/Xcode/DerivedData/SDDKit-caodxadizwyqrsgjbwppiasvwxxv/Build/Products/Debug-iphonesimulator/SDDI.framework"; sourceTree = "<group>"; };
 		56E788371CE4BDE20049D3CA /* SDDMockFlows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDMockFlows.h; sourceTree = "<group>"; };
 		56E788381CE4BDE20049D3CA /* SDDMockFlows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDMockFlows.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -55,7 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5673C5F01C603C3600482DBA /* libSDD.a in Frameworks */,
+				56AD9AD41CEB1E22003EC9B7 /* SDDI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,7 +62,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5673C5F11C603C4000482DBA /* libSDD.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,7 +71,7 @@
 		5673C5741C5EFBB900482DBA = {
 			isa = PBXGroup;
 			children = (
-				5673C5EF1C603C3600482DBA /* libSDD.a */,
+				56AD9AD31CEB1E22003EC9B7 /* SDDI.framework */,
 				5673C57F1C5EFBB900482DBA /* SDDExamples */,
 				5673C5991C5EFBB900482DBA /* SDDExamplesTests */,
 				5673C57E1C5EFBB900482DBA /* Products */,
@@ -359,7 +357,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../SDD/**";
 				INFOPLIST_FILE = SDDExamples/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDExamples;
@@ -375,7 +373,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../SDD/**";
 				INFOPLIST_FILE = SDDExamples/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDExamples;
@@ -387,7 +385,7 @@
 		5673C5A31C5EFBB900482DBA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../SDD/**";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = SDDExamplesTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -402,7 +400,7 @@
 		5673C5A41C5EFBB900482DBA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../SDD/**";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = SDDExamplesTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (

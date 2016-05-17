@@ -81,6 +81,61 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
 }
 @end
 
+@interface SDDNilLogger :NSObject <SDDSchedulerLogger> @end
+@implementation SDDNilLogger
+- (void)willStartScheduler:(nonnull SDDScheduler *)scheduler {}
+- (void)didStopScheduler:(nonnull SDDScheduler *)scheduler {}
+- (void)scheduler:(nonnull SDDScheduler *)scheduler didActivateState:(nonnull SDDState *)state withArgument:(nullable id)argument {}
+- (void)scheduler:(nonnull SDDScheduler *)scheduler didDeactivateState:(nonnull SDDState *)state {}
+- (void)scheduler:(nonnull SDDScheduler *)scheduler didOccurEvent:(nonnull SDDEvent *)event withArgument:(nullable id)argument {}
+@end
+
+
+@implementation SDDSchedulerConsoleLogger {
+    SDDSchedulerLogMasks _masks;
+}
+
+- (instancetype)init {
+    if (self = [super init]) {
+        _masks = SDDSchedulerLogMaskAll;
+    }
+    return self;
+}
+
+- (nonnull instancetype)initWithMasks:(SDDSchedulerLogMasks)masks {
+    if (self = [super init]) {
+        _masks = masks;
+    }
+    return self;
+}
+
+- (void)willStartScheduler:(nonnull SDDScheduler *)scheduler {
+    if (_masks & SDDSchedulerLogMaskStart)
+        NSLog(@"[SDD][L] %@", scheduler);
+}
+
+- (void)didStopScheduler:(nonnull SDDScheduler *)scheduler {
+    if (_masks & SDDSchedulerLogMaskStop)
+        NSLog(@"[SDD][S] %@", scheduler);
+}
+
+- (void)scheduler:(nonnull SDDScheduler *)scheduler didActivateState:(nonnull SDDState *)state withArgument:(nullable id)argument {
+    if (_masks & SDDSchedulerLogMaskActivate)
+        NSLog(@"[SDD][A] %@ : %@", state, argument);
+}
+
+- (void)scheduler:(nonnull SDDScheduler *)scheduler didDeactivateState:(nonnull SDDState *)state {
+    if (_masks & SDDSchedulerLogMaskDeactivate)
+        NSLog(@"[SDD][D] %@", state);
+}
+
+- (void)scheduler:(nonnull SDDScheduler *)scheduler didOccurEvent:(nonnull SDDEvent *)event withArgument:(nullable id)argument {
+    if (_masks & SDDSchedulerLogMaskEvent)
+        NSLog(@"[SDD][E] %@ : %@", event, argument);
+}
+
+@end
+
 
 @interface SDDScheduler ()<SDDEventSubscriber> @end
 
@@ -95,11 +150,14 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     NSMutableDictionary* _parents;
     NSMutableDictionary* _defaults;
     NSMutableDictionary* _monoDescendants;
+    
+    id<SDDSchedulerLogger> _logger;
 }
 
-- (instancetype)initWithOperationQueue:(NSOperationQueue *)queue {
+- (instancetype)initWithOperationQueue:(NSOperationQueue *)queue logger:(id<SDDSchedulerLogger>)logger {
     if (self = [super init]) {
         _queue       = queue;
+        _logger      = logger ? logger : [SDDNilLogger new];
         _states      = [NSMutableSet set];
         _jumpTables  = [NSMutableDictionary dictionary];
         _parents     = [NSMutableDictionary dictionary];
@@ -175,6 +233,8 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
      要实现这种语义，有很多种方案，例如使用独立线程+生产者、消费者机制等等。但是，本质上来说，其实这就是一个“排队”问题。所以，可以利用OC提供的Operation Queue机制更轻松地实现为：将所有可能导致Action，Event激发的行为“丢”到队列中处理，而不是立即执行。这样的话，即使有新的事件被激发，其触发的状态转换和Action都会再次被排队。而它们前面，肯定已经排好了此前E1激发的其它转换。
      */
     [_queue addOperationWithBlock:^{
+        [_logger scheduler:self didOccurEvent:event withArgument:argument];
+        
         SDDTransition* trans;
         SDDState *trigger;
         NSArray* path = [self pathOfState:_currentState];
@@ -265,17 +325,29 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
                 lastEqualIdx = j;
             }
         }
-        lastSolidIdx = MIN(lastEqualIdx, [currentPath indexOfObject:triggerState]);
+        
+        // 在不同的实现中indexOfObject返回值是不一样的，static library配置中，它直接返回-1，所以一切正常
+        // 但在framework配置中，它返回的是MAX_INT，从而导致 MIN(lastEqualIdx, [current indexOfObject:triggerState])不正确
+        NSInteger triggerIdx = [currentPath indexOfObject:triggerState];
+        if (triggerIdx == NSNotFound)
+            triggerIdx = -1;
+        
+        lastSolidIdx = MIN(lastEqualIdx, triggerIdx);
     }
     
     for (int i=(int)currentPath.count - 1; i > lastSolidIdx; --i) {
         SDDState* s = currentPath[i];
         [s deactivate];
+
+        [_logger scheduler:self didDeactivateState:s];
     }
     
+    NSInteger val = lastSolidIdx+1;
     for (NSInteger i=lastSolidIdx+1; i < nextPath.count; ++i) {
         SDDState* s = nextPath[i];
         [s activate:argument];
+
+        [_logger scheduler:self didActivateState:s withArgument:argument];
     }
     
     _currentState = nextPath.lastObject;
@@ -290,6 +362,8 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     NSAssert(_rootState != nil, @"[%@] rootState不允许为nil", NSStringFromSelector(_cmd));
     NSAssert([_states containsObject:_rootState], @"[%@] rootState必须为已添加的状态之一", NSStringFromSelector(_cmd));
     
+    [_logger willStartScheduler:self];
+    
     _epool = epool;
     [_epool addSubscriber:self];
     [self activateState:_rootState triggerState:nil withArgument:argument];
@@ -303,12 +377,16 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     for (int i=(int)currentPath.count - 1; i>=0; --i) {
         SDDState* s = currentPath[i];
         [s deactivate];
+        
+        [_logger scheduler:self didDeactivateState:s];
     }
     
     [_epool removeSubscriber:self];
     
     _currentState = nil;
     _epool = nil;
+    
+    [_logger didStopScheduler:self];
 }
 
 @end

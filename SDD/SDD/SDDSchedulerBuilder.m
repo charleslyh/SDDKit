@@ -13,25 +13,56 @@
 #import "sdd_parser.h"
 #import "sdd_array.h"
 
-
-@interface SDDState (Builder)
-- (void)setName:(NSString*)name;
-@end
-
-
 static const void* kSDDStateBuilderNameKey = &kSDDStateBuilderNameKey;
-@implementation SDDState (Builder)
+static const void* kSDDStateBuilderDSLKey  = &kSDDStateBuilderDSLKey;
 
-- (void)setName:(NSString *)name {
-    objc_setAssociatedObject(self, kSDDStateBuilderNameKey, name, OBJC_ASSOCIATION_RETAIN);
+@implementation SDDScheduler (SDDNameSupport)
+
+- (void)sdd_setName:(NSString *)name {
+    objc_setAssociatedObject(self, kSDDStateBuilderNameKey, name, OBJC_ASSOCIATION_COPY);
+}
+
+- (NSString*)sdd_name {
+    NSString* name = objc_getAssociatedObject(self, kSDDStateBuilderNameKey);
+    return name;
 }
 
 - (NSString*)description {
-    NSString* builderDesc = objc_getAssociatedObject(self, kSDDStateBuilderNameKey);
-    if (builderDesc == nil)
+    NSString *name = [self sdd_name];
+    if (name == nil)
         return [super description];
     
-    return builderDesc;
+    return name;
+}
+
+- (void)sdd_setDSL:(NSString *)dsl {
+    objc_setAssociatedObject(self, kSDDStateBuilderDSLKey, dsl, OBJC_ASSOCIATION_COPY);
+}
+
+- (NSString *)sdd_DSL {
+    return objc_getAssociatedObject(self, kSDDStateBuilderDSLKey);
+}
+
+@end
+
+@implementation SDDState (Builder)
+
+- (void)sdd_setName:(NSString *)name {
+    objc_setAssociatedObject(self, kSDDStateBuilderNameKey, name, OBJC_ASSOCIATION_RETAIN);
+}
+
+- (NSString*)sdd_name {
+    NSString* name = objc_getAssociatedObject(self, kSDDStateBuilderNameKey);
+    
+    return name;
+}
+
+- (NSString*)description {
+    NSString *name = [self sdd_name];
+    if (name == nil)
+        return [super description];
+    
+    return name;
 }
 
 @end
@@ -128,12 +159,10 @@ void SDDSchedulerAddState(void* contextObj, sdd_state* raw_state) {
     
     NSString* name = [NSString stringWithCString:raw_state->name encoding:NSUTF8StringEncoding];
     SDDState* state = [[SDDState alloc] initWithActivation:activation deactivation:deactivation];
-    [state setName:name];
+    [state sdd_setName:name];
     pcontext.states[name] = state;
     [pcontext.scheduler addState:state];
     [pcontext.scheduler setState:state defaultState:[pcontext stateWithCName:raw_state->default_stub]];
-    
-    [pcontext.scheduler setRootState:state];
 }
 
 void SDDSchedulerSetDescendants(void* contextObj, sdd_state* raw_master, sdd_array* raw_descendants) {
@@ -230,23 +259,32 @@ void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
 }
 
 void SDDSchedulerBuilderHandleCompletion(void *contextObj, sdd_state *root_state) {
+    __weak SDDParserContext* pcontext = (__bridge SDDParserContext*)contextObj;
+    __weak id context = pcontext.runtimeContext;
     
+    SDDState *rootState = [pcontext stateWithCName:root_state->name];
+    [pcontext.scheduler setRootState:rootState];
+    [pcontext.scheduler sdd_setName:[NSString stringWithUTF8String:root_state->name]];
 }
 
 @implementation SDDSchedulerBuilder {
     NSString* _namespace;
+    id<SDDSchedulerLogger> _logger;
     __weak id _context;
 }
 
-- (instancetype)initWithNamespace:(NSString*)namespc {
+- (instancetype)initWithNamespace:(NSString*)namespc logger:(id<SDDSchedulerLogger>)logger {
     if (self = [super init]) {
         _namespace = namespc;
+        _logger    = logger;
     }
     return self;
 }
 
-- (SDDScheduler*)schedulerWithContext:(id)context eventsPool:(SDDEventsPool*)epool dsl:(NSString*)dsl queue:(NSOperationQueue*)queue {
-    SDDScheduler* scheduler = [[SDDScheduler alloc] initWithOperationQueue:queue];
+- (SDDScheduler*)schedulerWithContext:(id)context dsl:(NSString*)dsl queue:(NSOperationQueue*)queue {
+    SDDScheduler* scheduler = [[SDDScheduler alloc] initWithOperationQueue:queue logger:_logger];
+    [scheduler sdd_setDSL:dsl];
+    
     NSMutableDictionary* states = [NSMutableDictionary dictionary];
     
     SDDParserContext* pcontext = [[SDDParserContext alloc] init];
