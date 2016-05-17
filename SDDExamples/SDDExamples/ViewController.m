@@ -22,7 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _reporter = [[SDDISocketReporter alloc] initWithHost:@"localhost" port:9800];
+    _reporter = [[SDDISocketReporter alloc] initWithHost:@"172.19.143.199" port:9800];
     [_reporter start];
     
     NSString* dsl = SDDOCLanguage

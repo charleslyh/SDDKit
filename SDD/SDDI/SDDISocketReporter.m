@@ -86,8 +86,8 @@
 - (void)scheduler:(nonnull SDDScheduler *)scheduler didDeactivateState:(nonnull SDDState *)state {
     [NSJSONSerialization writeJSONObject:@{
                                            @"proto": @"deactivate",
-                                           @"scheduler": [scheduler description],
-                                           @"state":     [state description],
+                                           @"scheduler": [scheduler sdd_name],
+                                           @"state":     [state sdd_name],
                                            }
                                 toStream:_outputStream
                                  options:0

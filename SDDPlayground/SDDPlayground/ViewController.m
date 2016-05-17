@@ -116,6 +116,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 @interface ViewController()<SDDServiceDelegate, SDDServicePeerDelegate, NSTableViewDataSource, NSTabViewDelegate>
 @property (weak) IBOutlet NSTableView *historiesTableView;
 @property IBOutlet NSTextView *stockMessagesView;
+@property (weak) IBOutlet NSButton *filterEButton;
 
 @property NSMutableArray *histories;
 @end
@@ -128,6 +129,9 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     NSMutableDictionary *_aliveFlags;
     
     NSMutableDictionary *_presenters;
+    
+    NSMutableArray *_filteredHistories;
+    BOOL _wantEvents;
 }
 
 - (void)service:(SDDService *)service didReceiveConnection:(SDDServicePeer *)connection {
@@ -136,6 +140,8 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _wantEvents = YES;
+    _filterEButton.state = NSOnState;
 
     _presenters = [NSMutableDictionary dictionary];
     
@@ -196,6 +202,17 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 
 - (void)syncHistoriesTableView {
     dispatch_async(dispatch_get_main_queue(), ^{
+        if (_wantEvents) {
+            _filteredHistories = _histories;
+        } else {
+            _filteredHistories = [@[] mutableCopy];
+            for (NSString *item in _histories) {
+                if (![item hasPrefix:@"[E]"]) {
+                    [_filteredHistories addObject:item];
+                }
+            }
+        }
+        
         [_historiesTableView reloadData];
     });
 }
@@ -214,8 +231,13 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     });
 }
 
+- (IBAction)didChangeFilterEValue:(NSButton *)button {
+    _wantEvents = button.state == NSOnState;
+    [self syncHistoriesTableView];
+}
+
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-    return _histories.count;
+    return _filteredHistories.count;
 }
 
 - (NSView *)tableView:(NSTableView *)tableView
@@ -223,7 +245,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
                   row:(NSInteger)row
 {
     NSTableCellView *cellView = [tableView makeViewWithIdentifier:@"HistoryCellView" owner:self];
-    cellView.textField.stringValue = _histories[row];
+    cellView.textField.stringValue = _filteredHistories[row];
     
     return cellView;
 }

@@ -16,6 +16,7 @@
 		5673C59B1C5EFBB900482DBA /* SDDSchedulerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C59A1C5EFBB900482DBA /* SDDSchedulerTests.m */; };
 		5673C5B11C5EFC3F00482DBA /* SDDBuilderDSLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5B01C5EFC3F00482DBA /* SDDBuilderDSLTests.m */; };
 		56AD9AD41CEB1E22003EC9B7 /* SDDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56AD9AD31CEB1E22003EC9B7 /* SDDI.framework */; };
+		56AD9AE91CEB3D00003EC9B7 /* SDDI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 56AD9AE71CEB3D00003EC9B7 /* SDDI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		56E788391CE4BDE20049D3CA /* SDDMockFlows.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E788381CE4BDE20049D3CA /* SDDMockFlows.m */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,20 @@
 			remoteInfo = SDDExamples;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		56AD9AEA1CEB3D00003EC9B7 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				56AD9AE91CEB3D00003EC9B7 /* SDDI.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5673C57D1C5EFBB900482DBA /* SDDExamples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDDExamples.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,6 +60,7 @@
 		5673C59C1C5EFBB900482DBA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5673C5B01C5EFC3F00482DBA /* SDDBuilderDSLTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDBuilderDSLTests.m; sourceTree = "<group>"; };
 		56AD9AD31CEB1E22003EC9B7 /* SDDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDDI.framework; path = "../../../../Library/Developer/Xcode/DerivedData/SDDKit-caodxadizwyqrsgjbwppiasvwxxv/Build/Products/Debug-iphonesimulator/SDDI.framework"; sourceTree = "<group>"; };
+		56AD9AE71CEB3D00003EC9B7 /* SDDI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SDDI.framework; path = "/Users/Charles/Library/Developer/Xcode/DerivedData/SDDKit-caodxadizwyqrsgjbwppiasvwxxv/Build/Products/Debug-iphoneos/SDDI.framework"; sourceTree = "<absolute>"; };
 		56E788371CE4BDE20049D3CA /* SDDMockFlows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDMockFlows.h; sourceTree = "<group>"; };
 		56E788381CE4BDE20049D3CA /* SDDMockFlows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDMockFlows.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -71,6 +87,7 @@
 		5673C5741C5EFBB900482DBA = {
 			isa = PBXGroup;
 			children = (
+				56AD9AE71CEB3D00003EC9B7 /* SDDI.framework */,
 				56AD9AD31CEB1E22003EC9B7 /* SDDI.framework */,
 				5673C57F1C5EFBB900482DBA /* SDDExamples */,
 				5673C5991C5EFBB900482DBA /* SDDExamplesTests */,
@@ -133,6 +150,7 @@
 				5673C5791C5EFBB900482DBA /* Sources */,
 				5673C57A1C5EFBB900482DBA /* Frameworks */,
 				5673C57B1C5EFBB900482DBA /* Resources */,
+				56AD9AEA1CEB3D00003EC9B7 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
