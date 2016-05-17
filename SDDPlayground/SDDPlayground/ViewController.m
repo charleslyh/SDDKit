@@ -45,11 +45,17 @@ NSString * SDDPGStringNameFromRawState(sdd_state *s) {
 
 - (NSAttributedString *)statesText {
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] init];
-    [self buildStatesText:text withStateNamed:_rootName];
+    [self buildStatesText:text withStateNamed:_rootName ident:0];
     return text;
 }
 
-- (void)buildStatesText:(NSMutableAttributedString *)text withStateNamed:(NSString *)stateName {
+- (void)buildStatesText:(NSMutableAttributedString *)text withStateNamed:(NSString *)stateName ident:(NSInteger)ident {
+    static NSString *kIdentString = @"    ";
+    
+    for (NSInteger i=0; i<ident; ++i) {
+        [text appendAttributedString:[[NSAttributedString alloc] initWithString:kIdentString]];
+    }
+    
     [text appendAttributedString:[[NSAttributedString alloc] initWithString:@"["]];
     
     NSColor *color = [self isAliveState:stateName] ? [NSColor redColor] : [NSColor blackColor];
@@ -57,7 +63,6 @@ NSString * SDDPGStringNameFromRawState(sdd_state *s) {
     if (!font) {
         font = [NSFont fontWithName:@"Menlo" size:14];
     }
-    
     
     [text appendAttributedString:[[NSAttributedString alloc] initWithString:stateName
                                                                  attributes:@{
@@ -67,17 +72,24 @@ NSString * SDDPGStringNameFromRawState(sdd_state *s) {
     
     NSArray *subStates = _descendants[stateName];
     if (subStates.count > 0) {
-        [text appendAttributedString:[[NSAttributedString alloc] initWithString:@"  "]];
+        [text appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
     }
     
     for (NSString *name in subStates) {
-        [self buildStatesText:text withStateNamed:name];
+        [self buildStatesText:text withStateNamed:name ident:ident+1];
         
         if (name != subStates.lastObject) {
-            [text appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
+            [text appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
         }
     }
     
+    if (subStates.count >0) {
+        [text appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+    
+        for (NSInteger i=0; i<ident; ++i) {
+            [text appendAttributedString:[[NSAttributedString alloc] initWithString:kIdentString]];
+        }
+    }
     [text appendAttributedString:[[NSAttributedString alloc] initWithString:@"]"]];
 }
 
@@ -268,7 +280,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
             NSAttributedString *text = [presenter statesText];
             
             [self.stockMessagesView.textStorage appendAttributedString:text];
-            [self.stockMessagesView.textStorage appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+            [self.stockMessagesView.textStorage appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n"]];
         }
     });
 }
