@@ -112,13 +112,22 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     presenter.rootName = SDDPGStringNameFromRawState(root);
 }
 
+@interface SDDPGHistoryItem : NSObject
+@property NSString *shortString;
+@property NSString *longString;
+@end
+
+@implementation SDDPGHistoryItem
+@end
+
 
 @interface ViewController()<SDDServiceDelegate, SDDServicePeerDelegate, NSTableViewDataSource, NSTabViewDelegate>
-@property (weak) IBOutlet NSTableView *historiesTableView;
 @property IBOutlet NSTextView *stockMessagesView;
+@property (weak) IBOutlet NSTableView *historiesTableView;
 @property (weak) IBOutlet NSButton *filterEButton;
+@property (weak) IBOutlet NSTextField *histroyLabel;
 
-@property NSMutableArray *histories;
+@property NSMutableArray<SDDPGHistoryItem*> *historyItems;
 @end
 
 @implementation ViewController {
@@ -130,7 +139,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     
     NSMutableDictionary *_presenters;
     
-    NSMutableArray *_filteredHistories;
+    NSMutableArray<SDDPGHistoryItem*> *_filteredHistories;
     BOOL _wantEvents;
 }
 
@@ -142,6 +151,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     [super viewDidLoad];
     _wantEvents = YES;
     _filterEButton.state = NSOnState;
+    [self syncHistoryLabelForSelectionChange];
 
     _presenters = [NSMutableDictionary dictionary];
     
@@ -149,7 +159,24 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     _service.delegate = self;
     [_service start];
     
-    _histories = [NSMutableArray array];
+    _historyItems = [NSMutableArray array];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:NSTableViewSelectionDidChangeNotification
+                                                      object:_historiesTableView
+                                                       queue:nil
+                                                  usingBlock:^(NSNotification * _Nonnull note)
+    {
+        [self syncHistoryLabelForSelectionChange];
+    }];
+}
+
+- (void)syncHistoryLabelForSelectionChange {
+    NSInteger row = _historiesTableView.selectedRow;
+    if (row == -1) {
+        self.histroyLabel.stringValue = @"请选中事件列表";
+    } else {
+        self.histroyLabel.stringValue = _filteredHistories[row].longString;
+    }
 }
 
 - (void)peer:(SDDServicePeer *)peer willStartSchedulerWithDSL:(NSString *)dsl {
@@ -167,7 +194,11 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     
     [self syncTextView];
 
-    [_histories addObject:[NSString stringWithFormat:@"[L] %@", presenter.rootName]];
+    SDDPGHistoryItem *item = [SDDPGHistoryItem new];
+    item.shortString = [NSString stringWithFormat:@"[L] %@", presenter.rootName];
+    item.longString  = [NSString stringWithFormat:@"[Launch    ] %@", presenter.rootName];
+    [_historyItems addObject:item];
+
     [self syncHistoriesTableView];
 }
 
@@ -175,7 +206,10 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     [_presenters removeObjectForKey:schedulerName];
     [self syncTextView];
     
-    [_histories addObject:[NSString stringWithFormat:@"[S] %@", schedulerName]];
+    SDDPGHistoryItem *item = [SDDPGHistoryItem new];
+    item.shortString = [NSString stringWithFormat:@"[S] %@", schedulerName];
+    item.longString  = [NSString stringWithFormat:@"[Stop      ] %@", schedulerName];
+    [_historyItems addObject:item];
     [self syncHistoriesTableView];
 }
 
@@ -183,7 +217,10 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     [_presenters[schedulerName] activateState:stateName];
     [self syncTextView];
     
-    [_histories addObject:[NSString stringWithFormat:@"[A] %@.%@", schedulerName, stateName]];
+    SDDPGHistoryItem *item = [SDDPGHistoryItem new];
+    item.shortString = [NSString stringWithFormat:@"[A] %@", stateName];
+    item.longString  = [NSString stringWithFormat:@"[Activate  ] %@/%@", schedulerName, stateName];
+    [_historyItems addObject:item];
     [self syncHistoriesTableView];
 }
 
@@ -191,25 +228,30 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     [_presenters[schedulerName] deactivateState:stateName];
     [self syncTextView];
 
-    [_histories addObject:[NSString stringWithFormat:@"[D] %@.%@", schedulerName, stateName]];
+    SDDPGHistoryItem *item = [SDDPGHistoryItem new];
+    item.shortString = [NSString stringWithFormat:@"[D] %@", stateName];
+    item.longString  = [NSString stringWithFormat:@"[Deactivate] %@/%@", schedulerName, stateName];
+    [_historyItems addObject:item];
     [self syncHistoriesTableView];
 }
 
 - (void)peer:(SDDServicePeer *)peer didReceiveEvent:(NSString *)event {
-    [_histories addObject:[NSString stringWithFormat:@"[E] %@", event]];
+    SDDPGHistoryItem *item = [SDDPGHistoryItem new];
+    item.shortString = [NSString stringWithFormat:@"[E] %@", event];
+    item.longString  = [NSString stringWithFormat:@"[Event     ] %@", event];
+    [_historyItems addObject:item];
     [self syncHistoriesTableView];
 }
 
 - (void)syncHistoriesTableView {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (_wantEvents) {
-            _filteredHistories = _histories;
-        } else {
-            _filteredHistories = [@[] mutableCopy];
-            for (NSString *item in _histories) {
-                if (![item hasPrefix:@"[E]"]) {
-                    [_filteredHistories addObject:item];
-                }
+        [_historiesTableView deselectAll:nil];
+        
+        _filteredHistories = [@[] mutableCopy];
+        for (NSInteger i=0; i<_historyItems.count; ++i) {
+            SDDPGHistoryItem *item = _historyItems[i];
+            if (_wantEvents || ![item.shortString hasPrefix:@"[E]"]) {
+                [_filteredHistories addObject:item];
             }
         }
         
@@ -234,6 +276,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 - (IBAction)didChangeFilterEValue:(NSButton *)button {
     _wantEvents = button.state == NSOnState;
     [self syncHistoriesTableView];
+    [_historiesTableView deselectAll:nil];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
@@ -245,7 +288,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
                   row:(NSInteger)row
 {
     NSTableCellView *cellView = [tableView makeViewWithIdentifier:@"HistoryCellView" owner:self];
-    cellView.textField.stringValue = _filteredHistories[row];
+    cellView.textField.stringValue = _filteredHistories[row].shortString;
     
     return cellView;
 }

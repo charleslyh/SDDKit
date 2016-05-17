@@ -35,7 +35,7 @@
 		56AD9ABF1CEADEA9003EC9B7 /* SDDSchedulerBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 562CA5521CE5EB4D00861684 /* SDDSchedulerBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		56AD9AC01CEADEC3003EC9B7 /* sdd_array.h in Headers */ = {isa = PBXBuildFile; fileRef = 5696AA391CE8C79B00CAB7CC /* sdd_array.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		56AD9AC11CEADED6003EC9B7 /* sdd_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 5696AA401CE8C79B00CAB7CC /* sdd_parser.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		56AD9AD71CEB2EC8003EC9B7 /* SDDISocketReporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 56AD9AD51CEB2EC8003EC9B7 /* SDDISocketReporter.h */; };
+		56AD9AD71CEB2EC8003EC9B7 /* SDDISocketReporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 56AD9AD51CEB2EC8003EC9B7 /* SDDISocketReporter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		56AD9AD81CEB2EC8003EC9B7 /* SDDISocketReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 56AD9AD61CEB2EC8003EC9B7 /* SDDISocketReporter.m */; };
 		56AD9ADF1CEB2F44003EC9B7 /* SDDService.h in Headers */ = {isa = PBXBuildFile; fileRef = 56AD9AD91CEB2F44003EC9B7 /* SDDService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		56AD9AE01CEB2F44003EC9B7 /* SDDService.m in Sources */ = {isa = PBXBuildFile; fileRef = 56AD9ADA1CEB2F44003EC9B7 /* SDDService.m */; };

@@ -260,7 +260,6 @@ void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
 
 void SDDSchedulerBuilderHandleCompletion(void *contextObj, sdd_state *root_state) {
     __weak SDDParserContext* pcontext = (__bridge SDDParserContext*)contextObj;
-    __weak id context = pcontext.runtimeContext;
     
     SDDState *rootState = [pcontext stateWithCName:root_state->name];
     [pcontext.scheduler setRootState:rootState];
@@ -270,19 +269,21 @@ void SDDSchedulerBuilderHandleCompletion(void *contextObj, sdd_state *root_state
 @implementation SDDSchedulerBuilder {
     NSString* _namespace;
     id<SDDSchedulerLogger> _logger;
+    NSOperationQueue *_queue;
     __weak id _context;
 }
 
-- (instancetype)initWithNamespace:(NSString*)namespc logger:(id<SDDSchedulerLogger>)logger {
+- (instancetype)initWithNamespace:(NSString*)namespc logger:(id<SDDSchedulerLogger>)logger queue:(NSOperationQueue*)queue {
     if (self = [super init]) {
         _namespace = namespc;
         _logger    = logger;
+        _queue     = queue;
     }
     return self;
 }
 
-- (SDDScheduler*)schedulerWithContext:(id)context dsl:(NSString*)dsl queue:(NSOperationQueue*)queue {
-    SDDScheduler* scheduler = [[SDDScheduler alloc] initWithOperationQueue:queue logger:_logger];
+- (SDDScheduler*)schedulerWithContext:(id)context dsl:(NSString*)dsl {
+    SDDScheduler* scheduler = [[SDDScheduler alloc] initWithOperationQueue:_queue logger:_logger];
     [scheduler sdd_setDSL:dsl];
     
     NSMutableDictionary* states = [NSMutableDictionary dictionary];

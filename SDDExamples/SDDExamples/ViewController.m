@@ -14,15 +14,16 @@
 @end
 
 @implementation ViewController {
-    SDDEventsPool *_epool;
-    SDDScheduler *_scheduler;
+    SDDScheduler *_simple;
+    SDDScheduler *_verbose;
+    
     SDDISocketReporter *_reporter;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _reporter = [[SDDISocketReporter alloc] initWithHost:@"172.19.143.199" port:9800];
+    _reporter = [[SDDISocketReporter alloc] initWithHost:@"localhost" port:9800];
     [_reporter start];
     
     NSString* dsl = SDDOCLanguage
@@ -38,16 +39,38 @@
      [B]->[C]: E4
      );
     
-    _epool = [SDDEventsPool defaultPool];
-    SDDSchedulerBuilder *builder = [[SDDSchedulerBuilder alloc] initWithNamespace:@"" logger:_reporter];
-    _scheduler = [builder schedulerWithContext:self dsl:dsl queue:[NSOperationQueue mainQueue]];
+    SDDSchedulerBuilder *builder = [[SDDSchedulerBuilder alloc] initWithNamespace:nil logger:_reporter queue:[NSOperationQueue currentQueue]];
+
+    _simple = [builder schedulerWithContext:self dsl:dsl];
+    [_simple startWithEventsPool:[SDDEventsPool defaultPool]];
     
-    [_scheduler startWithEventsPool:_epool];
+    NSString *verboseDSL = SDDOCLanguage
+    (
+     [Guide ~[Await]
+      [Await]
+      [Present]
+      [Done]
+      ]
+     
+     [Await]   -> [Present]: UIViewDidLoad(isFirstLaunch)
+     [Await]   -> [Done]:    UIViewDidLoad(!isFirstLaunch)
+     
+     [Present] -> [Done]:    DidAskToCloseGuideVC
+    );
+    
+    _verbose = [builder schedulerWithContext:self dsl:verboseDSL];
+    [_verbose startWithEventsPool:[SDDEventsPool defaultPool]];
+    
+    [[SDDEventsPool defaultPool] scheduleEvent:@"UIViewDidLoad"];
+}
+
+- (BOOL)isFirstLaunch {
+    return NO;
 }
 
 - (IBAction)didTouchButton:(UIButton *)sender {
     NSArray *allEvents = @[@"E1", @"E2", @"E3", @"E4"];
-    [_epool scheduleEvent:allEvents[sender.tag - 10]];
+    [[SDDEventsPool defaultPool] scheduleEvent:allEvents[sender.tag - 10]];
 }
 
 @end
