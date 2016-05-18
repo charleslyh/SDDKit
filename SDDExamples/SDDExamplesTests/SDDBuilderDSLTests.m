@@ -24,11 +24,9 @@
     self.flows = [[SDDMockFlows alloc] init];
     
     SDDEventsPool* epool = [[SDDEventsPool alloc] init];
-    SDDSchedulerBuilder* builder = [[SDDSchedulerBuilder alloc] initWithNamespace:@"" logger:nil];
+    SDDSchedulerBuilder* builder = [[SDDSchedulerBuilder alloc] initWithNamespace:@"" logger:nil queue:[SDDDirectExecutionQueue new]];
     SDDScheduler* scheduler = [builder schedulerWithContext:self
-                                                        dsl:dsl
-                                                      queue:[SDDDirectExecutionQueue new]
-                               ];
+                                                        dsl:dsl];
     
     [scheduler startWithEventsPool:epool initialArgument:argument];
     

@@ -33,7 +33,7 @@
 @interface SDDSchedulerBuilder : NSObject
 
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
-- (instancetype)initWithNamespace:(NSString*)namespc logger:(id<SDDSchedulerLogger>)logger;
+- (instancetype)initWithNamespace:(NSString*)namespc logger:(id<SDDSchedulerLogger>)logger queue:(NSOperationQueue*)queue;
 
-- (SDDScheduler*)schedulerWithContext:(id)context dsl:(NSString*)dsl queue:(NSOperationQueue*)queue;
+- (SDDScheduler*)schedulerWithContext:(id)context dsl:(NSString*)dsl;
 @end

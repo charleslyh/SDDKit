@@ -149,7 +149,7 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     SDDState* _currentState;
     NSMutableDictionary* _parents;
     NSMutableDictionary* _defaults;
-    NSMutableDictionary* _monoDescendants;
+    NSMutableDictionary* _descendants;
     
     id<SDDSchedulerLogger> _logger;
 }
@@ -162,7 +162,7 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
         _jumpTables  = [NSMutableDictionary dictionary];
         _parents     = [NSMutableDictionary dictionary];
         _defaults    = [NSMutableDictionary dictionary];
-        _monoDescendants = [NSMutableDictionary dictionary];
+        _descendants = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -175,10 +175,10 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     for (SDDState* state in children)
         _parents[state] = parent;
     
-    if (_monoDescendants[parent] == nil)
-        _monoDescendants[parent] = [NSMutableArray array];
+    if (_descendants[parent] == nil)
+        _descendants[parent] = [NSMutableArray array];
     
-    NSMutableArray* ownDescendants = _monoDescendants[parent];
+    NSMutableArray* ownDescendants = _descendants[parent];
     [ownDescendants addObjectsFromArray:children];
 }
 
@@ -278,7 +278,7 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     next = state;
     while(next) {
         // 如果某个状态包含唯一的子状态，但又么有明确指定default状态，那需要隐式定义该状态为默认状态
-        NSArray* descendants   = _monoDescendants[next];
+        NSArray* descendants   = _descendants[next];
         SDDState* defaultState = _defaults[next];
         NSAssert(defaultState!=nil || descendants.count<=1, @"状态%@的后续状态无法确定", next);
         
@@ -294,7 +294,7 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
             while (descendants.count == 1) {
                 [path addObject:descendants.firstObject];
                 next = descendants.firstObject;
-                descendants = _monoDescendants[next];
+                descendants = _descendants[next];
             }
         } else {
             break;
