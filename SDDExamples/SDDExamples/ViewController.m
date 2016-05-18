@@ -14,16 +14,16 @@
 @end
 
 @implementation ViewController {
-    SDDScheduler *_simple;
-    SDDScheduler *_verbose;
-    
-    SDDISocketReporter *_reporter;
+    SDDSchedulerBuilder *_builder;
+    SDDISocketReporter  *_reporter;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     _reporter = [[SDDISocketReporter alloc] initWithHost:@"localhost" port:9800];
+    [[SDDEventsPool defaultPool] addSubscriber:_reporter];
+    
     [_reporter start];
     
     NSString* dsl = SDDOCLanguage
@@ -39,10 +39,12 @@
      [B]->[C]: E4
      );
     
-    SDDSchedulerBuilder *builder = [[SDDSchedulerBuilder alloc] initWithNamespace:nil logger:_reporter queue:[NSOperationQueue currentQueue]];
+    _builder = [[SDDSchedulerBuilder alloc] initWithNamespace:nil
+                                                       logger:_reporter
+                                                        queue:[NSOperationQueue currentQueue]
+                                                   eventsPool:[SDDEventsPool defaultPool]];
 
-    _simple = [builder schedulerWithContext:self dsl:dsl];
-    [_simple startWithEventsPool:[SDDEventsPool defaultPool]];
+    [_builder hostSchedulerWithContext:self dsl:dsl];
     
     NSString *verboseDSL = SDDOCLanguage
     (
@@ -57,9 +59,8 @@
      
      [Present] -> [Done]:    DidAskToCloseGuideVC
     );
-    
-    _verbose = [builder schedulerWithContext:self dsl:verboseDSL];
-    [_verbose startWithEventsPool:[SDDEventsPool defaultPool]];
+
+    [_builder hostSchedulerWithContext:self dsl:verboseDSL];
     
     [[SDDEventsPool defaultPool] scheduleEvent:@"UIViewDidLoad"];
 }

@@ -9,6 +9,9 @@
 #import "SDDISocketReporter.h"
 #import "SDDSchedulerBuilder.h"
 
+@interface SDDISocketReporter ()<NSStreamDelegate>
+@end
+
 
 @implementation SDDISocketReporter {
     NSString *_host;
@@ -95,6 +98,9 @@
 }
 
 - (void)scheduler:(nonnull SDDScheduler *)scheduler didOccurEvent:(nonnull SDDEvent *)event withArgument:(nullable id)argument {
+}
+
+- (void)onEvent:(nonnull SDDEvent *)event withParam:(nullable id)param {
     [NSJSONSerialization writeJSONObject:@{
                                            @"proto": @"event",
                                            @"value": event,

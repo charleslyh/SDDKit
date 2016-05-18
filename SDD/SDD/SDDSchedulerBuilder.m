@@ -267,19 +267,29 @@ void SDDSchedulerBuilderHandleCompletion(void *contextObj, sdd_state *root_state
 }
 
 @implementation SDDSchedulerBuilder {
-    NSString* _namespace;
+    NSString*              _namespace;
     id<SDDSchedulerLogger> _logger;
-    NSOperationQueue *_queue;
-    __weak id _context;
+    NSOperationQueue       *_queue;
+    SDDEventsPool          *_epool;
+    
+    NSMutableArray         *_schedulers;
 }
 
-- (instancetype)initWithNamespace:(NSString*)namespc logger:(id<SDDSchedulerLogger>)logger queue:(NSOperationQueue*)queue {
+- (instancetype)initWithNamespace:(NSString*)namespc logger:(id<SDDSchedulerLogger>)logger queue:(NSOperationQueue*)queue eventsPool:(SDDEventsPool *)epool {
     if (self = [super init]) {
-        _namespace = namespc;
-        _logger    = logger;
-        _queue     = queue;
+        _namespace  = namespc;
+        _logger     = logger;
+        _queue      = queue;
+        _epool      = epool;
+        _schedulers = [NSMutableArray array];
     }
     return self;
+}
+
+- (void)dealloc {
+    for (SDDScheduler *s in _schedulers) {
+        [s stop];
+    }
 }
 
 - (SDDScheduler*)schedulerWithContext:(id)context dsl:(NSString*)dsl {
@@ -300,7 +310,18 @@ void SDDSchedulerBuilderHandleCompletion(void *contextObj, sdd_state *root_state
     callback.transitionHandler = &SDDSchedulerMakeTransition;
     callback.completionHandler = &SDDSchedulerBuilderHandleCompletion;
     
-    sdd_parse([dsl cStringUsingEncoding:NSUTF8StringEncoding] , &callback);
+    sdd_parse([dsl cStringUsingEncoding:NSUTF8StringEncoding], &callback);
     return scheduler;
 }
+
+- (void)hostSchedulerWithContext:(id)context dsl:(NSString *)dsl {
+    [self hostSchedulerWithContext:context dsl:dsl initialArgument:nil];
+}
+
+- (void)hostSchedulerWithContext:(id)context dsl:(NSString *)dsl initialArgument:(id)argument {
+    SDDScheduler *scheduler = [self schedulerWithContext:context dsl:dsl];
+    [scheduler startWithEventsPool:_epool initialArgument:argument];
+    [_schedulers addObject:scheduler];
+}
+
 @end
