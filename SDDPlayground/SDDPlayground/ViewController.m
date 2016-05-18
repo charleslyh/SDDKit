@@ -31,6 +31,10 @@ NSString * SDDPGStringNameFromRawState(sdd_state *s) {
     return self;
 }
 
+- (void)resetAlives {
+    _aliveFlags = [NSMutableDictionary dictionary];
+}
+
 - (void)deactivateState:(NSString *)stateName {
     _aliveFlags[stateName] = @NO;
 }
@@ -124,12 +128,18 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     presenter.rootName = SDDPGStringNameFromRawState(root);
 }
 
-@interface SDDPGHistoryItem : NSObject
+
+@interface SDDPGHistoryItem : NSObject<NSCopying>
 @property NSString *shortString;
 @property NSString *longString;
 @end
 
 @implementation SDDPGHistoryItem
+
+- (id)copyWithZone:(NSZone *)zone {
+    return self;
+}
+
 @end
 
 
@@ -139,15 +149,17 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 @property (weak) IBOutlet NSButton *filterEButton;
 @property (weak) IBOutlet NSTextField *histroyLabel;
 
-@property NSMutableArray<SDDPGHistoryItem*> *historyItems;
+@property NSMutableArray<SDDPGHistoryItem *> *historyItems;
+@property NSMutableDictionary<NSString *, SDDSchedulerPresenter *> *presenters;
 @end
 
 @implementation ViewController {
     SDDService *_service;
     
-    NSMutableDictionary *_presenters;
     NSMutableArray<SDDPGHistoryItem*> *_filteredHistories;
     BOOL _wantEvents;
+    
+    NSMutableDictionary *_redoActivities;
 }
 
 - (void)service:(SDDService *)service didReceiveConnection:(SDDServicePeer *)connection {
@@ -156,17 +168,12 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _wantEvents = YES;
-    _filterEButton.state = NSOnState;
-    [self syncHistoryLabelForSelectionChange];
-
-    _presenters = [NSMutableDictionary dictionary];
+    
+    [self resetContent];
     
     _service = [[SDDService alloc] init];
     _service.delegate = self;
-    [_service start];
-    
-    _historyItems = [NSMutableArray array];
+    _wantEvents = YES;
     
     [[NSNotificationCenter defaultCenter] addObserverForName:NSTableViewSelectionDidChangeNotification
                                                       object:_historiesTableView
@@ -174,25 +181,36 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
                                                   usingBlock:^(NSNotification * _Nonnull note)
     {
         [self syncHistoryLabelForSelectionChange];
+        [self rebuildStatePresentations];
     }];
     
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:SDDServerPeerDidDisconnectNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        [self clearContent];
+    [[NSNotificationCenter defaultCenter] addObserverForName:SDDServerPeerDidDisconnectNotification
+                                                      object:nil
+                                                       queue:nil
+                                                  usingBlock:^(NSNotification * _Nonnull note)
+    {
+        [self resetContent];
     }];
+    
+    _filterEButton.state = _wantEvents ? NSOnState : NSOffState;
+    [self syncHistoryLabelForSelectionChange];
+
+    [_service start];
 }
 
-- (void)clearContent {
-    _presenters   = [NSMutableDictionary dictionary];
-    _historyItems = [NSMutableArray array];
+- (void)resetContent {
+    _historyItems   = [NSMutableArray array];
+    _presenters     = [NSMutableDictionary dictionary];
+    _redoActivities = [NSMutableDictionary dictionary];
     
     [self syncHistoriesTableView];
     [self syncTextView];
 }
 
 - (void)syncHistoryLabelForSelectionChange {
+    static NSInteger NoneSelected = -1;
     NSInteger row = _historiesTableView.selectedRow;
-    if (row == -1) {
+    if (row == NoneSelected) {
         self.histroyLabel.stringValue = @"请选中事件列表";
     } else {
         self.histroyLabel.stringValue = _filteredHistories[row].longString;
@@ -210,48 +228,75 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     callback.completionHandler = &SDDPGHandleRootState;
     sdd_parse([dsl UTF8String], &callback);
     
-    _presenters[presenter.rootName] = presenter;
-    
-    [self syncTextView];
-
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
     item.shortString = [NSString stringWithFormat:@"[L] %@", presenter.rootName];
     item.longString  = [NSString stringWithFormat:@"[Launch    ] %@", presenter.rootName];
     [_historyItems addObject:item];
 
+    __weak typeof(self) wself = self;
+    _redoActivities[item] = ^{
+        wself.presenters[presenter.rootName] = presenter;
+        [presenter resetAlives];
+    };
+
+    void (^redo)() = _redoActivities[item];
+    redo();
+    
+    [self syncTextView];
     [self syncHistoriesTableView];
 }
 
 - (void)peer:(SDDServicePeer *)peer didStopSchedulerNamed:(NSString *)schedulerName {
-    [_presenters removeObjectForKey:schedulerName];
-    [self syncTextView];
-    
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
     item.shortString = [NSString stringWithFormat:@"[S] %@", schedulerName];
     item.longString  = [NSString stringWithFormat:@"[Stop      ] %@", schedulerName];
     [_historyItems addObject:item];
+    
+    __weak typeof(self) wself = self;
+    _redoActivities[item] = ^{
+        [wself.presenters removeObjectForKey:schedulerName];
+    };
+    
+    void (^redo)() = _redoActivities[item];
+    redo();
+    
+    [self syncTextView];
     [self syncHistoriesTableView];
 }
 
 - (void)peer:(SDDServicePeer *)peer didActivateState:(NSString *)stateName forSchedulerNamed:(NSString *)schedulerName {
-    [_presenters[schedulerName] activateState:stateName];
-    [self syncTextView];
-    
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
     item.shortString = [NSString stringWithFormat:@"[A] %@", stateName];
     item.longString  = [NSString stringWithFormat:@"[Activate  ] %@/%@", schedulerName, stateName];
     [_historyItems addObject:item];
+    
+    __weak typeof(self) wself = self;
+    _redoActivities[item] = ^{
+        [wself.presenters[schedulerName] activateState:stateName];
+    };
+    
+    void (^redo)() = _redoActivities[item];
+    redo();
+    
+    [self syncTextView];
     [self syncHistoriesTableView];
 }
 
 - (void)peer:(SDDServicePeer *)peer didDeactivateState:(NSString *)stateName forSchedulerNamed:(NSString *)schedulerName {
-    [_presenters[schedulerName] deactivateState:stateName];
-    [self syncTextView];
-
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
     item.shortString = [NSString stringWithFormat:@"[D] %@", stateName];
     item.longString  = [NSString stringWithFormat:@"[Deactivate] %@/%@", schedulerName, stateName];
     [_historyItems addObject:item];
+    
+    __weak typeof(self) wself = self;
+    _redoActivities[item] = ^{
+        [wself.presenters[schedulerName] deactivateState:stateName];
+    };
+    
+    void (^redo)() = _redoActivities[item];
+    redo();
+    
+    [self syncTextView];
     [self syncHistoriesTableView];
 }
 
@@ -260,7 +305,28 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     item.shortString = [NSString stringWithFormat:@"[E] %@", event];
     item.longString  = [NSString stringWithFormat:@"[Event     ] %@", event];
     [_historyItems addObject:item];
+    
+    _redoActivities[item] = ^{};
+    
     [self syncHistoriesTableView];
+}
+
+- (void)rebuildStatePresentations {
+    _presenters = [NSMutableDictionary dictionary];
+    
+    NSInteger selectedRow = _historiesTableView.selectedRow;
+    SDDPGHistoryItem *selectedItem = selectedRow == -1 ? nil : _filteredHistories[selectedRow];
+    
+    for (NSInteger i=0; i<_historyItems.count; ++i) {
+        SDDPGHistoryItem *item = _historyItems[i];
+        void (^redo)() = _redoActivities[item];
+        redo();
+
+        if (item == selectedItem)
+            break;
+    }
+    
+    [self syncTextView];
 }
 
 - (void)syncHistoriesTableView {
@@ -273,7 +339,9 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
             }
         }
         
+        NSIndexSet *oldSelection = [_historiesTableView selectedRowIndexes];
         [_historiesTableView reloadData];
+        [_historiesTableView selectRowIndexes:oldSelection byExtendingSelection:NO];
     });
 }
 
