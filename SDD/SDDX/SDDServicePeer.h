@@ -20,6 +20,8 @@
 @end
 
 
+extern NSString * const SDDServerPeerDidDisconnectNotification;
+
 @interface SDDServicePeer : NSObject
 @property (weak) id<SDDServicePeerDelegate> delegate;
 

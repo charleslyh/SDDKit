@@ -8,6 +8,9 @@
 
 #import "SDDServicePeer.h"
 
+NSString * const SDDServerPeerDidDisconnectNotification = @"SDDServerPeerDidDisconnectNotification";
+
+
 @interface SDDServicePeer() <NSStreamDelegate>
 @end
 
@@ -124,6 +127,8 @@
             
             [theStream close];
             [theStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:SDDServerPeerDidDisconnectNotification object:self];
             
             break;
             

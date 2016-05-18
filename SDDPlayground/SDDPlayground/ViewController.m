@@ -145,12 +145,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 @implementation ViewController {
     SDDService *_service;
     
-    NSString     *_rootName;
-    NSDictionary *_descendants;
-    NSMutableDictionary *_aliveFlags;
-    
     NSMutableDictionary *_presenters;
-    
     NSMutableArray<SDDPGHistoryItem*> *_filteredHistories;
     BOOL _wantEvents;
 }
@@ -180,6 +175,19 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     {
         [self syncHistoryLabelForSelectionChange];
     }];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:SDDServerPeerDidDisconnectNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        [self clearContent];
+    }];
+}
+
+- (void)clearContent {
+    _presenters   = [NSMutableDictionary dictionary];
+    _historyItems = [NSMutableArray array];
+    
+    [self syncHistoriesTableView];
+    [self syncTextView];
 }
 
 - (void)syncHistoryLabelForSelectionChange {
@@ -257,8 +265,6 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 
 - (void)syncHistoriesTableView {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_historiesTableView deselectAll:nil];
-        
         _filteredHistories = [@[] mutableCopy];
         for (NSInteger i=0; i<_historyItems.count; ++i) {
             SDDPGHistoryItem *item = _historyItems[i];
@@ -288,7 +294,6 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 - (IBAction)didChangeFilterEValue:(NSButton *)button {
     _wantEvents = button.state == NSOnState;
     [self syncHistoriesTableView];
-    [_historiesTableView deselectAll:nil];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
