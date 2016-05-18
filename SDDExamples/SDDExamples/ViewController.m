@@ -20,47 +20,42 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     _reporter = [[SDDISocketReporter alloc] initWithHost:@"localhost" port:9800];
     [[SDDEventsPool defaultPool] addSubscriber:_reporter];
-    
     [_reporter start];
-    
-    NSString* dsl = SDDOCLanguage
-    (
-     [E ~[D]
-      [B]
-      [D ~[A] [A][C]]
-      ]
-     
-     [B]->[A]: E1
-     [D]->[B]: E2
-     [A]->[C]: E3
-     [B]->[C]: E4
-     );
     
     _builder = [[SDDSchedulerBuilder alloc] initWithNamespace:nil
                                                        logger:_reporter
                                                         queue:[NSOperationQueue currentQueue]
                                                    eventsPool:[SDDEventsPool defaultPool]];
-
-    [_builder hostSchedulerWithContext:self dsl:dsl];
     
-    NSString *verboseDSL = SDDOCLanguage
-    (
-     [Guide ~[Await]
-      [Await]
-      [Present]
-      [Done]
-      ]
-     
-     [Await]   -> [Present]: UIViewDidLoad(isFirstLaunch)
-     [Await]   -> [Done]:    UIViewDidLoad(!isFirstLaunch)
-     
-     [Present] -> [Done]:    DidAskToCloseGuideVC
-    );
-
-    [_builder hostSchedulerWithContext:self dsl:verboseDSL];
+    [_builder hostSchedulerWithContext:self dsl:SDDOCLanguage
+     (
+      [E ~[D]
+       [B]
+       [D ~[A] [A][C]]
+       ]
+      
+      [B]->[A]: E1
+      [D]->[B]: E2
+      [A]->[C]: E3
+      [B]->[C]: E4
+      )];
+    
+    [_builder hostSchedulerWithContext:self dsl:SDDOCLanguage
+     (
+      [Guide ~[Await]
+       [Await]
+       [Present]
+       [Done]
+       ]
+      
+      [Await]   -> [Present]: UIViewDidLoad(isFirstLaunch)
+      [Await]   -> [Done]:    UIViewDidLoad(!isFirstLaunch)
+      
+      [Present] -> [Done]:    DidAskToCloseGuideVC
+      )];
     
     [[SDDEventsPool defaultPool] scheduleEvent:@"UIViewDidLoad"];
 }
