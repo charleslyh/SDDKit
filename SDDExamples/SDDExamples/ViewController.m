@@ -10,8 +10,6 @@
 #import <SDDI/SDDI.h>
 
 
-#define lalalalalalal lalalalal
-
 @interface ViewController ()
 @end
 
