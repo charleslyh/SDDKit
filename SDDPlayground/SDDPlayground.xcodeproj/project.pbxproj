@@ -336,6 +336,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = SDDPlayground/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDKit.SDDPlayground;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -349,6 +350,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = SDDPlayground/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDKit.SDDPlayground;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "SDDScheduler.h"
+#import "SDDEventsPool.h"
 
-@interface SDDISocketReporter : NSObject<SDDSchedulerLogger, NSStreamDelegate>
+@interface SDDISocketReporter : NSObject<SDDSchedulerLogger, SDDEventSubscriber>
 
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithHost:(NSString *)host port:(uint16_t)port;

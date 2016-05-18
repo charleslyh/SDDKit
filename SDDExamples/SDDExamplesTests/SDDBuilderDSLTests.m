@@ -24,16 +24,15 @@
     self.flows = [[SDDMockFlows alloc] init];
     
     SDDEventsPool* epool = [[SDDEventsPool alloc] init];
-    SDDSchedulerBuilder* builder = [[SDDSchedulerBuilder alloc] initWithNamespace:@"" logger:nil queue:[SDDDirectExecutionQueue new]];
-    SDDScheduler* scheduler = [builder schedulerWithContext:self
-                                                        dsl:dsl];
     
-    [scheduler startWithEventsPool:epool initialArgument:argument];
-    
-    if (customActions != NULL)
-        customActions(epool);
-    
-    [scheduler stop];
+    // Inorder to trigger -[SDDSchedulerBuilder dealloc] method, we have to put belows into an auto release pool
+    @autoreleasepool {
+        SDDSchedulerBuilder* builder = [[SDDSchedulerBuilder alloc] initWithNamespace:@"" logger:nil queue:[SDDDirectExecutionQueue new] eventsPool:epool];
+        [builder hostSchedulerWithContext:self dsl:dsl initialArgument:argument];
+        
+        if (customActions != NULL)
+            customActions(epool);
+    }
     
     XCTAssertEqualObjects([_flows description], expectedFlows);
 }
