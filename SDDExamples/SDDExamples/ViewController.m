@@ -47,7 +47,7 @@
      (
       [Guide ~[Await]
        [Await]
-       [Present]
+       [Present e:launchJob x:foo]
        [Done]
        ]
       

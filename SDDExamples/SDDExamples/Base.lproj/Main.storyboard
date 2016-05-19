@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -70,6 +71,8 @@
                                 <exclude reference="xBm-Mm-LJA"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="2Wa-dY-Sfp"/>
+                                <exclude reference="fVJ-IT-Isg"/>
                                 <exclude reference="6qz-aI-9qr"/>
                                 <exclude reference="IaZ-Sw-1AV"/>
                                 <exclude reference="K4r-DC-ag2"/>
@@ -77,8 +80,6 @@
                                 <exclude reference="iSZ-bS-wJQ"/>
                                 <exclude reference="9Jj-qF-ZBb"/>
                                 <exclude reference="wSf-my-qKG"/>
-                                <exclude reference="2Wa-dY-Sfp"/>
-                                <exclude reference="fVJ-IT-Isg"/>
                                 <exclude reference="QbX-8r-Sod"/>
                                 <exclude reference="lqw-CF-nqQ"/>
                                 <exclude reference="t84-wm-BoA"/>
@@ -92,6 +93,8 @@
                                 <include reference="xBm-Mm-LJA"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="2Wa-dY-Sfp"/>
+                                <include reference="fVJ-IT-Isg"/>
                                 <include reference="6qz-aI-9qr"/>
                                 <include reference="IaZ-Sw-1AV"/>
                                 <include reference="K4r-DC-ag2"/>
@@ -99,8 +102,6 @@
                                 <include reference="iSZ-bS-wJQ"/>
                                 <include reference="9Jj-qF-ZBb"/>
                                 <include reference="wSf-my-qKG"/>
-                                <include reference="2Wa-dY-Sfp"/>
-                                <include reference="fVJ-IT-Isg"/>
                                 <include reference="QbX-8r-Sod"/>
                                 <include reference="lqw-CF-nqQ"/>
                                 <include reference="t84-wm-BoA"/>

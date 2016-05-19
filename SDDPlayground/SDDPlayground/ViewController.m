@@ -132,6 +132,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 @interface SDDPGHistoryItem : NSObject<NSCopying>
 @property NSString *shortString;
 @property NSString *longString;
+@property NSImage *optioanlImage;
 @end
 
 @implementation SDDPGHistoryItem
@@ -148,6 +149,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 @property (weak) IBOutlet NSTableView *historiesTableView;
 @property (weak) IBOutlet NSButton *filterEButton;
 @property (weak) IBOutlet NSTextField *histroyLabel;
+@property (weak) IBOutlet NSImageView *screenshotImageView;
 
 @property NSMutableArray<SDDPGHistoryItem *> *historyItems;
 @property NSMutableDictionary<NSString *, SDDSchedulerPresenter *> *presenters;
@@ -168,6 +170,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.screenshotImageView setImageScaling:NSImageScaleProportionallyDown];
     
     [self resetContent];
     
@@ -180,6 +183,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
                                                   usingBlock:^(NSNotification * _Nonnull note)
     {
         [self syncHistoryLabelForSelectionChange];
+        [self syncScreenshotImageViewByHistorySelection];
         [self rebuildStatePresentations];
     }];
     
@@ -205,6 +209,16 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     
     [self syncHistoriesTableView];
     [self syncTextView];
+}
+
+- (void)syncScreenshotImageViewByHistorySelection {
+    static NSInteger NoneSelected = -1;
+    NSInteger row = _historiesTableView.selectedRow;
+    if (row == NoneSelected) {
+        self.screenshotImageView.image = nil;
+    } else {
+        self.screenshotImageView.image = _filteredHistories[row].optioanlImage;
+    }
 }
 
 - (void)syncHistoryLabelForSelectionChange {
@@ -250,10 +264,11 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     }];
 }
 
-- (void)peer:(SDDServicePeer *)peer didActivateState:(NSString *)stateName forSchedulerNamed:(NSString *)schedulerName {
+- (void)peer:(SDDServicePeer *)peer didActivateState:(NSString *)stateName forSchedulerNamed:(NSString *)schedulerName image:(NSImage *)image {
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
-    item.shortString = [NSString stringWithFormat:@"[A] %@", stateName];
-    item.longString  = [NSString stringWithFormat:@"[Activate  ] %@/%@", schedulerName, stateName];
+    item.shortString   = [NSString stringWithFormat:@"[A] %@", stateName];
+    item.longString    = [NSString stringWithFormat:@"[Activate  ] %@/%@", schedulerName, stateName];
+    item.optioanlImage = image;
     [_historyItems addObject:item];
     
     [self syncUIByAddingItem:item presenterUpdate:^(ViewController *wself) {

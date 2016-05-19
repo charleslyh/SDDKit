@@ -6,6 +6,7 @@
 //  Copyright © 2016年 Flash. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "SDDISocketReporter.h"
 #import "SDDSchedulerBuilder.h"
 
@@ -67,7 +68,7 @@
 
 - (void)didStopScheduler:(nonnull SDDScheduler *)scheduler {
     [NSJSONSerialization writeJSONObject:@{
-                                           @"proto": @"stop",
+                                           @"proto":     @"stop",
                                            @"scheduler": [scheduler sdd_name],
                                            }
                                 toStream:_outputStream
@@ -75,11 +76,39 @@
                                    error:nil];
 }
 
+- (UIImage *)captureFullScreen {
+    UIView *window = [[UIApplication sharedApplication] keyWindow];
+    
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+        // for retina-display
+        CGRect bounds = CGRectMake(0, 0,
+                                   window.bounds.size.width  / [UIScreen mainScreen].scale / 2,
+                                   window.bounds.size.height / [UIScreen mainScreen].scale / 2) ;
+        UIGraphicsBeginImageContextWithOptions(bounds.size, NO, [UIScreen mainScreen].scale);
+        [window drawViewHierarchyInRect:bounds afterScreenUpdates:NO];
+    } else {
+        // non-retina-display
+    }
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
 - (void)scheduler:(nonnull SDDScheduler *)scheduler didActivateState:(nonnull SDDState *)state withArgument:(nullable id)argument {
+    NSString *imageString = @"";
+    UIImage *screenshot = [self captureFullScreen];
+    if (screenshot != nil) {
+        NSData *ssData = UIImageJPEGRepresentation(screenshot, 0.75);
+        imageString = [ssData base64EncodedStringWithOptions:0];
+    }
+    NSInteger l = imageString.length;
+    
     [NSJSONSerialization writeJSONObject:@{
-                                           @"proto": @"activate",
+                                           @"proto":     @"activate",
                                            @"scheduler": [scheduler sdd_name],
                                            @"state":     [state sdd_name],
+                                           @"screenshot": imageString,
                                            }
                                 toStream:_outputStream
                                  options:0
@@ -88,7 +117,7 @@
 
 - (void)scheduler:(nonnull SDDScheduler *)scheduler didDeactivateState:(nonnull SDDState *)state {
     [NSJSONSerialization writeJSONObject:@{
-                                           @"proto": @"deactivate",
+                                           @"proto":     @"deactivate",
                                            @"scheduler": [scheduler sdd_name],
                                            @"state":     [state sdd_name],
                                            }
