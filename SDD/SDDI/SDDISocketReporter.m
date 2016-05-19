@@ -85,7 +85,7 @@
                                    window.bounds.size.width  / [UIScreen mainScreen].scale / 2,
                                    window.bounds.size.height / [UIScreen mainScreen].scale / 2) ;
         UIGraphicsBeginImageContextWithOptions(bounds.size, NO, [UIScreen mainScreen].scale);
-        [window drawViewHierarchyInRect:bounds afterScreenUpdates:NO];
+        [window drawViewHierarchyInRect:bounds afterScreenUpdates:YES];
     } else {
         // non-retina-display
     }

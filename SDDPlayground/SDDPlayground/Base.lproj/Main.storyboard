@@ -674,26 +674,26 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <imageView horizontalHuggingPriority="249" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="dNx-93-wqH">
-                                <rect key="frame" x="0.0" y="30" width="276" height="463"/>
+                                <rect key="frame" x="0.0" y="31" width="276" height="462"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="276" id="PBK-Gp-bsT"/>
                                 </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="ISJ-Xk-W8H"/>
                             </imageView>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="oUs-2A-s5y" userLabel="States">
-                                <rect key="frame" x="276" y="30" width="309" height="463"/>
+                                <rect key="frame" x="276" y="31" width="309" height="462"/>
                                 <clipView key="contentView" id="52q-bt-Nrf">
-                                    <rect key="frame" x="0.0" y="0.0" width="309" height="463"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="309" height="462"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView editable="NO" importsGraphics="NO" findStyle="panel" verticallyResizable="YES" allowsNonContiguousLayout="YES" id="zq2-6h-1Nd">
-                                            <rect key="frame" x="0.0" y="0.0" width="309" height="463"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="309" height="462"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <size key="minSize" width="309" height="463"/>
+                                            <size key="minSize" width="309" height="462"/>
                                             <size key="maxSize" width="480" height="10000000"/>
                                             <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <size key="minSize" width="309" height="463"/>
+                                            <size key="minSize" width="309" height="462"/>
                                             <size key="maxSize" width="480" height="10000000"/>
                                         </textView>
                                     </subviews>
@@ -719,19 +719,19 @@
                                 </connections>
                             </button>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pye-lj-gyN" userLabel="Histories">
-                                <rect key="frame" x="586" y="30" width="200" height="433"/>
+                                <rect key="frame" x="586" y="31" width="200" height="432"/>
                                 <clipView key="contentView" id="Uo2-RW-9Vl">
-                                    <rect key="frame" x="0.0" y="0.0" width="200" height="433"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="200" height="432"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="c2J-Rm-dq4" viewBased="YES" id="gb5-GQ-L81">
-                                            <rect key="frame" x="0.0" y="0.0" width="200" height="410"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="200" height="409"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn editable="NO" width="196.93629965249846" minWidth="40" maxWidth="1000" id="Htu-5L-xNf">
+                                                <tableColumn editable="NO" width="197.16291903622948" minWidth="40" maxWidth="1000" id="Htu-5L-xNf">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="History">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -745,7 +745,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="HistoryCellView" id="EXo-Yv-8yF">
-                                                            <rect key="frame" x="1" y="1" width="196.86414625086451" height="17"/>
+                                                            <rect key="frame" x="1" y="1" width="196.88613343062849" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hn2-Zj-agv">
@@ -776,7 +776,7 @@
                                     <constraint firstAttribute="width" constant="200" id="lIH-2i-19V"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="q1T-QD-OLJ">
-                                    <rect key="frame" x="0.0" y="418" width="200" height="15"/>
+                                    <rect key="frame" x="0.0" y="417" width="200" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="ZPN-hv-vCv">
@@ -809,10 +809,11 @@
                             </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="NKr-1Z-XTc" firstAttribute="top" secondItem="Pye-lj-gyN" secondAttribute="bottom" id="24I-vn-l9L"/>
+                            <constraint firstItem="NKr-1Z-XTc" firstAttribute="top" secondItem="Pye-lj-gyN" secondAttribute="bottom" constant="1" id="24I-vn-l9L"/>
+                            <constraint firstItem="NKr-1Z-XTc" firstAttribute="top" secondItem="dNx-93-wqH" secondAttribute="bottom" constant="1" id="5OV-Rz-8Yn"/>
                             <constraint firstItem="NKr-1Z-XTc" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="9s0-6E-rn8"/>
                             <constraint firstItem="8GM-Eq-rOy" firstAttribute="leading" secondItem="Pye-lj-gyN" secondAttribute="leading" constant="8" id="AXo-5f-gfy"/>
-                            <constraint firstItem="NKr-1Z-XTc" firstAttribute="top" secondItem="oUs-2A-s5y" secondAttribute="bottom" id="H0l-g3-N4q"/>
+                            <constraint firstItem="NKr-1Z-XTc" firstAttribute="top" secondItem="oUs-2A-s5y" secondAttribute="bottom" constant="1" id="H0l-g3-N4q"/>
                             <constraint firstItem="dNx-93-wqH" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="MFs-mk-kjs"/>
                             <constraint firstItem="dNx-93-wqH" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="PbI-Bq-Llk"/>
                             <constraint firstAttribute="trailing" secondItem="NKr-1Z-XTc" secondAttribute="trailing" id="QMs-ZX-TJV"/>
@@ -821,7 +822,6 @@
                             <constraint firstItem="oUs-2A-s5y" firstAttribute="leading" secondItem="dNx-93-wqH" secondAttribute="trailing" id="UQi-rl-C7m"/>
                             <constraint firstItem="oUs-2A-s5y" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="X8p-Au-hou"/>
                             <constraint firstAttribute="trailing" secondItem="Pye-lj-gyN" secondAttribute="trailing" id="eaW-fk-vDH"/>
-                            <constraint firstAttribute="bottom" secondItem="dNx-93-wqH" secondAttribute="bottom" constant="30" id="f57-ZQ-KEw"/>
                             <constraint firstItem="Pye-lj-gyN" firstAttribute="top" secondItem="8GM-Eq-rOy" secondAttribute="bottom" constant="8" id="mh5-hG-PZ1"/>
                             <constraint firstAttribute="bottom" secondItem="NKr-1Z-XTc" secondAttribute="bottom" id="qd9-6B-DRU"/>
                         </constraints>

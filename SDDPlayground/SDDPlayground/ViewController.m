@@ -243,7 +243,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     sdd_parse([dsl UTF8String], &callback);
     
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
-    item.shortString = [NSString stringWithFormat:@"[L] %@", presenter.rootName];
+    item.shortString = [NSString stringWithFormat:@"  [L] %@", presenter.rootName];
     item.longString  = [NSString stringWithFormat:@"[Launch    ] %@", presenter.rootName];
     [_historyItems addObject:item];
 
@@ -255,7 +255,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 
 - (void)peer:(SDDServicePeer *)peer didStopSchedulerNamed:(NSString *)schedulerName {
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
-    item.shortString = [NSString stringWithFormat:@"[S] %@", schedulerName];
+    item.shortString = [NSString stringWithFormat:@"  [S] %@", schedulerName];
     item.longString  = [NSString stringWithFormat:@"[Stop      ] %@", schedulerName];
     [_historyItems addObject:item];
     
@@ -266,7 +266,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 
 - (void)peer:(SDDServicePeer *)peer didActivateState:(NSString *)stateName forSchedulerNamed:(NSString *)schedulerName image:(NSImage *)image {
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
-    item.shortString   = [NSString stringWithFormat:@"[A] %@", stateName];
+    item.shortString   = [NSString stringWithFormat:@"√ [A] %@", stateName];
     item.longString    = [NSString stringWithFormat:@"[Activate  ] %@/%@", schedulerName, stateName];
     item.optioanlImage = image;
     [_historyItems addObject:item];
@@ -278,7 +278,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 
 - (void)peer:(SDDServicePeer *)peer didDeactivateState:(NSString *)stateName forSchedulerNamed:(NSString *)schedulerName {
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
-    item.shortString = [NSString stringWithFormat:@"[D] %@", stateName];
+    item.shortString = [NSString stringWithFormat:@"  [D] %@", stateName];
     item.longString  = [NSString stringWithFormat:@"[Deactivate] %@/%@", schedulerName, stateName];
     [_historyItems addObject:item];
     
@@ -289,7 +289,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 
 - (void)peer:(SDDServicePeer *)peer didReceiveEvent:(NSString *)event {
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
-    item.shortString = [NSString stringWithFormat:@"[E] %@", event];
+    item.shortString = [NSString stringWithFormat:@"  [E] %@", event];
     item.longString  = [NSString stringWithFormat:@"[Event     ] %@", event];
     [_historyItems addObject:item];
     
@@ -319,7 +319,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
         _filteredHistories = [@[] mutableCopy];
         for (NSInteger i=0; i<_historyItems.count; ++i) {
             SDDPGHistoryItem *item = _historyItems[i];
-            if (_wantEvents || ![item.shortString hasPrefix:@"[E]"]) {
+            if (_wantEvents || ![item.shortString hasPrefix:@"  [E]"]) {
                 [_filteredHistories addObject:item];
             }
         }

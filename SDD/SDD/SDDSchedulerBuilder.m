@@ -129,11 +129,11 @@ void SDDSchedulerAddState(void* contextObj, sdd_state* raw_state) {
                 SDDSimpleAction(context, simpleSel);
             } else if ([context respondsToSelector:augmentedSel]) {
                 SDDAugmentedAction(context, augmentedSel, argument);
-            } else {
+            } else if (context != nil) {
                 [[NSException exceptionWithName:@"SDDSchedulerBuilderException"
                                          reason:[NSString stringWithFormat:@"无法在上下文:%@ 对象中找到 %@ 方法", context, act]
                                        userInfo:@{
-                                                  @"context": context,
+                                                  @"context": context ? context : @"null",
                                                   @"action":  act,
                                                   }] raise];
             }
@@ -146,11 +146,11 @@ void SDDSchedulerAddState(void* contextObj, sdd_state* raw_state) {
             SEL simpleSel    = NSSelectorFromString(act);
             if ([context respondsToSelector:simpleSel]) {
                 SDDSimpleAction(context, simpleSel);
-            } else {
+            } else if (context != nil) {
                 [[NSException exceptionWithName:@"SDDSchedulerBuilderException"
                                          reason:[NSString stringWithFormat:@"无法在上下文:%@ 对象中找到 %@ 方法", context, act]
                                        userInfo:@{
-                                                  @"context": context,
+                                                  @"context": context ? context : @"null",
                                                   @"action":  act,
                                                   }] raise];
             }
@@ -197,11 +197,11 @@ void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
                 SDDSimpleAction(context, simpleSel);
             } else if ([context respondsToSelector:augmentedSel]) {
                 SDDAugmentedAction(context, augmentedSel, argument);
-            } else {
+            } else if (context != nil) {
                 [[NSException exceptionWithName:@"SDDSchedulerBuilderException"
                                          reason:[NSString stringWithFormat:@"无法在上下文:%@ 对象中找到 %@ 方法", context, act]
                                        userInfo:@{
-                                                  @"context": context,
+                                                  @"context": context ? context : @"null",
                                                   @"action":  act,
                                                   }] raise];
             }
@@ -239,11 +239,11 @@ void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
                     exprValue = SDDConditionMsgSend(context, simpleSel);
                 } else if ([context respondsToSelector:augmentedSel]) {
                     exprValue = SDDConditionMsgSend2(context, augmentedSel, argument);
-                } else {
+                } else if (context != nil) {
                     [[NSException exceptionWithName:@"SDDSchedulerBuilderException"
                                              reason:[NSString stringWithFormat:@"无法在上下文:%@ 对象中找到 %@ 方法", context, p]
                                            userInfo:@{
-                                                      @"context":   context,
+                                                      @"context":   context ? context : @"null",
                                                       @"condition": p,
                                                       }] raise];
                 }
