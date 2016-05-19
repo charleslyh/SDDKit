@@ -345,7 +345,12 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 - (void)syncTextView {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.stockMessagesView.textStorage setAttributedString:[[NSAttributedString alloc] init]];
-        for (NSString *key in _presenters.allKeys) {
+        
+        NSArray* sortedNames = [_presenters.allKeys sortedArrayUsingComparator:^NSComparisonResult(NSString *lhs, NSString *rhs) {
+            return [lhs compare:rhs];
+        }];
+        
+        for (NSString *key in sortedNames) {
             SDDSchedulerPresenter *presenter = _presenters[key];
 
             NSAttributedString *text = [presenter statesText];
