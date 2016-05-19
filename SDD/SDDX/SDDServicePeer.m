@@ -6,7 +6,11 @@
 //  Copyright © 2016年 Flash. All rights reserved.
 //
 
+#import <AppKit/AppKit.h>
 #import "SDDServicePeer.h"
+
+NSString * const SDDServerPeerDidDisconnectNotification = @"SDDServerPeerDidDisconnectNotification";
+
 
 @interface SDDServicePeer() <NSStreamDelegate>
 @end
@@ -15,7 +19,7 @@
     NSInputStream  *_istream;
     NSOutputStream *_ostream;
     
-    uint8_t _buffer[4096];
+    uint8_t _buffer[4<<20];
     NSInteger _nextWritingPos;
 }
 
@@ -94,7 +98,11 @@
                                 if ([protocol isEqualToString:@"start"]) {
                                     [self.delegate peer:self willStartSchedulerWithDSL:object[@"dsl"]];
                                 } else if ([protocol isEqualToString:@"activate"]) {
-                                    [self.delegate peer:self didActivateState:object[@"state"] forSchedulerNamed:object[@"scheduler"]];
+                                    NSString *base64String = object[@"screenshot"];
+                                    NSData *imageData = [[NSData alloc] initWithBase64EncodedString:base64String options:0];
+                                    NSImage *screenshot = [[NSImage alloc] initWithData:imageData];
+                                    
+                                    [self.delegate peer:self didActivateState:object[@"state"] forSchedulerNamed:object[@"scheduler"] image:screenshot];
                                 } else if ([protocol isEqualToString:@"deactivate"]) {
                                     [self.delegate peer:self didDeactivateState:object[@"state"] forSchedulerNamed:object[@"scheduler"]];
                                 } else if ([protocol isEqualToString:@"event"]) {
@@ -103,9 +111,9 @@
                                     [self.delegate peer:self didStopSchedulerNamed:object[@"scheduler"]];
                                 }
                             } else {
-                                _buffer[_nextWritingPos] = 0;
-                                NSString *s = [NSString stringWithCString:(char*)_buffer encoding:NSUTF8StringEncoding];
-                                NSLog(@"Abandon buffer:%@", s);
+//                                _buffer[_nextWritingPos] = 0;
+//                                NSString *s = [NSString stringWithCString:(char*)_buffer encoding:NSUTF8StringEncoding];
+//                                NSLog(@"Abandon buffer:%@", s);
                             }
                         }
                     }
@@ -124,6 +132,8 @@
             
             [theStream close];
             [theStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:SDDServerPeerDidDisconnectNotification object:self];
             
             break;
             

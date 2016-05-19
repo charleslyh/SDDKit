@@ -14,11 +14,13 @@
 - (void)peer:(SDDServicePeer *)peer willStartSchedulerWithDSL:(NSString *)dsl;
 - (void)peer:(SDDServicePeer *)peer didStopSchedulerNamed:(NSString *)schedulerName;
 
-- (void)peer:(SDDServicePeer *)peer didActivateState:(NSString *)stateName forSchedulerNamed:(NSString *)schedulerName;
+- (void)peer:(SDDServicePeer *)peer didActivateState:(NSString *)stateName forSchedulerNamed:(NSString *)schedulerName image:(NSImage *)image;
 - (void)peer:(SDDServicePeer *)peer didDeactivateState:(NSString *)stateName forSchedulerNamed:(NSString *)schedulerName;
 - (void)peer:(SDDServicePeer *)peer didReceiveEvent:(NSString *)event;
 @end
 
+
+extern NSString * const SDDServerPeerDidDisconnectNotification;
 
 @interface SDDServicePeer : NSObject
 @property (weak) id<SDDServicePeerDelegate> delegate;
