@@ -15,9 +15,10 @@
 		5673C5901C5EFBB900482DBA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5673C58E1C5EFBB900482DBA /* LaunchScreen.storyboard */; };
 		5673C59B1C5EFBB900482DBA /* SDDSchedulerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C59A1C5EFBB900482DBA /* SDDSchedulerTests.m */; };
 		5673C5B11C5EFC3F00482DBA /* SDDBuilderDSLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5B01C5EFC3F00482DBA /* SDDBuilderDSLTests.m */; };
-		56AD9AEC1CEB47B5003EC9B7 /* SDDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56AD9AEB1CEB47B5003EC9B7 /* SDDI.framework */; };
-		56AD9AED1CEB47B5003EC9B7 /* SDDI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 56AD9AEB1CEB47B5003EC9B7 /* SDDI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		56E788391CE4BDE20049D3CA /* SDDMockFlows.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E788381CE4BDE20049D3CA /* SDDMockFlows.m */; };
+		D4D4AA221CEDAE77006E6409 /* Context.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D4AA211CEDAE77006E6409 /* Context.m */; };
+		D4E1E8C91CEC0D7A000C73EA /* SDDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4E1E8C81CEC0D7A000C73EA /* SDDI.framework */; };
+		D4E1E8CC1CEC1421000C73EA /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4E1E8CB1CEC1421000C73EA /* LoginViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,20 +30,6 @@
 			remoteInfo = SDDExamples;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		56AD9AEA1CEB3D00003EC9B7 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				56AD9AED1CEB47B5003EC9B7 /* SDDI.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5673C57D1C5EFBB900482DBA /* SDDExamples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDDExamples.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,6 +49,11 @@
 		56AD9AEB1CEB47B5003EC9B7 /* SDDI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SDDI.framework; path = "/Users/Charles/Library/Developer/Xcode/DerivedData/SDDKit-caodxadizwyqrsgjbwppiasvwxxv/Build/Products/Debug-iphonesimulator/SDDI.framework"; sourceTree = "<absolute>"; };
 		56E788371CE4BDE20049D3CA /* SDDMockFlows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDMockFlows.h; sourceTree = "<group>"; };
 		56E788381CE4BDE20049D3CA /* SDDMockFlows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDMockFlows.m; sourceTree = "<group>"; };
+		D4D4AA201CEDAE76006E6409 /* Context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Context.h; sourceTree = "<group>"; };
+		D4D4AA211CEDAE77006E6409 /* Context.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Context.m; sourceTree = "<group>"; };
+		D4E1E8C81CEC0D7A000C73EA /* SDDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDDI.framework; path = "../../../../Library/Developer/Xcode/DerivedData/SDDKit-gfgbiyvhscqfeadnpnniqnxfpacs/Build/Products/Debug-iphonesimulator/SDDI.framework"; sourceTree = "<group>"; };
+		D4E1E8CA1CEC1421000C73EA /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		D4E1E8CB1CEC1421000C73EA /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				56AD9AEC1CEB47B5003EC9B7 /* SDDI.framework in Frameworks */,
+				D4E1E8C91CEC0D7A000C73EA /* SDDI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +78,7 @@
 		5673C5741C5EFBB900482DBA = {
 			isa = PBXGroup;
 			children = (
+				D4E1E8C81CEC0D7A000C73EA /* SDDI.framework */,
 				56AD9AEB1CEB47B5003EC9B7 /* SDDI.framework */,
 				5673C57F1C5EFBB900482DBA /* SDDExamples */,
 				5673C5991C5EFBB900482DBA /* SDDExamplesTests */,
@@ -107,8 +100,12 @@
 			children = (
 				5673C5831C5EFBB900482DBA /* AppDelegate.h */,
 				5673C5841C5EFBB900482DBA /* AppDelegate.m */,
+				D4D4AA201CEDAE76006E6409 /* Context.h */,
+				D4D4AA211CEDAE77006E6409 /* Context.m */,
 				5673C5861C5EFBB900482DBA /* ViewController.h */,
 				5673C5871C5EFBB900482DBA /* ViewController.m */,
+				D4E1E8CA1CEC1421000C73EA /* LoginViewController.h */,
+				D4E1E8CB1CEC1421000C73EA /* LoginViewController.m */,
 				5673C5891C5EFBB900482DBA /* Main.storyboard */,
 				5673C58C1C5EFBB900482DBA /* Assets.xcassets */,
 				5673C58E1C5EFBB900482DBA /* LaunchScreen.storyboard */,
@@ -148,7 +145,6 @@
 				5673C5791C5EFBB900482DBA /* Sources */,
 				5673C57A1C5EFBB900482DBA /* Frameworks */,
 				5673C57B1C5EFBB900482DBA /* Resources */,
-				56AD9AEA1CEB3D00003EC9B7 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -238,8 +234,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4E1E8CC1CEC1421000C73EA /* LoginViewController.m in Sources */,
 				5673C5881C5EFBB900482DBA /* ViewController.m in Sources */,
 				5673C5851C5EFBB900482DBA /* AppDelegate.m in Sources */,
+				D4D4AA221CEDAE77006E6409 /* Context.m in Sources */,
 				5673C5821C5EFBB900482DBA /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

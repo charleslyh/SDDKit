@@ -8,25 +8,21 @@
 
 #import "ViewController.h"
 #import <SDDI/SDDI.h>
-
+#import "LoginViewController.h"
+#import "Context.h"
 
 @interface ViewController ()
 @end
 
 @implementation ViewController {
     SDDSchedulerBuilder *_builder;
-    SDDISocketReporter  *_reporter;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    _reporter = [[SDDISocketReporter alloc] initWithHost:@"localhost" port:9800];
-    [[SDDEventsPool defaultPool] addSubscriber:_reporter];
-    [_reporter start];
     
     _builder = [[SDDSchedulerBuilder alloc] initWithNamespace:nil
-                                                       logger:_reporter
+                                                       logger:globalContext.reporter
                                                         queue:[NSOperationQueue currentQueue]
                                                    eventsPool:[SDDEventsPool defaultPool]];
     
@@ -69,4 +65,15 @@
     [[SDDEventsPool defaultPool] scheduleEvent:allEvents[sender.tag - 10]];
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"segueToLoginVC"]) {
+        LoginViewController* vc = segue.destinationViewController.childViewControllers.firstObject;
+        vc.closingHandler = ^{
+            [self dismissViewControllerAnimated:YES completion:nil];
+        };
+        vc.successHandler = ^{
+            [self dismissViewControllerAnimated:YES completion:nil];
+        };
+    }
+}
 @end
