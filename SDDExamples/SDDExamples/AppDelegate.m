@@ -7,16 +7,28 @@
 //
 
 #import "AppDelegate.h"
+#import <SDDI/SDDI.h>
+#import "Context.h"
 
-@interface AppDelegate ()
+//@interface AppDelegate (Configuration)
+//@end
 
+@implementation AppDelegate (Configuration)
+- (void)setupGlobalContext {
+    SDDISocketReporter* reporter = [[SDDISocketReporter alloc] initWithHost:@"localhost" port:9800];
+    [[SDDEventsPool defaultPool] addSubscriber:reporter];
+    [reporter start];
+    
+    globalContext = [[Context alloc] initWithReporter:reporter];
+}
 @end
 
 @implementation AppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    [self setupGlobalContext];
+    
     return YES;
 }
 
