@@ -102,7 +102,6 @@
         NSData *ssData = UIImageJPEGRepresentation(screenshot, 0.75);
         imageString = [ssData base64EncodedStringWithOptions:0];
     }
-    NSInteger l = imageString.length;
     
     [NSJSONSerialization writeJSONObject:@{
                                            @"proto":     @"activate",
