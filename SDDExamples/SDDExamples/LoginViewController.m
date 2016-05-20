@@ -18,6 +18,10 @@ static NSString* const kLVCDidChangePhoneNumber     = @"DidChangePhoneNumber";
 static NSString* const kLVCDoneVerifying            = @"DoneVerifying";
 static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
 
+static NSString* const kLVCMockVerifyPhoneNumber    = @"15012345678";
+static NSString* const kLVCMockVerifySMSCode        = @"654321";
+static NSInteger const kLVCMockVerifyClue           = 88888888;
+
 @interface UIColor (LVCDisableColor)
 + (UIColor*)LVCButtonDisableColor;
 + (UIColor*)LVCButtonOrangeColor;
@@ -85,7 +89,7 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
 -(void)startCountDown {
     __weak typeof(self) wself = self;
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        int remainingTime = 30;
+        int remainingTime = 10;
         while (wself && remainingTime > 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [wself.SMSCodeRequestingButton setTitle:[NSString stringWithFormat:@"%d秒后重试", remainingTime]
@@ -163,15 +167,12 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
 }
 
 -(void)performMockLogin {
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        sleep(5);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSNumber *verify;
-            if ([self.phoneNumberField.text isEqualToString:@"15012345678"] && [self.SMSCodeField.text isEqualToString:@"654321"]) {
-                verify = [NSNumber numberWithInteger:88888888];
-            }
-            [[SDDEventsPool defaultPool] scheduleEvent:kLVCDoneVerifying withParam:verify];
-        });
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSNumber *verify;
+        if ([self.phoneNumberField.text isEqualToString:kLVCMockVerifyPhoneNumber] && [self.SMSCodeField.text isEqualToString:kLVCMockVerifySMSCode]) {
+            verify = [NSNumber numberWithInteger:kLVCMockVerifyClue];
+        }
+        [[SDDEventsPool defaultPool] scheduleEvent:kLVCDoneVerifying withParam:verify];
     });
 }
 
@@ -207,11 +208,8 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
     [UIView animateWithDuration:0.25 animations:^{
         self.failureTip.alpha = 1.0;
     }];
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        sleep(1.5);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[SDDEventsPool defaultPool] scheduleEvent:kLVCShouldHideFailureTip];
-        });
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [[SDDEventsPool defaultPool] scheduleEvent:kLVCShouldHideFailureTip];
     });
 }
 
@@ -263,7 +261,7 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
     NSString* dsl = SDDOCLanguage
     (
         [SMSCodeField ~[Disabled]
-         [Disabled  e:disableSMSCodeField]
+         [Disabled  e:disableSMSCodeField resetSMSCodeField]
          [Normal    e:enableSMSCodeField resetSMSCodeField]
          ]
      
@@ -317,8 +315,8 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
          [Shown     e:showFailureTip]
          ]
      
-     [Hidden]    ->  [Shown]:   DoneVerifying(!isLoginSucceed)
-     [Shown]     ->  [Hidden]:  ShouldHideFailureTip
+        [Hidden]    ->  [Shown]:   DoneVerifying(!isLoginSucceed)
+        [Shown]     ->  [Hidden]:  ShouldHideFailureTip
      );
     
     [_builder hostSchedulerWithContext:self dsl:dsl];
