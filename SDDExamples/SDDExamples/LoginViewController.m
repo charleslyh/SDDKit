@@ -51,7 +51,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
 @end
 
 @implementation LoginViewController {
-    SDDSchedulerBuilder *_builder;
+    SDDSchedulerBuilder *_domain;
 }
 
 - (void)viewDidLayoutSubviews {
@@ -99,7 +99,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
             sleep(1);
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[SDDEventsPool defaultPool] scheduleEvent:kLVCTimesUp];
+            [_domain.epool scheduleEvent:kLVCTimesUp];
         });
     });
 }
@@ -170,9 +170,9 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         NSNumber *verify;
         if ([self.phoneNumberField.text isEqualToString:kLVCMockVerifyPhoneNumber] && [self.SMSCodeField.text isEqualToString:kLVCMockVerifySMSCode]) {
-            verify = [NSNumber numberWithInteger:kLVCMockVerifyClue];
+            verify = @(kLVCMockVerifyClue);
         }
-        [[SDDEventsPool defaultPool] scheduleEvent:kLVCDoneVerifying withParam:verify];
+        [_domain.epool scheduleEvent:kLVCDoneVerifying withParam:verify];
     });
 }
 
@@ -185,9 +185,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
 }
 
 -(void)handleLoginSuccess {
-    if (self.successHandler) {
-        self.successHandler();
-    }
+    self.successHandler();
 }
 
 -(void)hideActivityIndicator {
@@ -209,15 +207,8 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         self.failureTip.alpha = 1.0;
     }];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [[SDDEventsPool defaultPool] scheduleEvent:kLVCShouldHideFailureTip];
+        [_domain.epool scheduleEvent:kLVCShouldHideFailureTip];
     });
-}
-
--(void)setupSDD {
-    _builder = [[SDDSchedulerBuilder alloc] initWithNamespace:@"loginVC"
-                                                       logger:globalContext.reporter
-                                                        queue:[NSOperationQueue currentQueue]
-                                                   eventsPool:[SDDEventsPool defaultPool]];
 }
 
 -(void)setupSMSButtonState {
@@ -239,7 +230,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
          [CountDown]    ->  [Disabled]:     TimesUp(!isPhoneNumber)
     );
     
-    [_builder hostSchedulerWithContext:self dsl:dsl];
+    [_domain hostSchedulerWithContext:self dsl:dsl];
 }
 
 -(void)setupPhoneNumberFieldState {
@@ -254,7 +245,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         [Disabled]  ->  [Normal]:      TimesUp
     );
     
-    [_builder hostSchedulerWithContext:self dsl:dsl];
+    [_domain hostSchedulerWithContext:self dsl:dsl];
 }
 
 -(void)setupSMSCodeFieldState {
@@ -269,7 +260,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         [Normal]      ->  [Disabled]:   DidChangePhoneNumber
     );
     
-    [_builder hostSchedulerWithContext:self dsl:dsl];
+    [_domain hostSchedulerWithContext:self dsl:dsl];
 }
 
 -(void)setupVerifyButtonState {
@@ -289,7 +280,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         [Verifying]    ->  [Success]:   DoneVerifying(isLoginSucceed)
     );
     
-    [_builder hostSchedulerWithContext:self dsl:dsl];
+    [_domain hostSchedulerWithContext:self dsl:dsl];
 }
 
 -(void)setupActivityIndicatorState {
@@ -304,7 +295,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         [Shown]     ->  [Hidden]:  DoneVerifying
     );
     
-    [_builder hostSchedulerWithContext:self dsl:dsl];
+    [_domain hostSchedulerWithContext:self dsl:dsl];
 }
 
 -(void)setupFailureTipState {
@@ -319,16 +310,16 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         [Shown]     ->  [Hidden]:  ShouldHideFailureTip
      );
     
-    [_builder hostSchedulerWithContext:self dsl:dsl];
+    [_domain hostSchedulerWithContext:self dsl:dsl];
 }
 
--(void)viewDidLoad {
-    [super viewDidLoad];
+-(void)setupDomainWidgets {
+    _domain = [[SDDSchedulerBuilder alloc] initWithNamespace:@"loginVC"
+                                                      logger:globalContext.reporter
+                                                       queue:[NSOperationQueue currentQueue]];
     
-    [self.phoneNumberField becomeFirstResponder];
-    self.phoneNumberField.delegate = self;
-    self.SMSCodeField.delegate = self;
-    [self setupSDD];
+    [_domain.epool addSubscriber:globalContext.reporter];
+    
     [self setupSMSButtonState];
     [self setupPhoneNumberFieldState];
     [self setupSMSCodeFieldState];
@@ -337,27 +328,38 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
     [self setupFailureTipState];
 }
 
+- (void)dealloc {
+    [_domain.epool removeSubscriber:globalContext.reporter];
+}
+
+-(void)viewDidLoad {
+    [super viewDidLoad];
+    
+    // 让键盘随着界面一起出现
+    [self.phoneNumberField becomeFirstResponder];
+    
+    [self setupDomainWidgets];
+}
+
 - (IBAction)phoneNumberTextDidChange:(UITextField *)sender {
-    [[SDDEventsPool defaultPool] scheduleEvent:kLVCDidChangeTextFields];
-    [[SDDEventsPool defaultPool] scheduleEvent:kLVCDidChangePhoneNumber];
+    [_domain.epool scheduleEvent:kLVCDidChangeTextFields];
+    [_domain.epool scheduleEvent:kLVCDidChangePhoneNumber];
 }
 
 - (IBAction)SMSCodeTextDidChange:(UITextField *)sender {
-    [[SDDEventsPool defaultPool] scheduleEvent:kLVCDidChangeTextFields];
+    [_domain.epool scheduleEvent:kLVCDidChangeTextFields];
 }
 
 - (IBAction)didTouchSMSButton:(id)sender {
-    [[SDDEventsPool defaultPool] scheduleEvent:kLVCDidTouchSMSCodeButton];
+    [_domain.epool scheduleEvent:kLVCDidTouchSMSCodeButton];
 }
 
 - (IBAction)didTouchStopButton:(id)sender {
-    if (self.closingHandler) {
-        self.closingHandler();
-    }
+    self.closingHandler();
 }
 
 - (IBAction)didTouchVerifyButton:(id)sender {
-    [[SDDEventsPool defaultPool] scheduleEvent:kLVCDidTouchVerifyButton];
+    [_domain.epool scheduleEvent:kLVCDidTouchVerifyButton];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

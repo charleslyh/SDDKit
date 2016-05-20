@@ -231,7 +231,11 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     }
 }
 
-- (void)peer:(SDDServicePeer *)peer willStartSchedulerWithDSL:(NSString *)dsl {
+- (NSString *)namesFromStates:(NSArray<NSString *> *)stateNames {
+    return [stateNames componentsJoinedByString:@","];
+}
+
+- (void)peer:(SDDServicePeer *)peer scheduler:(NSString *)scheduler didStartWithDSL:(NSString *)dsl didActivates:(NSArray<NSString *> *)activates {
     SDDSchedulerPresenter *presenter = [[SDDSchedulerPresenter alloc] init];
     
     sdd_parser_callback callback;
@@ -243,53 +247,61 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     sdd_parse([dsl UTF8String], &callback);
     
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
-    item.shortString = [NSString stringWithFormat:@"  [L] %@", presenter.rootName];
-    item.longString  = [NSString stringWithFormat:@"[Launch    ] %@", presenter.rootName];
+    item.shortString = [NSString stringWithFormat:@"[L] %@", presenter.rootName];
+    item.longString  = [NSString stringWithFormat:@"[Launch    ] %@ {%@}", presenter.rootName, [self namesFromStates:activates]];
     [_historyItems addObject:item];
-
+    
     [self syncUIByAddingItem:item presenterUpdate:^(ViewController *wself) {
-        wself.presenters[presenter.rootName] = presenter;
+        wself.presenters[scheduler] = presenter;
+        
         [presenter resetAlives];
+        for (NSString *sname in activates) {
+            [presenter activateState:sname];
+        }
     }];
 }
 
-- (void)peer:(SDDServicePeer *)peer didStopSchedulerNamed:(NSString *)schedulerName {
+- (void)peer:(SDDServicePeer *)peer scheduler:(NSString *)scheduler didStopWithDeactivates:(NSArray<NSString *> *)deactivates {
+    SDDSchedulerPresenter *presenter = self.presenters[scheduler];
+    
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
-    item.shortString = [NSString stringWithFormat:@"  [S] %@", schedulerName];
-    item.longString  = [NSString stringWithFormat:@"[Stop      ] %@", schedulerName];
+    item.shortString = [NSString stringWithFormat:@"[S] %@", presenter.rootName];
+    item.longString  = [NSString stringWithFormat:@"[Stop      ] %@ {%@}", presenter.rootName, [self namesFromStates:deactivates]];
     [_historyItems addObject:item];
     
     [self syncUIByAddingItem:item presenterUpdate:^(ViewController *wself) {
-        [wself.presenters removeObjectForKey:schedulerName];
+        for (NSString *sname in deactivates) {
+            [presenter deactivateState:sname];
+        }
+        
+        [wself.presenters removeObjectForKey:scheduler];
     }];
 }
 
-- (void)peer:(SDDServicePeer *)peer didActivateState:(NSString *)stateName forSchedulerNamed:(NSString *)schedulerName image:(NSImage *)image {
+- (void)peer:(SDDServicePeer *)peer scheduler:(NSString *)scheduler activates:(NSArray<NSString *> *)activates deactivates:(NSArray<NSString *> *)deactivates byEvent:(NSString *)event withScreenshotImage:(NSImage *)screenshot
+{
+    SDDSchedulerPresenter *presenter = self.presenters[scheduler];
+    
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
-    item.shortString   = [NSString stringWithFormat:@"√ [A] %@", stateName];
-    item.longString    = [NSString stringWithFormat:@"[Activate  ] %@/%@", schedulerName, stateName];
-    item.optioanlImage = image;
+    item.shortString   = [NSString stringWithFormat:@"[T] %@", event];
+    item.longString    = [NSString stringWithFormat:@"[Transit   ] %@ : {%@} -> {%@}", event, [self namesFromStates:activates], [self namesFromStates:deactivates]];
+    item.optioanlImage = screenshot;
     [_historyItems addObject:item];
     
     [self syncUIByAddingItem:item presenterUpdate:^(ViewController *wself) {
-        [wself.presenters[schedulerName] activateState:stateName];
-    }];
-}
-
-- (void)peer:(SDDServicePeer *)peer didDeactivateState:(NSString *)stateName forSchedulerNamed:(NSString *)schedulerName {
-    SDDPGHistoryItem *item = [SDDPGHistoryItem new];
-    item.shortString = [NSString stringWithFormat:@"  [D] %@", stateName];
-    item.longString  = [NSString stringWithFormat:@"[Deactivate] %@/%@", schedulerName, stateName];
-    [_historyItems addObject:item];
-    
-    [self syncUIByAddingItem:item presenterUpdate:^(ViewController *wself) {
-        [wself.presenters[schedulerName] deactivateState:stateName];
+        for (NSString *sname in deactivates) {
+            [presenter deactivateState:sname];
+        }
+        
+        for (NSString *sname in activates) {
+            [presenter activateState:sname];
+        }
     }];
 }
 
 - (void)peer:(SDDServicePeer *)peer didReceiveEvent:(NSString *)event {
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
-    item.shortString = [NSString stringWithFormat:@"  [E] %@", event];
+    item.shortString = [NSString stringWithFormat:@"[E] %@", event];
     item.longString  = [NSString stringWithFormat:@"[Event     ] %@", event];
     [_historyItems addObject:item];
     
@@ -319,7 +331,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
         _filteredHistories = [@[] mutableCopy];
         for (NSInteger i=0; i<_historyItems.count; ++i) {
             SDDPGHistoryItem *item = _historyItems[i];
-            if (_wantEvents || ![item.shortString hasPrefix:@"  [E]"]) {
+            if (_wantEvents || ![item.shortString hasPrefix:@"[E]"]) {
                 [_filteredHistories addObject:item];
             }
         }

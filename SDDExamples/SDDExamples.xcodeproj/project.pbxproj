@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5608A06A1CEDC0DD00CE4B1E /* SDDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5608A0691CEDC0DD00CE4B1E /* SDDI.framework */; };
 		5608A06B1CEDC0DD00CE4B1E /* SDDI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5608A0691CEDC0DD00CE4B1E /* SDDI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		564711F51CEF56580079C43A /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 564711F31CEF56580079C43A /* Login.storyboard */; };
 		5673C5821C5EFBB900482DBA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5811C5EFBB900482DBA /* main.m */; };
 		5673C5851C5EFBB900482DBA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5841C5EFBB900482DBA /* AppDelegate.m */; };
 		5673C5881C5EFBB900482DBA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5871C5EFBB900482DBA /* ViewController.m */; };
@@ -48,6 +49,7 @@
 
 /* Begin PBXFileReference section */
 		5608A0691CEDC0DD00CE4B1E /* SDDI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SDDI.framework; path = "/Users/Charles/Library/Developer/Xcode/DerivedData/SDDKit-caodxadizwyqrsgjbwppiasvwxxv/Build/Products/Debug-iphoneos/SDDI.framework"; sourceTree = "<absolute>"; };
+		564711F41CEF56580079C43A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
 		5673C57D1C5EFBB900482DBA /* SDDExamples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDDExamples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5673C5811C5EFBB900482DBA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5673C5831C5EFBB900482DBA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -120,9 +122,9 @@
 				D4E1E8CA1CEC1421000C73EA /* LoginViewController.h */,
 				D4E1E8CB1CEC1421000C73EA /* LoginViewController.m */,
 				5673C5891C5EFBB900482DBA /* Main.storyboard */,
-				5673C58C1C5EFBB900482DBA /* Assets.xcassets */,
+				564711F31CEF56580079C43A /* Login.storyboard */,
 				5673C58E1C5EFBB900482DBA /* LaunchScreen.storyboard */,
-				5673C5911C5EFBB900482DBA /* Info.plist */,
+				5673C58C1C5EFBB900482DBA /* Assets.xcassets */,
 				5673C5801C5EFBB900482DBA /* Supporting Files */,
 			);
 			path = SDDExamples;
@@ -131,6 +133,7 @@
 		5673C5801C5EFBB900482DBA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5673C5911C5EFBB900482DBA /* Info.plist */,
 				5673C5811C5EFBB900482DBA /* main.m */,
 			);
 			name = "Supporting Files";
@@ -228,6 +231,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				564711F51CEF56580079C43A /* Login.storyboard in Resources */,
 				5673C5901C5EFBB900482DBA /* LaunchScreen.storyboard in Resources */,
 				5673C58D1C5EFBB900482DBA /* Assets.xcassets in Resources */,
 				5673C58B1C5EFBB900482DBA /* Main.storyboard in Resources */,
@@ -277,6 +281,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		564711F31CEF56580079C43A /* Login.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				564711F41CEF56580079C43A /* Base */,
+			);
+			name = Login.storyboard;
+			sourceTree = "<group>";
+		};
 		5673C5891C5EFBB900482DBA /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

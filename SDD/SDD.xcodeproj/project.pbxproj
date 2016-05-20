@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		564711F11CEF523E0079C43A /* VCPDynamic.h in Headers */ = {isa = PBXBuildFile; fileRef = 564711EF1CEF523E0079C43A /* VCPDynamic.h */; };
+		564711F21CEF523E0079C43A /* VCPDynamic.m in Sources */ = {isa = PBXBuildFile; fileRef = 564711F01CEF523E0079C43A /* VCPDynamic.m */; };
+		564711F61CEF569D0079C43A /* VCPDynamic.m in Sources */ = {isa = PBXBuildFile; fileRef = 564711F01CEF523E0079C43A /* VCPDynamic.m */; };
+		564711F71CEF56BB0079C43A /* VCPDynamic.h in Headers */ = {isa = PBXBuildFile; fileRef = 564711EF1CEF523E0079C43A /* VCPDynamic.h */; };
 		5696AA6E1CE8CE2B00CAB7CC /* SDDX.h in Headers */ = {isa = PBXBuildFile; fileRef = 5696AA6D1CE8CE2B00CAB7CC /* SDDX.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5696AA751CE8CE8A00CAB7CC /* sdd_array.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA381CE8C79B00CAB7CC /* sdd_array.c */; };
 		5696AA761CE8CE8A00CAB7CC /* sdd_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA3A1CE8C79B00CAB7CC /* sdd_builder.c */; };
@@ -53,6 +57,8 @@
 		562CA5511CE5EB4D00861684 /* SDDScheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDScheduler.m; sourceTree = "<group>"; };
 		562CA5521CE5EB4D00861684 /* SDDSchedulerBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDSchedulerBuilder.h; sourceTree = "<group>"; };
 		562CA5531CE5EB4D00861684 /* SDDSchedulerBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDSchedulerBuilder.m; sourceTree = "<group>"; };
+		564711EF1CEF523E0079C43A /* VCPDynamic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCPDynamic.h; sourceTree = "<group>"; };
+		564711F01CEF523E0079C43A /* VCPDynamic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCPDynamic.m; sourceTree = "<group>"; };
 		5696AA381CE8C79B00CAB7CC /* sdd_array.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_array.c; sourceTree = "<group>"; };
 		5696AA391CE8C79B00CAB7CC /* sdd_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdd_array.h; sourceTree = "<group>"; };
 		5696AA3A1CE8C79B00CAB7CC /* sdd_builder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_builder.c; sourceTree = "<group>"; };
@@ -127,6 +133,8 @@
 				5696AA3E1CE8C79B00CAB7CC /* sdd_builder.yy.c */,
 				5696AA3F1CE8C79B00CAB7CC /* sdd_parser.c */,
 				5696AA401CE8C79B00CAB7CC /* sdd_parser.h */,
+				564711EF1CEF523E0079C43A /* VCPDynamic.h */,
+				564711F01CEF523E0079C43A /* VCPDynamic.m */,
 				562CA54E1CE5EB4D00861684 /* SDDEventsPool.h */,
 				562CA54F1CE5EB4D00861684 /* SDDEventsPool.m */,
 				562CA5501CE5EB4D00861684 /* SDDScheduler.h */,
@@ -179,6 +187,7 @@
 				56AD9ADF1CEB2F44003EC9B7 /* SDDService.h in Headers */,
 				5696AA7D1CE8CEBA00CAB7CC /* SDDEventsPool.h in Headers */,
 				56AD9AE11CEB2F44003EC9B7 /* SDDServicePeer.h in Headers */,
+				564711F11CEF523E0079C43A /* VCPDynamic.h in Headers */,
 				5696AA7E1CE8CEBA00CAB7CC /* SDDScheduler.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -187,6 +196,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				564711F71CEF56BB0079C43A /* VCPDynamic.h in Headers */,
 				56AD9ABF1CEADEA9003EC9B7 /* SDDSchedulerBuilder.h in Headers */,
 				56AD9ABC1CEADEA9003EC9B7 /* sdd_parser.h in Headers */,
 				56AD9ABB1CEADEA9003EC9B7 /* sdd_array.h in Headers */,
@@ -302,6 +312,7 @@
 				5696AA791CE8CE8A00CAB7CC /* sdd_parser.c in Sources */,
 				5696AA7B1CE8CE8A00CAB7CC /* SDDScheduler.m in Sources */,
 				56AD9AE21CEB2F44003EC9B7 /* SDDServicePeer.m in Sources */,
+				564711F21CEF523E0079C43A /* VCPDynamic.m in Sources */,
 				5696AA771CE8CE8A00CAB7CC /* sdd_builder.tab.c in Sources */,
 				56AD9AE01CEB2F44003EC9B7 /* SDDService.m in Sources */,
 			);
@@ -314,6 +325,7 @@
 				56AD9AB81CEADE9E003EC9B7 /* SDDEventsPool.m in Sources */,
 				56AD9ABA1CEADE9E003EC9B7 /* SDDSchedulerBuilder.m in Sources */,
 				56AD9AB31CEADE9E003EC9B7 /* sdd_array.c in Sources */,
+				564711F61CEF569D0079C43A /* VCPDynamic.m in Sources */,
 				56AD9AB41CEADE9E003EC9B7 /* sdd_builder.c in Sources */,
 				56AD9AB61CEADE9E003EC9B7 /* sdd_builder.yy.c in Sources */,
 				56AD9AB71CEADE9E003EC9B7 /* sdd_parser.c in Sources */,
@@ -424,7 +436,7 @@
 				INFOPLIST_FILE = SDDX/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDKit.SDDX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -448,7 +460,7 @@
 				INFOPLIST_FILE = SDDX/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDKit.SDDX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;

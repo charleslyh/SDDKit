@@ -56,88 +56,79 @@
     [_inputStream close];
 }
 
-- (void)willStartScheduler:(nonnull SDDScheduler *)scheduler {
-    [NSJSONSerialization writeJSONObject:@{
-                                           @"proto": @"start",
-                                           @"dsl":   [scheduler sdd_DSL],
-                                           }
-                                toStream:_outputStream
-                                 options:0
-                                   error:nil];
+- (void)sendPacketWithProto:(NSString *)proto body:(NSDictionary *)body {
+    NSMutableDictionary *object = [NSMutableDictionary dictionary];
+    object[@"proto"] = proto;
+    object[@"body"]  = body;
+    [NSJSONSerialization writeJSONObject:object toStream:_outputStream options:0 error:nil];
 }
 
-- (void)didStopScheduler:(nonnull SDDScheduler *)scheduler {
-    [NSJSONSerialization writeJSONObject:@{
-                                           @"proto":     @"stop",
-                                           @"scheduler": [scheduler sdd_name],
-                                           }
-                                toStream:_outputStream
-                                 options:0
-                                   error:nil];
+- (NSArray<NSString *>*)namesFromStates:(NSArray<SDDState *> *)states {
+    NSMutableArray *names = [NSMutableArray array];
+    for (SDDState *s in states) {
+        [names addObject:s.sddName];
+    }
+    
+    return names;
+}
+
+- (void)didStartScheduler:(SDDScheduler *)scheduler activates:(NSArray<SDDState *> *)activates {
+    [self sendPacketWithProto:@"start"
+                         body:@{
+                                @"scheduler": scheduler.sddIdentifier,
+                                @"dsl":       scheduler.sddDSL,
+                                @"activates": [self namesFromStates:activates],
+                                }];
+}
+
+- (void)didStopScheduler:(SDDScheduler *)scheduler deactivates:(NSArray<SDDState *> *)deactivates {
+    [self sendPacketWithProto:@"stop"
+                         body:@{
+                                @"scheduler":   scheduler.sddIdentifier,
+                                @"deactivates": [self namesFromStates:deactivates],
+                                }];
 }
 
 - (UIImage *)captureFullScreen {
     UIView *window = [[UIApplication sharedApplication] keyWindow];
     
-    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-        // for retina-display
-        CGRect bounds = CGRectMake(0, 0,
-                                   window.bounds.size.width  / [UIScreen mainScreen].scale / 2,
-                                   window.bounds.size.height / [UIScreen mainScreen].scale / 2) ;
-        UIGraphicsBeginImageContextWithOptions(bounds.size, NO, [UIScreen mainScreen].scale);
-        [window drawViewHierarchyInRect:bounds afterScreenUpdates:YES];
-    } else {
-        // non-retina-display
-    }
+    // 非retina屏已经不在考虑之中啦……
+    CGRect bounds = CGRectMake(0, 0,
+                               window.bounds.size.width  / [UIScreen mainScreen].scale / 2,
+                               window.bounds.size.height / [UIScreen mainScreen].scale / 2) ;
+    UIGraphicsBeginImageContextWithOptions(bounds.size, NO, [UIScreen mainScreen].scale);
+    [window drawViewHierarchyInRect:bounds afterScreenUpdates:YES];
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return image;
 }
 
-- (void)scheduler:(nonnull SDDScheduler *)scheduler didActivateState:(nonnull SDDState *)state withArgument:(nullable id)argument {
+- (void)scheduler:(SDDScheduler *)scheduler
+        activates:(NSArray<SDDState *> *)activates
+      deactivates:(NSArray<SDDState *> *)deactivates
+          byEvent:(SDDEvent *)event
+{
     NSString *imageString = @"";
     UIImage *screenshot = [self captureFullScreen];
     if (screenshot != nil) {
         NSData *ssData = UIImageJPEGRepresentation(screenshot, 0.75);
         imageString = [ssData base64EncodedStringWithOptions:0];
     }
-    
-    [NSJSONSerialization writeJSONObject:@{
-                                           @"proto":     @"activate",
-                                           @"scheduler": [scheduler sdd_name],
-                                           @"state":     [state sdd_name],
-                                           @"screenshot": imageString,
-                                           }
-                                toStream:_outputStream
-                                 options:0
-                                   error:nil];
-}
 
-- (void)scheduler:(nonnull SDDScheduler *)scheduler didDeactivateState:(nonnull SDDState *)state {
-    [NSJSONSerialization writeJSONObject:@{
-                                           @"proto":     @"deactivate",
-                                           @"scheduler": [scheduler sdd_name],
-                                           @"state":     [state sdd_name],
-                                           }
-                                toStream:_outputStream
-                                 options:0
-                                   error:nil];
-}
-
-- (void)scheduler:(nonnull SDDScheduler *)scheduler didOccurEvent:(nonnull SDDEvent *)event withArgument:(nullable id)argument {
+    [self sendPacketWithProto:@"transit"
+                         body:@{
+                                @"scheduler":   scheduler.sddIdentifier,
+                                @"event":       event,
+                                @"activates":   [self namesFromStates:activates],
+                                @"deactivates": [self namesFromStates:deactivates],
+                                @"screenshot":  imageString,
+                                }];
 }
 
 - (void)onEvent:(nonnull SDDEvent *)event withParam:(nullable id)param {
-    [NSJSONSerialization writeJSONObject:@{
-                                           @"proto": @"event",
-                                           @"value": event,
-                                           }
-                                toStream:_outputStream
-                                 options:0
-                                   error:nil];
+    [self sendPacketWithProto:@"event" body:@{ @"value": event }];
 }
-
 
 - (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent
 {

@@ -14,12 +14,12 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"segueToLoginVC"]) {
         LoginViewController* vc = segue.destinationViewController.childViewControllers.firstObject;
-        vc.closingHandler = ^{
+        
+        void (^dismiss)() = ^{
             [self dismissViewControllerAnimated:YES completion:nil];
         };
-        vc.successHandler = ^{
-            [self dismissViewControllerAnimated:YES completion:nil];
-        };
+        
+        vc.successHandler = vc.closingHandler = dismiss;
     }
 }
 @end

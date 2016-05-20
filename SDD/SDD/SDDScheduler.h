@@ -31,21 +31,21 @@ typedef void (^SDDDeactivation)();
 @class SDDScheduler;
 
 @protocol SDDSchedulerLogger <NSObject>
-- (void)willStartScheduler:(nonnull SDDScheduler *)scheduler;
-- (void)didStopScheduler:(nonnull SDDScheduler *)scheduler;
-- (void)scheduler:(nonnull SDDScheduler *)scheduler didActivateState:(nonnull SDDState *)state withArgument:(nullable id)argument;
-- (void)scheduler:(nonnull SDDScheduler *)scheduler didDeactivateState:(nonnull SDDState *)state;
-- (void)scheduler:(nonnull SDDScheduler *)scheduler didOccurEvent:(nonnull SDDEvent *)event withArgument:(nullable id)argument;
+- (void)didStartScheduler:(nonnull SDDScheduler *)scheduler activates:(nonnull NSArray<SDDState *>*)activatedStates;
+- (void)didStopScheduler:(nonnull SDDScheduler *)scheduler deactivates:(nonnull NSArray<SDDState *>*)deactivatedStates;
+
+- (void)scheduler:(nonnull SDDScheduler *)scheduler
+        activates:(nonnull NSArray<SDDState *>*)activatedStates
+      deactivates:(nonnull NSArray<SDDState *>*)deactivatedStates
+          byEvent:(nonnull SDDEvent *)event;
 @end
 
 
 typedef NS_OPTIONS(NSInteger, SDDSchedulerLogMasks) {
     SDDSchedulerLogMaskStart      = 1 << 0,
     SDDSchedulerLogMaskStop       = 1 << 1,
-    SDDSchedulerLogMaskActivate   = 1 << 2,
-    SDDSchedulerLogMaskDeactivate = 1 << 3,
-    SDDSchedulerLogMaskEvent      = 1 << 4,
-    SDDSchedulerLogMaskAll        = 0x001F,
+    SDDSchedulerLogMaskTransition = 1 << 2,
+    SDDSchedulerLogMaskAll        = 0xFFFF,
 };
 
 // It is used for console logging
