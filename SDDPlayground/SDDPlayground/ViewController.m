@@ -247,8 +247,8 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     sdd_parse([dsl UTF8String], &callback);
     
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
-    item.shortString = [NSString stringWithFormat:@"[L] %@", presenter.rootName];
-    item.longString  = [NSString stringWithFormat:@"[Launch    ] %@ {%@}", presenter.rootName, [self namesFromStates:activates]];
+    item.shortString = [NSString stringWithFormat:@"<L> [%@]", presenter.rootName];
+    item.longString  = [NSString stringWithFormat:@"<Launch  > [%@] {%@}", presenter.rootName, [self namesFromStates:activates]];
     [_historyItems addObject:item];
     
     [self syncUIByAddingItem:item presenterUpdate:^(ViewController *wself) {
@@ -265,8 +265,8 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     SDDSchedulerPresenter *presenter = self.presenters[scheduler];
     
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
-    item.shortString = [NSString stringWithFormat:@"[S] %@", presenter.rootName];
-    item.longString  = [NSString stringWithFormat:@"[Stop      ] %@ {%@}", presenter.rootName, [self namesFromStates:deactivates]];
+    item.shortString = [NSString stringWithFormat:@"<S> [%@]", presenter.rootName];
+    item.longString  = [NSString stringWithFormat:@"<Stop   > [%@] {%@}", presenter.rootName, [self namesFromStates:deactivates]];
     [_historyItems addObject:item];
     
     [self syncUIByAddingItem:item presenterUpdate:^(ViewController *wself) {
@@ -283,8 +283,12 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     SDDSchedulerPresenter *presenter = self.presenters[scheduler];
     
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
-    item.shortString   = [NSString stringWithFormat:@"[T] %@", event];
-    item.longString    = [NSString stringWithFormat:@"[Transit   ] %@ : {%@} -> {%@}", event, [self namesFromStates:activates], [self namesFromStates:deactivates]];
+    item.shortString   = [NSString stringWithFormat:@"<T> [%@] %@", presenter.rootName, event];
+    item.longString    = [NSString stringWithFormat:@"<Transit> [%@]: %@ {%@} -> {%@}",
+                                                    presenter.rootName,
+                                                    event,
+                                                    [self namesFromStates:deactivates],
+                                                    [self namesFromStates:activates]];
     item.optioanlImage = screenshot;
     [_historyItems addObject:item];
     
@@ -301,8 +305,8 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 
 - (void)peer:(SDDServicePeer *)peer didReceiveEvent:(NSString *)event {
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
-    item.shortString = [NSString stringWithFormat:@"[E] %@", event];
-    item.longString  = [NSString stringWithFormat:@"[Event     ] %@", event];
+    item.shortString = [NSString stringWithFormat:@"<E> %@", event];
+    item.longString  = [NSString stringWithFormat:@"<Event  > %@", event];
     [_historyItems addObject:item];
     
     [self syncUIByAddingItem:item presenterUpdate:NULL];
@@ -331,7 +335,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
         _filteredHistories = [@[] mutableCopy];
         for (NSInteger i=0; i<_historyItems.count; ++i) {
             SDDPGHistoryItem *item = _historyItems[i];
-            if (_wantEvents || ![item.shortString hasPrefix:@"[E]"]) {
+            if (_wantEvents || ![item.shortString hasPrefix:@"<E>"]) {
                 [_filteredHistories addObject:item];
             }
         }
@@ -358,13 +362,11 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.stockMessagesView.textStorage setAttributedString:[[NSAttributedString alloc] init]];
         
-        NSArray* sortedNames = [_presenters.allKeys sortedArrayUsingComparator:^NSComparisonResult(NSString *lhs, NSString *rhs) {
-            return [lhs compare:rhs];
+        NSArray *sortedPresenters = [_presenters.allValues sortedArrayUsingComparator:^NSComparisonResult(SDDSchedulerPresenter *lhs, SDDSchedulerPresenter *rhs) {
+            return [lhs.rootName compare:rhs.rootName];
         }];
         
-        for (NSString *key in sortedNames) {
-            SDDSchedulerPresenter *presenter = _presenters[key];
-
+        for (SDDSchedulerPresenter *presenter in sortedPresenters) {
             NSAttributedString *text = [presenter statesText];
             
             [self.stockMessagesView.textStorage appendAttributedString:text];

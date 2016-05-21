@@ -14,7 +14,6 @@
 
 - (void)setupGlobalContext {
     SDDISocketReporter* reporter = [[SDDISocketReporter alloc] initWithHost:@"localhost" port:9800];
-    [[SDDEventsPool defaultPool] addSubscriber:reporter];
     [reporter start];
     
     globalContext = [[Context alloc] initWithReporter:reporter];
