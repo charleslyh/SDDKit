@@ -28,18 +28,18 @@ A visual way of impletementing UI / Complex systems
 	- [ ] 历史状态选择器
 	- [ ] 命名分支选择器
 - [ ] Objective-C Library 增强
-	- [ ] 对标准控件的事件简化触发支持
-```objective-c
-		_btn.sdd_trigger(TouchUpInside, @"DidTouchButton");
-```
-	- [ ] 时间触发器的支持
-```objective-c
-		domain.sdd_trigger_after(3, @"EventAfter3Seconds");
-        domain.sdd_trigger_periodically(1, @"EventEvery1Second");
-        // 其它
-```
+	- [ ] 对标准控件的事件简化触发支持  
+    ```objective-c
+    		_btn.sdd_trigger(TouchUpInside, @"DidTouchButton");
+    ```
+	- [ ] 时间触发器的支持  
+    ```objective-c
+    		domain.sdd_trigger_after(3, @"EventAfter3Seconds");
+            domain.sdd_trigger_periodically(1, @"EventEvery1Second");
+            // 其它
+    ```
 	- [ ] 标准控件的内置DSL操作方法支持，如hide(ctrl)
-	- [ ] ...... Use your imagination ......
+	- [ ] …… Use your imagination ……
 - [ ] 日志本地化备份与加载分析
 - [ ] Playground对同一个客户端支持多个命名空间（域）的支持
 - [ ] Playground支持多个客户端连接
