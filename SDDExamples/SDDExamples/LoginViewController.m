@@ -18,6 +18,10 @@ static NSString* const kLVCDidChangePhoneNumber     = @"DidChangePhoneNumber";
 static NSString* const kLVCDoneVerifying            = @"DoneVerifying";
 static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
 
+static NSString* const kLVCMockVerifyPhoneNumber    = @"15012345678";
+static NSString* const kLVCMockVerifySMSCode        = @"654321";
+static NSInteger const kLVCMockVerifyClue           = 88888888;
+
 @interface UIColor (LVCDisableColor)
 + (UIColor*)LVCButtonDisableColor;
 + (UIColor*)LVCButtonOrangeColor;
@@ -47,7 +51,7 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
 @end
 
 @implementation LoginViewController {
-    SDDSchedulerBuilder *_builder;
+    SDDSchedulerBuilder *_domain;
 }
 
 - (void)viewDidLayoutSubviews {
@@ -85,7 +89,7 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
 -(void)startCountDown {
     __weak typeof(self) wself = self;
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        int remainingTime = 30;
+        int remainingTime = 10;
         while (wself && remainingTime > 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [wself.SMSCodeRequestingButton setTitle:[NSString stringWithFormat:@"%d秒后重试", remainingTime]
@@ -95,7 +99,7 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
             sleep(1);
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[SDDEventsPool defaultPool] scheduleEvent:kLVCTimesUp];
+            [_domain.epool scheduleEvent:kLVCTimesUp];
         });
     });
 }
@@ -163,15 +167,12 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
 }
 
 -(void)performMockLogin {
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        sleep(5);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSNumber *verify;
-            if ([self.phoneNumberField.text isEqualToString:@"15012345678"] && [self.SMSCodeField.text isEqualToString:@"654321"]) {
-                verify = [NSNumber numberWithInteger:88888888];
-            }
-            [[SDDEventsPool defaultPool] scheduleEvent:kLVCDoneVerifying withParam:verify];
-        });
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSNumber *verify;
+        if ([self.phoneNumberField.text isEqualToString:kLVCMockVerifyPhoneNumber] && [self.SMSCodeField.text isEqualToString:kLVCMockVerifySMSCode]) {
+            verify = @(kLVCMockVerifyClue);
+        }
+        [_domain.epool scheduleEvent:kLVCDoneVerifying withParam:verify];
     });
 }
 
@@ -184,9 +185,7 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
 }
 
 -(void)handleLoginSuccess {
-    if (self.successHandler) {
-        self.successHandler();
-    }
+    self.successHandler();
 }
 
 -(void)hideActivityIndicator {
@@ -207,19 +206,9 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
     [UIView animateWithDuration:0.25 animations:^{
         self.failureTip.alpha = 1.0;
     }];
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        sleep(1.5);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[SDDEventsPool defaultPool] scheduleEvent:kLVCShouldHideFailureTip];
-        });
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_domain.epool scheduleEvent:kLVCShouldHideFailureTip];
     });
-}
-
--(void)setupSDD {
-    _builder = [[SDDSchedulerBuilder alloc] initWithNamespace:@"loginVC"
-                                                       logger:globalContext.reporter
-                                                        queue:[NSOperationQueue currentQueue]
-                                                   eventsPool:[SDDEventsPool defaultPool]];
 }
 
 -(void)setupSMSButtonState {
@@ -241,7 +230,7 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
          [CountDown]    ->  [Disabled]:     TimesUp(!isPhoneNumber)
     );
     
-    [_builder hostSchedulerWithContext:self dsl:dsl];
+    [_domain hostSchedulerWithContext:self dsl:dsl];
 }
 
 -(void)setupPhoneNumberFieldState {
@@ -256,14 +245,14 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
         [Disabled]  ->  [Normal]:      TimesUp
     );
     
-    [_builder hostSchedulerWithContext:self dsl:dsl];
+    [_domain hostSchedulerWithContext:self dsl:dsl];
 }
 
 -(void)setupSMSCodeFieldState {
     NSString* dsl = SDDOCLanguage
     (
         [SMSCodeField ~[Disabled]
-         [Disabled  e:disableSMSCodeField]
+         [Disabled  e:disableSMSCodeField resetSMSCodeField]
          [Normal    e:enableSMSCodeField resetSMSCodeField]
          ]
      
@@ -271,7 +260,7 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
         [Normal]      ->  [Disabled]:   DidChangePhoneNumber
     );
     
-    [_builder hostSchedulerWithContext:self dsl:dsl];
+    [_domain hostSchedulerWithContext:self dsl:dsl];
 }
 
 -(void)setupVerifyButtonState {
@@ -291,7 +280,7 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
         [Verifying]    ->  [Success]:   DoneVerifying(isLoginSucceed)
     );
     
-    [_builder hostSchedulerWithContext:self dsl:dsl];
+    [_domain hostSchedulerWithContext:self dsl:dsl];
 }
 
 -(void)setupActivityIndicatorState {
@@ -306,7 +295,7 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
         [Shown]     ->  [Hidden]:  DoneVerifying
     );
     
-    [_builder hostSchedulerWithContext:self dsl:dsl];
+    [_domain hostSchedulerWithContext:self dsl:dsl];
 }
 
 -(void)setupFailureTipState {
@@ -317,20 +306,20 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
          [Shown     e:showFailureTip]
          ]
      
-     [Hidden]    ->  [Shown]:   DoneVerifying(!isLoginSucceed)
-     [Shown]     ->  [Hidden]:  ShouldHideFailureTip
+        [Hidden]    ->  [Shown]:   DoneVerifying(!isLoginSucceed)
+        [Shown]     ->  [Hidden]:  ShouldHideFailureTip
      );
     
-    [_builder hostSchedulerWithContext:self dsl:dsl];
+    [_domain hostSchedulerWithContext:self dsl:dsl];
 }
 
--(void)viewDidLoad {
-    [super viewDidLoad];
+-(void)setupDomainWidgets {
+    _domain = [[SDDSchedulerBuilder alloc] initWithNamespace:@"loginVC"
+                                                      logger:globalContext.reporter
+                                                       queue:[NSOperationQueue currentQueue]];
     
-    [self.phoneNumberField becomeFirstResponder];
-    self.phoneNumberField.delegate = self;
-    self.SMSCodeField.delegate = self;
-    [self setupSDD];
+    [_domain.epool addSubscriber:globalContext.reporter];
+    
     [self setupSMSButtonState];
     [self setupPhoneNumberFieldState];
     [self setupSMSCodeFieldState];
@@ -339,27 +328,38 @@ static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
     [self setupFailureTipState];
 }
 
+- (void)dealloc {
+    [_domain.epool removeSubscriber:globalContext.reporter];
+}
+
+-(void)viewDidLoad {
+    [super viewDidLoad];
+    
+    // 让键盘随着界面一起出现
+    [self.phoneNumberField becomeFirstResponder];
+    
+    [self setupDomainWidgets];
+}
+
 - (IBAction)phoneNumberTextDidChange:(UITextField *)sender {
-    [[SDDEventsPool defaultPool] scheduleEvent:kLVCDidChangeTextFields];
-    [[SDDEventsPool defaultPool] scheduleEvent:kLVCDidChangePhoneNumber];
+    [_domain.epool scheduleEvent:kLVCDidChangeTextFields];
+    [_domain.epool scheduleEvent:kLVCDidChangePhoneNumber];
 }
 
 - (IBAction)SMSCodeTextDidChange:(UITextField *)sender {
-    [[SDDEventsPool defaultPool] scheduleEvent:kLVCDidChangeTextFields];
+    [_domain.epool scheduleEvent:kLVCDidChangeTextFields];
 }
 
 - (IBAction)didTouchSMSButton:(id)sender {
-    [[SDDEventsPool defaultPool] scheduleEvent:kLVCDidTouchSMSCodeButton];
+    [_domain.epool scheduleEvent:kLVCDidTouchSMSCodeButton];
 }
 
 - (IBAction)didTouchStopButton:(id)sender {
-    if (self.closingHandler) {
-        self.closingHandler();
-    }
+    self.closingHandler();
 }
 
 - (IBAction)didTouchVerifyButton:(id)sender {
-    [[SDDEventsPool defaultPool] scheduleEvent:kLVCDidTouchVerifyButton];
+    [_domain.epool scheduleEvent:kLVCDidTouchVerifyButton];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

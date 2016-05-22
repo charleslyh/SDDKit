@@ -83,11 +83,12 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
 
 @interface SDDNilLogger :NSObject <SDDSchedulerLogger> @end
 @implementation SDDNilLogger
-- (void)willStartScheduler:(nonnull SDDScheduler *)scheduler {}
-- (void)didStopScheduler:(nonnull SDDScheduler *)scheduler {}
-- (void)scheduler:(nonnull SDDScheduler *)scheduler didActivateState:(nonnull SDDState *)state withArgument:(nullable id)argument {}
-- (void)scheduler:(nonnull SDDScheduler *)scheduler didDeactivateState:(nonnull SDDState *)state {}
-- (void)scheduler:(nonnull SDDScheduler *)scheduler didOccurEvent:(nonnull SDDEvent *)event withArgument:(nullable id)argument {}
+- (void)didStartScheduler:(SDDScheduler *)scheduler activates:(NSArray<SDDState *> *)activatedStates {}
+- (void)didStopScheduler:(SDDScheduler *)scheduler deactivates:(NSArray<SDDState *> *)deactivatedStates {}
+- (void)scheduler:(SDDScheduler *)scheduler
+        activates:(NSArray<SDDState *> *)activatedStates
+      deactivates:(NSArray<SDDState *> *)deactivatedStates
+          byEvent:(SDDEvent *)event {}
 @end
 
 
@@ -109,29 +110,24 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     return self;
 }
 
-- (void)willStartScheduler:(nonnull SDDScheduler *)scheduler {
+- (void)didStartScheduler:(SDDScheduler *)scheduler activates:(NSArray<SDDState *> *)activatedStates {
     if (_masks & SDDSchedulerLogMaskStart)
-        NSLog(@"[SDD][L] %@", scheduler);
+        NSLog(@"[SDD][L][%@] {%@}", scheduler, activatedStates);
 }
 
-- (void)didStopScheduler:(nonnull SDDScheduler *)scheduler {
+- (void)didStopScheduler:(SDDScheduler *)scheduler deactivates:(NSArray<SDDState *> *)deactivatedStates {
     if (_masks & SDDSchedulerLogMaskStop)
-        NSLog(@"[SDD][S] %@", scheduler);
+    NSLog(@"[SDD][S][%@] {%@}", scheduler, deactivatedStates);
 }
 
-- (void)scheduler:(nonnull SDDScheduler *)scheduler didActivateState:(nonnull SDDState *)state withArgument:(nullable id)argument {
-    if (_masks & SDDSchedulerLogMaskActivate)
-        NSLog(@"[SDD][A] %@ : %@", state, argument);
-}
-
-- (void)scheduler:(nonnull SDDScheduler *)scheduler didDeactivateState:(nonnull SDDState *)state {
-    if (_masks & SDDSchedulerLogMaskDeactivate)
-        NSLog(@"[SDD][D] %@", state);
-}
-
-- (void)scheduler:(nonnull SDDScheduler *)scheduler didOccurEvent:(nonnull SDDEvent *)event withArgument:(nullable id)argument {
-    if (_masks & SDDSchedulerLogMaskEvent)
-        NSLog(@"[SDD][E] %@ : %@", event, argument);
+- (void)scheduler:(SDDScheduler *)scheduler
+        activates:(NSArray<SDDState *> *)activatedStates
+      deactivates:(NSArray<SDDState *> *)deactivatedStates
+          byEvent:(SDDEvent *)event
+{
+    if (_masks & SDDSchedulerLogMaskTransition)
+        NSLog(@"[SDD][T][%@] event:%@\n activates:{%@}\n deactivates:{%@}",
+              scheduler, event, activatedStates, deactivatedStates);
 }
 
 @end
@@ -233,8 +229,6 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
      要实现这种语义，有很多种方案，例如使用独立线程+生产者、消费者机制等等。但是，本质上来说，其实这就是一个“排队”问题。所以，可以利用OC提供的Operation Queue机制更轻松地实现为：将所有可能导致Action，Event激发的行为“丢”到队列中处理，而不是立即执行。这样的话，即使有新的事件被激发，其触发的状态转换和Action都会再次被排队。而它们前面，肯定已经排好了此前E1激发的其它转换。
      */
     [_queue addOperationWithBlock:^{
-        [_logger scheduler:self didOccurEvent:event withArgument:argument];
-        
         SDDTransition* trans;
         SDDState *trigger;
         NSArray* path = [self pathOfState:_currentState];
@@ -260,8 +254,11 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
         
         SDDState* newState = trans.targetState;
         if (newState) {
-            [self activateState:newState triggerState:trigger withArgument:argument];
-            trans.postAct(argument);
+            [self activateState:newState triggerState:trigger withArgument:argument completion:^(NSArray *deactivates, NSArray *activates) {
+                trans.postAct(argument);
+                
+                [_logger scheduler:self activates:activates deactivates:deactivates byEvent:event];
+            }];
         }
     }];
 }
@@ -304,7 +301,11 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     return path;
 }
 
-- (void)activateState:(SDDState *)state triggerState:(SDDState *)triggerState withArgument:(id)argument {
+- (void)activateState:(SDDState *)state
+         triggerState:(SDDState *)triggerState
+         withArgument:(id)argument
+           completion:(void (^)(NSArray* deactivates, NSArray* activates))completion
+{
     NSArray* currentPath = [self pathOfState:_currentState];
     NSArray* nextPath    = [self pathOfState:state];
     
@@ -335,22 +336,27 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
         lastSolidIdx = MIN(lastEqualIdx, triggerIdx);
     }
     
+    NSMutableArray *activates = [NSMutableArray array];
+    NSMutableArray *deactivates = [NSMutableArray array];
+    
     for (int i=(int)currentPath.count - 1; i > lastSolidIdx; --i) {
         SDDState* s = currentPath[i];
         [s deactivate];
 
-        [_logger scheduler:self didDeactivateState:s];
+        [deactivates addObject:s];
     }
     
-    NSInteger val = lastSolidIdx+1;
     for (NSInteger i=lastSolidIdx+1; i < nextPath.count; ++i) {
         SDDState* s = nextPath[i];
         [s activate:argument];
 
-        [_logger scheduler:self didActivateState:s withArgument:argument];
+        [activates addObject:s];
     }
     
     _currentState = nextPath.lastObject;
+    
+    if (completion != NULL)
+        completion(deactivates, activates);
 }
 
 - (void)startWithEventsPool:(SDDEventsPool*)epool {
@@ -362,31 +368,25 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     NSAssert(_rootState != nil, @"[%@] rootState不允许为nil", NSStringFromSelector(_cmd));
     NSAssert([_states containsObject:_rootState], @"[%@] rootState必须为已添加的状态之一", NSStringFromSelector(_cmd));
     
-    [_logger willStartScheduler:self];
-    
     _epool = epool;
     [_epool addSubscriber:self];
-    [self activateState:_rootState triggerState:nil withArgument:argument];
+    [self activateState:_rootState triggerState:nil withArgument:argument completion:^(NSArray *_, NSArray *activates) {
+        [_logger didStartScheduler:self activates:activates];
+    }];
 }
 
 
 - (void)stop {
     NSAssert(_currentState!=nil, @"执行[SDDSchdeuler stop]之前，请确保其已经运行");
     
-    NSArray* currentPath = [self pathOfState:_currentState];
-    for (int i=(int)currentPath.count - 1; i>=0; --i) {
-        SDDState* s = currentPath[i];
-        [s deactivate];
-        
-        [_logger scheduler:self didDeactivateState:s];
-    }
+    [self activateState:nil triggerState:_currentState withArgument:nil completion:^(NSArray *deactivates, NSArray *_) {
+        [_logger didStopScheduler:self deactivates:deactivates];
+    }];
     
     [_epool removeSubscriber:self];
     
     _currentState = nil;
     _epool = nil;
-    
-    [_logger didStopScheduler:self];
 }
 
 @end

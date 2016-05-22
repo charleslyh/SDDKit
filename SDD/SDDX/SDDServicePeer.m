@@ -88,32 +88,36 @@ NSString * const SDDServerPeerDidDisconnectNotification = @"SDDServerPeerDidDisc
                             
                             NSDictionary *object;
                             if (data) {
-                                object = [NSJSONSerialization JSONObjectWithData:data
-                                                                         options:NSJSONReadingAllowFragments error:nil];
+                                object = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
                             }
                             
                             if (nil != object) {
                                 NSString *protocol = object[@"proto"];
+                                NSDictionary *body = object[@"body"];
                                 
                                 if ([protocol isEqualToString:@"start"]) {
-                                    [self.delegate peer:self willStartSchedulerWithDSL:object[@"dsl"]];
-                                } else if ([protocol isEqualToString:@"activate"]) {
-                                    NSString *base64String = object[@"screenshot"];
+                                    [self.delegate peer:self
+                                              scheduler:body[@"scheduler"]
+                                        didStartWithDSL:body[@"dsl"]
+                                           didActivates:body[@"activates"]];
+                                } else if ([protocol isEqualToString:@"stop"]) {
+                                    [self.delegate peer:self
+                                              scheduler:body[@"scheduler"]
+                                 didStopWithDeactivates:body[@"deactivates"]];
+                                } else if ([protocol isEqualToString:@"transit"]){
+                                    NSString *base64String = body[@"screenshot"];
                                     NSData *imageData = [[NSData alloc] initWithBase64EncodedString:base64String options:0];
                                     NSImage *screenshot = [[NSImage alloc] initWithData:imageData];
-                                    
-                                    [self.delegate peer:self didActivateState:object[@"state"] forSchedulerNamed:object[@"scheduler"] image:screenshot];
-                                } else if ([protocol isEqualToString:@"deactivate"]) {
-                                    [self.delegate peer:self didDeactivateState:object[@"state"] forSchedulerNamed:object[@"scheduler"]];
+
+                                    [self.delegate peer:self
+                                              scheduler:body[@"scheduler"]
+                                              activates:body[@"activates"]
+                                            deactivates:body[@"deactivates"]
+                                                byEvent:body[@"event"]
+                                    withScreenshotImage:screenshot];
                                 } else if ([protocol isEqualToString:@"event"]) {
-                                    [self.delegate peer:self didReceiveEvent:object[@"value"]];
-                                } else if ([protocol isEqualToString:@"stop"]) {
-                                    [self.delegate peer:self didStopSchedulerNamed:object[@"scheduler"]];
+                                    [self.delegate peer:self didReceiveEvent:body[@"value"]];
                                 }
-                            } else {
-//                                _buffer[_nextWritingPos] = 0;
-//                                NSString *s = [NSString stringWithCString:(char*)_buffer encoding:NSUTF8StringEncoding];
-//                                NSLog(@"Abandon buffer:%@", s);
                             }
                         }
                     }

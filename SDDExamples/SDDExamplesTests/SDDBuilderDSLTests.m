@@ -23,15 +23,13 @@
 - (void)performTestWithDSL:(NSString*)dsl expectedFlows:(NSString*)expectedFlows initialArgument:(id)argument customActions:(void (^)(SDDEventsPool*))customActions {
     self.flows = [[SDDMockFlows alloc] init];
     
-    SDDEventsPool* epool = [[SDDEventsPool alloc] init];
-    
     // Inorder to trigger -[SDDSchedulerBuilder dealloc] method, we have to put belows into an auto release pool
     @autoreleasepool {
-        SDDSchedulerBuilder* builder = [[SDDSchedulerBuilder alloc] initWithNamespace:@"" logger:nil queue:[SDDDirectExecutionQueue new] eventsPool:epool];
+        SDDSchedulerBuilder* builder = [[SDDSchedulerBuilder alloc] initWithNamespace:@"" logger:nil queue:[SDDDirectExecutionQueue new]];
         [builder hostSchedulerWithContext:self dsl:dsl initialArgument:argument];
         
         if (customActions != NULL)
-            customActions(epool);
+            customActions(builder.epool);
     }
     
     XCTAssertEqualObjects([_flows description], expectedFlows);
