@@ -38,6 +38,7 @@
                                 </variation>
                                 <connections>
                                     <segue destination="1X5-Lx-vMt" kind="presentation" identifier="segueToLoginVC" id="VrX-th-Cxn"/>
+<<<<<<< HEAD
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J8C-mj-Bh1">
@@ -45,6 +46,8 @@
                                 <state key="normal" title="定位服务"/>
                                 <connections>
                                     <segue destination="goM-Ym-HPp" kind="show" id="WjX-lm-5oZ"/>
+=======
+>>>>>>> charleslyh/master
                                 </connections>
                             </button>
                         </subviews>
@@ -100,6 +103,7 @@
             </objects>
             <point key="canvasLocation" x="294" y="297"/>
         </scene>
+<<<<<<< HEAD
         <!--locationService-->
         <scene sceneID="0S9-Cp-uCv">
             <objects>
@@ -188,6 +192,10 @@
         </scene>
         <!--Login-->
         <scene sceneID="ODg-mq-3Q1">
+=======
+        <!--Login-->
+        <scene sceneID="jLl-Zp-Bgr">
+>>>>>>> charleslyh/master
             <objects>
                 <viewControllerPlaceholder storyboardName="Login" id="1X5-Lx-vMt" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PHd-C8-Bqb" userLabel="First Responder" sceneMemberID="firstResponder"/>
