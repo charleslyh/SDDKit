@@ -52,13 +52,21 @@ static NSString * const KLRServiceEventAuthorizationDisabled = @"LocationService
 }
 
 
+- (void) dealloc
+{
+    [_sddBuilder.epool removeSubscriber:globalContext.reporter];
+}
+
 - (SDDSchedulerBuilder *) sddBuilder
 {
     if (!_sddBuilder) {
         _sddBuilder = [[SDDSchedulerBuilder alloc] initWithNamespace:@"LocationRelateService"
                                                                              logger:globalContext.reporter
                                                                               queue:[NSOperationQueue currentQueue]
-                                                                         eventsPool:[SDDEventsPool defaultPool]];
+                                                                         ];
+        [_sddBuilder.epool addSubscriber:globalContext.reporter];
+
+        
     }
     return _sddBuilder;
 }
