@@ -234,7 +234,7 @@ static NSString * const KLRServiceEventAuthorizationDisabled = @"LocationService
 
 - (void) scheduleEvent:(NSString *)event withParam:(nullable id)param
 {
-    [[SDDEventsPool defaultPool] scheduleEvent:event withParam:param];
+    [self.sddBuilder.epool scheduleEvent:event withParam:param];
 }
 
 #pragma mark CLLocationDelegate
