@@ -150,13 +150,16 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 @property (weak) IBOutlet NSButton *filterEButton;
 @property (weak) IBOutlet NSTextField *histroyLabel;
 @property (weak) IBOutlet NSImageView *screenshotImageView;
+@property (weak) IBOutlet NSTextField *eventField;
+@property (weak) IBOutlet NSButton *eventSendingButton;
 
 @property NSMutableArray<SDDPGHistoryItem *> *historyItems;
 @property NSMutableDictionary<NSString *, SDDSchedulerPresenter *> *presenters;
 @end
 
 @implementation ViewController {
-    SDDService *_service;
+    SDDService     *_service;
+    SDDServicePeer *_peer;
     
     NSMutableArray<SDDPGHistoryItem*> *_filteredHistories;
     BOOL _wantEvents;
@@ -165,6 +168,9 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 }
 
 - (void)service:(SDDService *)service didReceiveConnection:(SDDServicePeer *)connection {
+    // Hold only one peer connection
+    _peer = connection;
+    
     connection.delegate = self;
 }
 
@@ -207,6 +213,8 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     _presenters       = [NSMutableDictionary dictionary];
     _presenterUpdates = [NSMutableDictionary dictionary];
     
+    self.screenshotImageView.image = nil;
+    self.eventField.stringValue = @"";
     [self syncHistoriesTableView];
     [self syncTextView];
 }
@@ -283,12 +291,12 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     SDDSchedulerPresenter *presenter = self.presenters[scheduler];
     
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
-    item.shortString   = [NSString stringWithFormat:@"<T> [%@] %@", presenter.rootName, event];
-    item.longString    = [NSString stringWithFormat:@"<Transit> [%@]: %@ {%@} -> {%@}",
-                                                    presenter.rootName,
-                                                    event,
-                                                    [self namesFromStates:deactivates],
-                                                    [self namesFromStates:activates]];
+    item.shortString = [NSString stringWithFormat:@"<T> [%@]", presenter.rootName];
+    item.longString  = [NSString stringWithFormat:@"<Transit> [%@]: %@ {%@} -> {%@}",
+                        presenter.rootName,
+                        event,
+                        [self namesFromStates:deactivates],
+                        [self namesFromStates:activates]];
     item.optioanlImage = screenshot;
     [_historyItems addObject:item];
     
@@ -373,6 +381,11 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
             [self.stockMessagesView.textStorage appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n"]];
         }
     });
+}
+
+- (IBAction)didTouchGenterateEventImitationButton:(id)sender {
+    [_peer sendEventImitation:self.eventField.stringValue];
+    self.eventField.stringValue = @"";
 }
 
 - (IBAction)didChangeFilterEValue:(NSButton *)button {

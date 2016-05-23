@@ -18,14 +18,18 @@
     NSString *_host;
     uint16_t  _port;
     
-    NSInputStream *_inputStream;
-    NSOutputStream *_outputStream;
+    NSInputStream *_istream;
+    uint8_t _buffer[16<<10];
+    NSInteger _nextWritingPos;
+    
+    NSOutputStream *_ostream;
 }
 
 - (instancetype)initWithHost:(NSString *)host port:(uint16_t)port {
     if (self = [super init]) {
         _host = host;
         _port = port;
+        _delegate = nil;
     }
     return self;
 }
@@ -34,33 +38,33 @@
     CFReadStreamRef readStream;
     CFWriteStreamRef writeStream;
     CFStreamCreatePairWithSocketToHost(NULL, (__bridge CFStringRef)_host, _port, &readStream, &writeStream);
-    _inputStream = (__bridge NSInputStream *)readStream;
-    _outputStream = (__bridge NSOutputStream *)writeStream;
+    _istream = (__bridge NSInputStream *)readStream;
+    _ostream = (__bridge NSOutputStream *)writeStream;
     
-    _inputStream.delegate  = self;
-    _outputStream.delegate = self;
+    _istream.delegate  = self;
+    _ostream.delegate = self;
     
-    [_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    [_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [_istream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [_ostream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 }
 
 - (void)start {
     [self setupNetworkCommunication];
     
-    [_inputStream open];
-    [_outputStream open];
+    [_istream open];
+    [_ostream open];
 }
 
 - (void)stop {
-    [_outputStream close];
-    [_inputStream close];
+    [_ostream close];
+    [_istream close];
 }
 
 - (void)sendPacketWithProto:(NSString *)proto body:(NSDictionary *)body {
     NSMutableDictionary *object = [NSMutableDictionary dictionary];
     object[@"proto"] = proto;
     object[@"body"]  = body;
-    [NSJSONSerialization writeJSONObject:object toStream:_outputStream options:0 error:nil];
+    [NSJSONSerialization writeJSONObject:object toStream:_ostream options:0 error:nil];
 }
 
 - (NSArray<NSString *>*)namesFromStates:(NSArray<SDDState *> *)states {
@@ -130,8 +134,7 @@
     [self sendPacketWithProto:@"event" body:@{ @"value": event }];
 }
 
-- (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent
-{
+- (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent {
     switch (streamEvent) {
             
         case NSStreamEventOpenCompleted:
@@ -139,23 +142,70 @@
             break;
             
         case NSStreamEventHasBytesAvailable:
+            if (theStream == _istream) {
+                NSInteger len;
+                while ([_istream hasBytesAvailable]) {
+                    len = [_istream read:_buffer + _nextWritingPos maxLength:sizeof(_buffer) - _nextWritingPos];
+                    _nextWritingPos += len;
+                    _buffer[_nextWritingPos] = 0;
+                    if (len > 0) {
+                        BOOL hasMorePacket = YES;
+                        while(hasMorePacket && _nextWritingPos > 0) {
+                            hasMorePacket = NO;
+                            NSData *data;
+                            NSInteger k = 0;
+                            for (NSInteger i=0; i<_nextWritingPos; ++i) {
+                                if (_buffer[i] == ' ')
+                                    continue;
+                                
+                                if (_buffer[i] == '{') {
+                                    k++;
+                                } else if (_buffer[i] == '}') {
+                                    k--;
+                                    if (k==0) {
+                                        data = [NSData dataWithBytes:_buffer length:i+1];
+                                        memmove(_buffer, _buffer + i + 1, _nextWritingPos - i);
+                                        _nextWritingPos = _nextWritingPos - i - 1;
+                                        hasMorePacket = YES;
+                                        break;
+                                    }
+                                }
+                            }
+                            
+                            NSDictionary *object;
+                            if (data) {
+                                object = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+                            }
+                            
+                            if (nil != object) {
+                                NSString *proto    = object[@"proto"];
+                                NSDictionary *body = object[@"body"];
+                                
+                                if ([proto isEqualToString:@"imitation"]) {
+                                    [self.delegate reporter:self didReceiveEventImitation:body[@"event"]];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
             break;
+            
             
         case NSStreamEventErrorOccurred:
             NSLog(@"Can not connect to the host!");
             break;
             
         case NSStreamEventEndEncountered:
-            break;
+            NSLog(@"Stream did encounter end");
             
-        case NSStreamEventHasSpaceAvailable:
-            break;
-            
-        case NSStreamEventNone:
+            [theStream close];
+            [theStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
             break;
             
         default:
-            NSLog(@"Unknown event");
+            break;
     }
 }
 

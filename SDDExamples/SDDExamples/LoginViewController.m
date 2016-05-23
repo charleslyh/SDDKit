@@ -37,7 +37,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
 }
 @end
 
-@interface LoginViewController()<UITextFieldDelegate>
+@interface LoginViewController()<UITextFieldDelegate, SDDISocketReporterDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *grayMaskView;
 @property (nonatomic, weak) IBOutlet UITextField *phoneNumberField;
@@ -313,12 +313,17 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
     [_domain hostSchedulerWithContext:self dsl:dsl];
 }
 
+- (void)reporter:(SDDISocketReporter *)reporter didReceiveEventImitation:(NSString *)event {
+    [_domain.epool scheduleEvent:event];
+}
+
 -(void)setupDomainWidgets {
     _domain = [[SDDSchedulerBuilder alloc] initWithNamespace:@"loginVC"
                                                       logger:globalContext.reporter
                                                        queue:[NSOperationQueue currentQueue]];
     
     [_domain.epool addSubscriber:globalContext.reporter];
+    globalContext.reporter.delegate = self;
     
     [self setupSMSButtonState];
     [self setupPhoneNumberFieldState];

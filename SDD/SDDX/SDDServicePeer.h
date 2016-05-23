@@ -29,4 +29,6 @@ extern NSString * const SDDServerPeerDidDisconnectNotification;
 
 - (void)start;
 - (void)stop;
+
+- (void)sendEventImitation:(NSString *)event;
 @end
