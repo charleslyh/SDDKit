@@ -17,6 +17,8 @@ static NSString * const kLRServiceEventUpdateResumed = @"LocationServiceResumed"
 static NSString * const kLRServiceEventUpdateFailed = @"LocationServiceFailed";
 static NSString * const kLRServiceEventUpdating = @"LocationServiceUpdating";
 static NSString * const kLRServiceEventFree = @"LocationServiceFree";
+static NSString * const kLRServiceEventClose = @"LocatonServiceClose";
+
 
 static NSString * const kCLAuthorizationStatusAuthorizationChanged = @"LocationServiceAuthorizationChanged";
 static NSString * const kLRServiceEventAuthorizationDenied = @"LocationServiceDenied";
@@ -136,7 +138,9 @@ static NSString * const KLRServiceEventAuthorizationDisabled = @"LocationService
         self.locationContentLabel.enabled = YES;
         NSString *labelContent = [NSString stringWithFormat:@"当前经度为%@，纬度为%@",@(location.coordinate.latitude),@(location.coordinate.longitude)];
         self.locationContentLabel.text = labelContent;
-        [self scheduleEvent:kLRServiceEventFree withParam:nil];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+            [self scheduleEvent:kLRServiceEventFree withParam:nil];
+        });
     }
 }
 
@@ -149,18 +153,24 @@ static NSString * const KLRServiceEventAuthorizationDisabled = @"LocationService
 - (IBAction)locationServiceSwitchUpdate:(id)sender {
     if (self.locationServiceSwitch.enabled) {
         if (self.locationServiceSwitch.on) {
-            [self scheduleEvent:KLRServiceEventAuthorizationEnabled withParam:nil];
-            
+            [self scheduleEvent:kLRServiceEventFree withParam:nil];
         }else{
-            [self scheduleEvent:KLRServiceEventAuthorizationDisabled withParam:nil];
+            [self scheduleEvent:kLRServiceEventClose withParam:nil];
         }
     }
+}
+
+- (void) openSwitch
+{
+}
+
+- (void) offSwitch
+{
 }
 
 - (void) enableSwitch
 {
     self.locationServiceSwitch.enabled = YES;
-    [self.locationServiceSwitch setOn:YES animated:YES];
 }
 
 - (void) disableSwitch
@@ -170,11 +180,13 @@ static NSString * const KLRServiceEventAuthorizationDisabled = @"LocationService
 
 - (void) setLocationServiceSwitchOnState
 {
+    self.locationServiceSwitch.on = YES;
     [self openLocationService];
 }
 
 - (void) setLocationServiceSwitchOffState
 {
+    self.locationServiceSwitch.on = NO;
     [self closeLocationService];
 }
 
@@ -186,10 +198,14 @@ static NSString * const KLRServiceEventAuthorizationDisabled = @"LocationService
       [start e:configLocationManager contentLabelStartState]
       [disabled e:closeLocationService disableSwitch IndicatorViewStartState contentLabelStartState]
       [enabled e:openLocationService enableSwitch  ~[free]
-       [free e:IndicatorViewStopState]
+       [free e:IndicatorViewStopState  setLocationServiceSwitchOnState]
        [update e:IndicatorViewUpdateState contentLabelUpdateState]
+       [close e:setLocationServiceSwitchOffState contentLabelStartState]
        ]
       ]
+     [close] -> [free]  : LocationServiceFree
+     [free] -> [close]  : LocatonServiceClose
+     [update] -> [close] : LocatonServiceClose
      [free] -> [update] : LocationServiceUpdating
      [update] -> [free] : LocationServiceFree
      [start] -> [enabled] : LocationServiceEnabled
