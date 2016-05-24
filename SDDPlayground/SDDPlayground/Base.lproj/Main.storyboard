@@ -793,7 +793,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="SvJ-BG-esE"/>
                                 </constraints>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" focusRingType="none" alignment="left" placeholderString="发送模拟事件" drawsBackground="YES" usesSingleLineMode="YES" id="KBq-Wp-111">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" focusRingType="none" alignment="left" placeholderString="command: param" drawsBackground="YES" usesSingleLineMode="YES" id="KBq-Wp-111">
                                     <font key="font" metaFont="cellTitle"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -803,11 +803,11 @@
                                 </connections>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="P4e-R4-66v">
-                                <rect key="frame" x="735" y="30" width="50" height="24"/>
+                                <rect key="frame" x="735" y="29" width="50" height="26"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="2Yh-ac-shn"/>
                                 </constraints>
-                                <buttonCell key="cell" type="square" title="发送" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ljj-20-zQM">
+                                <buttonCell key="cell" type="smallSquare" title="发送" bezelStyle="smallSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ljj-20-zQM">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>

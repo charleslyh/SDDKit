@@ -10,9 +10,9 @@
 #import "SDDISocketReporter.h"
 #import "SDDSchedulerBuilder.h"
 
+
 @interface SDDISocketReporter ()<NSStreamDelegate>
 @end
-
 
 @implementation SDDISocketReporter {
     NSString *_host;
@@ -23,6 +23,8 @@
     NSInteger _nextWritingPos;
     
     NSOutputStream *_ostream;
+    NSMutableArray *_outputPackets;
+    dispatch_semaphore_t _outputSemaphore;
 }
 
 - (instancetype)initWithHost:(NSString *)host port:(uint16_t)port {
@@ -30,6 +32,8 @@
         _host = host;
         _port = port;
         _delegate = nil;
+        _outputPackets = [NSMutableArray array];
+        _outputSemaphore = dispatch_semaphore_create(0);
     }
     return self;
 }
@@ -48,14 +52,42 @@
     [_ostream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 }
 
+- (void)openSendingLoop {
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        while (_ostream != nil) {
+            dispatch_semaphore_wait(_outputSemaphore, DISPATCH_TIME_FOREVER);
+            if (_outputPackets.count <= 0) {
+                break;
+            }
+            
+            @synchronized (_outputPackets) {
+                if (_outputPackets.count > 0) {
+                    NSDictionary *packet = _outputPackets.firstObject;
+                    [_outputPackets removeObjectAtIndex:0];
+                    
+                    [NSJSONSerialization writeJSONObject:packet toStream:_ostream options:0 error:nil];
+                }
+            }
+        }
+    });
+}
+
+- (void)closeSendingLoop {
+    dispatch_semaphore_signal(_outputSemaphore);
+}
+
 - (void)start {
     [self setupNetworkCommunication];
     
     [_istream open];
     [_ostream open];
+
+    [self openSendingLoop];
 }
 
 - (void)stop {
+    [self closeSendingLoop];
+    
     [_ostream close];
     [_istream close];
 }
@@ -64,7 +96,11 @@
     NSMutableDictionary *object = [NSMutableDictionary dictionary];
     object[@"proto"] = proto;
     object[@"body"]  = body;
-    [NSJSONSerialization writeJSONObject:object toStream:_ostream options:0 error:nil];
+    
+    @synchronized (_outputPackets) {
+        [_outputPackets addObject:object];
+        dispatch_semaphore_signal(_outputSemaphore);
+    }
 }
 
 - (NSArray<NSString *>*)namesFromStates:(NSArray<SDDState *> *)states {
@@ -192,6 +228,8 @@
             
             break;
             
+        case NSStreamEventHasSpaceAvailable:
+            break;
             
         case NSStreamEventErrorOccurred:
             NSLog(@"Can not connect to the host!");
