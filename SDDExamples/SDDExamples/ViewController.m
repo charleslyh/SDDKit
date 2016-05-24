@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "LoginViewController.h"
+#import "location-relateServiceViewController.h"
 
 @implementation ViewController
 
