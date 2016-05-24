@@ -95,12 +95,14 @@ static NSString * const KLRServiceEventAuthorizationDisabled = @"LocationService
 
 - (void) IndicatorViewUpdateState
 {
+    return;
     self.locationUpdateIndicatorView.hidden = NO;
     [self.locationUpdateIndicatorView startAnimating];
 }
 
 - (void) IndicatorViewStopState
 {
+    return;
     self.locationUpdateIndicatorView.hidden = NO;
     [self.locationUpdateIndicatorView stopAnimating];
 }

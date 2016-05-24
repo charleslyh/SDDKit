@@ -19,9 +19,6 @@
 		56D3822C1CF3FBA6004801B9 /* libSDDI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 56D3822B1CF3FBA6004801B9 /* libSDDI.a */; };
 		56E788391CE4BDE20049D3CA /* SDDMockFlows.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E788381CE4BDE20049D3CA /* SDDMockFlows.m */; };
 		6B8762D31CEEF39800AFD2D2 /* location-relateServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8762D21CEEF39800AFD2D2 /* location-relateServiceViewController.m */; };
-		6BE1E45D1CF2B8BD00E83DF6 /* SDDI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE1E45C1CF2B8BD00E83DF6 /* SDDI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		6BE1E4651CF4087B00E83DF6 /* SDDI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE1E4641CF4087B00E83DF6 /* SDDI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		6BE1E4671CF42CE800E83DF6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE1E4661CF42CE800E83DF6 /* CoreLocation.framework */; };
 		D4D4AA221CEDAE77006E6409 /* Context.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D4AA211CEDAE77006E6409 /* Context.m */; };
 		D4E1E8CC1CEC1421000C73EA /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4E1E8CB1CEC1421000C73EA /* LoginViewController.m */; };
 /* End PBXBuildFile section */
@@ -70,9 +67,6 @@
 		56E788381CE4BDE20049D3CA /* SDDMockFlows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDMockFlows.m; sourceTree = "<group>"; };
 		6B8762D11CEEF39800AFD2D2 /* location-relateServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "location-relateServiceViewController.h"; path = "../location-relateServiceViewController.h"; sourceTree = "<group>"; };
 		6B8762D21CEEF39800AFD2D2 /* location-relateServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "location-relateServiceViewController.m"; path = "../location-relateServiceViewController.m"; sourceTree = "<group>"; };
-		6BE1E45C1CF2B8BD00E83DF6 /* SDDI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SDDI.framework; path = "/Users/siyuxing/Library/Developer/Xcode/DerivedData/SDDKit-czpyhdvmtkacbzfnhzogfrjiumuu/Build/Products/Debug-iphonesimulator/SDDI.framework"; sourceTree = "<absolute>"; };
-		6BE1E4641CF4087B00E83DF6 /* SDDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDDI.framework; path = "../../../Library/Developer/Xcode/DerivedData/SDDKit-czpyhdvmtkacbzfnhzogfrjiumuu/Build/Products/Debug-iphoneos/SDDI.framework"; sourceTree = "<group>"; };
-		6BE1E4661CF42CE800E83DF6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		D4D4AA201CEDAE76006E6409 /* Context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Context.h; sourceTree = "<group>"; };
 		D4D4AA211CEDAE77006E6409 /* Context.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Context.m; sourceTree = "<group>"; };
 		D4E1E8CA1CEC1421000C73EA /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
