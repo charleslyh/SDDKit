@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-<<<<<<< HEAD
-		5608A06A1CEDC0DD00CE4B1E /* SDDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5608A0691CEDC0DD00CE4B1E /* SDDI.framework */; };
-=======
->>>>>>> charleslyh/master
 		564711F51CEF56580079C43A /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 564711F31CEF56580079C43A /* Login.storyboard */; };
 		5673C5821C5EFBB900482DBA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5811C5EFBB900482DBA /* main.m */; };
 		5673C5851C5EFBB900482DBA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5841C5EFBB900482DBA /* AppDelegate.m */; };
@@ -47,11 +43,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-<<<<<<< HEAD
-				6BE1E45D1CF2B8BD00E83DF6 /* SDDI.framework in Embed Frameworks */,
-				6BE1E4651CF4087B00E83DF6 /* SDDI.framework in Embed Frameworks */,
-=======
->>>>>>> charleslyh/master
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -59,10 +50,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-<<<<<<< HEAD
-		5608A0691CEDC0DD00CE4B1E /* SDDI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SDDI.framework; path = "/Users/siyuxing/git/SDDKit/SDDExamples/../../../../Charles/Library/Developer/Xcode/DerivedData/SDDKit-caodxadizwyqrsgjbwppiasvwxxv/Build/Products/Debug-iphoneos/SDDI.framework"; sourceTree = "<absolute>"; };
-=======
->>>>>>> charleslyh/master
 		564711F41CEF56580079C43A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
 		5673C57D1C5EFBB900482DBA /* SDDExamples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDDExamples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5673C5811C5EFBB900482DBA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -97,12 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-<<<<<<< HEAD
-				6BE1E4671CF42CE800E83DF6 /* CoreLocation.framework in Frameworks */,
-				5608A06A1CEDC0DD00CE4B1E /* SDDI.framework in Frameworks */,
-=======
 				56D3822C1CF3FBA6004801B9 /* libSDDI.a in Frameworks */,
->>>>>>> charleslyh/master
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,14 +101,7 @@
 		5673C5741C5EFBB900482DBA = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
-				6BE1E4661CF42CE800E83DF6 /* CoreLocation.framework */,
-				6BE1E4641CF4087B00E83DF6 /* SDDI.framework */,
-				6BE1E45C1CF2B8BD00E83DF6 /* SDDI.framework */,
-				5608A0691CEDC0DD00CE4B1E /* SDDI.framework */,
-=======
 				56D3822B1CF3FBA6004801B9 /* libSDDI.a */,
->>>>>>> charleslyh/master
 				5673C57F1C5EFBB900482DBA /* SDDExamples */,
 				5673C5991C5EFBB900482DBA /* SDDExamplesTests */,
 				5673C57E1C5EFBB900482DBA /* Products */,
