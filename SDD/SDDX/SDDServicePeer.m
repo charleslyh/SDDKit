@@ -51,9 +51,7 @@ NSString * const SDDServerPeerDidDisconnectNotification = @"SDDServerPeerDidDisc
 - (void)sendEventImitation:(NSString *)event {
     [NSJSONSerialization writeJSONObject:@{
                                           @"proto": @"imitation",
-                                          @"body":  @{
-                                                        @"event": event,
-                                                    }
+                                          @"body":  @{ @"event": event }
                                           }
                                 toStream:_ostream
                                  options:0

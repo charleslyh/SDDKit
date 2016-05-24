@@ -9,3 +9,6 @@
 #import "SDDSchedulerBuilder.h"
 #import "SDDScheduler.h"
 #import "SDDEventsPool.h"
+
+#import "sdd_array.h"
+#import "sdd_parser.h"
