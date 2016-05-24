@@ -137,7 +137,9 @@ static NSString * const KLRServiceEventAuthorizationDisabled = @"LocationService
         CLLocation *location = content;
         self.locationContentLabel.enabled = YES;
         NSString *labelContent = [NSString stringWithFormat:@"当前经度为%@，纬度为%@",@(location.coordinate.latitude),@(location.coordinate.longitude)];
-        self.locationContentLabel.text = labelContent;
+        if (![self.locationContentLabel.text isEqualToString:labelContent]) {
+            self.locationContentLabel.text = labelContent;
+        }
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
             [self scheduleEvent:kLRServiceEventFree withParam:nil];
         });
@@ -233,6 +235,8 @@ static NSString * const KLRServiceEventAuthorizationDisabled = @"LocationService
     if (status == kCLAuthorizationStatusNotDetermined) {
         [self.locationManager requestAlwaysAuthorization];
     }
+    
+   // [self openLocationService];
 }
 
 

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		5608A06A1CEDC0DD00CE4B1E /* SDDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5608A0691CEDC0DD00CE4B1E /* SDDI.framework */; };
-		5608A06B1CEDC0DD00CE4B1E /* SDDI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5608A0691CEDC0DD00CE4B1E /* SDDI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		564711F51CEF56580079C43A /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 564711F31CEF56580079C43A /* Login.storyboard */; };
 		5673C5821C5EFBB900482DBA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5811C5EFBB900482DBA /* main.m */; };
 		5673C5851C5EFBB900482DBA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5841C5EFBB900482DBA /* AppDelegate.m */; };
@@ -20,6 +19,9 @@
 		5673C5B11C5EFC3F00482DBA /* SDDBuilderDSLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5B01C5EFC3F00482DBA /* SDDBuilderDSLTests.m */; };
 		56E788391CE4BDE20049D3CA /* SDDMockFlows.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E788381CE4BDE20049D3CA /* SDDMockFlows.m */; };
 		6B8762D31CEEF39800AFD2D2 /* location-relateServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8762D21CEEF39800AFD2D2 /* location-relateServiceViewController.m */; };
+		6BE1E45D1CF2B8BD00E83DF6 /* SDDI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE1E45C1CF2B8BD00E83DF6 /* SDDI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6BE1E4651CF4087B00E83DF6 /* SDDI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE1E4641CF4087B00E83DF6 /* SDDI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6BE1E4671CF42CE800E83DF6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE1E4661CF42CE800E83DF6 /* CoreLocation.framework */; };
 		D4D4AA221CEDAE77006E6409 /* Context.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D4AA211CEDAE77006E6409 /* Context.m */; };
 		D4E1E8CC1CEC1421000C73EA /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4E1E8CB1CEC1421000C73EA /* LoginViewController.m */; };
 /* End PBXBuildFile section */
@@ -41,7 +43,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5608A06B1CEDC0DD00CE4B1E /* SDDI.framework in Embed Frameworks */,
+				6BE1E45D1CF2B8BD00E83DF6 /* SDDI.framework in Embed Frameworks */,
+				6BE1E4651CF4087B00E83DF6 /* SDDI.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -49,7 +52,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5608A0691CEDC0DD00CE4B1E /* SDDI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SDDI.framework; path = "/Users/Charles/Library/Developer/Xcode/DerivedData/SDDKit-caodxadizwyqrsgjbwppiasvwxxv/Build/Products/Debug-iphoneos/SDDI.framework"; sourceTree = "<absolute>"; };
+		5608A0691CEDC0DD00CE4B1E /* SDDI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SDDI.framework; path = "/Users/siyuxing/git/SDDKit/SDDExamples/../../../../Charles/Library/Developer/Xcode/DerivedData/SDDKit-caodxadizwyqrsgjbwppiasvwxxv/Build/Products/Debug-iphoneos/SDDI.framework"; sourceTree = "<absolute>"; };
 		564711F41CEF56580079C43A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
 		5673C57D1C5EFBB900482DBA /* SDDExamples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDDExamples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5673C5811C5EFBB900482DBA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -69,6 +72,9 @@
 		56E788381CE4BDE20049D3CA /* SDDMockFlows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDMockFlows.m; sourceTree = "<group>"; };
 		6B8762D11CEEF39800AFD2D2 /* location-relateServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "location-relateServiceViewController.h"; path = "../location-relateServiceViewController.h"; sourceTree = "<group>"; };
 		6B8762D21CEEF39800AFD2D2 /* location-relateServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "location-relateServiceViewController.m"; path = "../location-relateServiceViewController.m"; sourceTree = "<group>"; };
+		6BE1E45C1CF2B8BD00E83DF6 /* SDDI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SDDI.framework; path = "/Users/siyuxing/Library/Developer/Xcode/DerivedData/SDDKit-czpyhdvmtkacbzfnhzogfrjiumuu/Build/Products/Debug-iphonesimulator/SDDI.framework"; sourceTree = "<absolute>"; };
+		6BE1E4641CF4087B00E83DF6 /* SDDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDDI.framework; path = "../../../Library/Developer/Xcode/DerivedData/SDDKit-czpyhdvmtkacbzfnhzogfrjiumuu/Build/Products/Debug-iphoneos/SDDI.framework"; sourceTree = "<group>"; };
+		6BE1E4661CF42CE800E83DF6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		D4D4AA201CEDAE76006E6409 /* Context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Context.h; sourceTree = "<group>"; };
 		D4D4AA211CEDAE77006E6409 /* Context.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Context.m; sourceTree = "<group>"; };
 		D4E1E8CA1CEC1421000C73EA /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -80,6 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BE1E4671CF42CE800E83DF6 /* CoreLocation.framework in Frameworks */,
 				5608A06A1CEDC0DD00CE4B1E /* SDDI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -97,6 +104,9 @@
 		5673C5741C5EFBB900482DBA = {
 			isa = PBXGroup;
 			children = (
+				6BE1E4661CF42CE800E83DF6 /* CoreLocation.framework */,
+				6BE1E4641CF4087B00E83DF6 /* SDDI.framework */,
+				6BE1E45C1CF2B8BD00E83DF6 /* SDDI.framework */,
 				5608A0691CEDC0DD00CE4B1E /* SDDI.framework */,
 				5673C57F1C5EFBB900482DBA /* SDDExamples */,
 				5673C5991C5EFBB900482DBA /* SDDExamplesTests */,
@@ -206,6 +216,7 @@
 				TargetAttributes = {
 					5673C57C1C5EFBB900482DBA = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 9Y3DN22XWF;
 					};
 					5673C5951C5EFBB900482DBA = {
 						CreatedOnToolsVersion = 7.2;
@@ -352,7 +363,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -401,13 +412,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../SDD/**";
 				INFOPLIST_FILE = SDDExamples/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDExamples;
+				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDExampleswewe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
@@ -417,13 +430,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../SDD/**";
 				INFOPLIST_FILE = SDDExamples/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDExamples;
+				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDExampleswewe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
