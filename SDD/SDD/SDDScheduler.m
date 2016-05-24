@@ -110,14 +110,23 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     return self;
 }
 
+- (NSString *)statesString:(NSArray<SDDState *> *)states {
+    NSMutableArray *names = [NSMutableArray array];
+    for (SDDState *s in states) {
+        [names addObject:[s description]];
+    }
+    
+    return [names componentsJoinedByString:@","];
+}
+
 - (void)didStartScheduler:(SDDScheduler *)scheduler activates:(NSArray<SDDState *> *)activatedStates {
     if (_masks & SDDSchedulerLogMaskStart)
-        NSLog(@"[SDD][L][%@] {%@}", scheduler, activatedStates);
+        NSLog(@"[SDD][L][%@] {%@}", scheduler, [self statesString:activatedStates]);
 }
 
 - (void)didStopScheduler:(SDDScheduler *)scheduler deactivates:(NSArray<SDDState *> *)deactivatedStates {
     if (_masks & SDDSchedulerLogMaskStop)
-    NSLog(@"[SDD][S][%@] {%@}", scheduler, deactivatedStates);
+        NSLog(@"[SDD][S][%@] {%@}", scheduler, [self statesString:deactivatedStates]);
 }
 
 - (void)scheduler:(SDDScheduler *)scheduler
@@ -126,8 +135,8 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
           byEvent:(SDDEvent *)event
 {
     if (_masks & SDDSchedulerLogMaskTransition)
-        NSLog(@"[SDD][T][%@] event:%@\n activates:{%@}\n deactivates:{%@}",
-              scheduler, event, activatedStates, deactivatedStates);
+        NSLog(@"[SDD][T][%@] event:%@\n deactivates:{%@}\n activates:{%@}",
+              scheduler, event, [self statesString:deactivatedStates], [self statesString:activatedStates]);
 }
 
 @end

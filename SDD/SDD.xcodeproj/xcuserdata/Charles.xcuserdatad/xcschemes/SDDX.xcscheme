@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5696AA6A1CE8CE2B00CAB7CC"
-               BuildableName = "SDDX.framework"
+               BlueprintIdentifier = "56D382151CF3FADC004801B9"
+               BuildableName = "libSDDX.a"
                BlueprintName = "SDDX"
                ReferencedContainer = "container:SDD.xcodeproj">
             </BuildableReference>
@@ -45,8 +45,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5696AA6A1CE8CE2B00CAB7CC"
-            BuildableName = "SDDX.framework"
+            BlueprintIdentifier = "56D382151CF3FADC004801B9"
+            BuildableName = "libSDDX.a"
             BlueprintName = "SDDX"
             ReferencedContainer = "container:SDD.xcodeproj">
          </BuildableReference>
@@ -63,8 +63,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5696AA6A1CE8CE2B00CAB7CC"
-            BuildableName = "SDDX.framework"
+            BlueprintIdentifier = "56D382151CF3FADC004801B9"
+            BuildableName = "libSDDX.a"
             BlueprintName = "SDDX"
             ReferencedContainer = "container:SDD.xcodeproj">
          </BuildableReference>

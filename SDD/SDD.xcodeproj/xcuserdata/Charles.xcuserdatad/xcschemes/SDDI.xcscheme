@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "56AD9AAA1CEADE8A003EC9B7"
-               BuildableName = "SDDI.framework"
+               BlueprintIdentifier = "56D381FE1CF3FA1E004801B9"
+               BuildableName = "libSDDI.a"
                BlueprintName = "SDDI"
                ReferencedContainer = "container:SDD.xcodeproj">
             </BuildableReference>
@@ -45,8 +45,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "56AD9AAA1CEADE8A003EC9B7"
-            BuildableName = "SDDI.framework"
+            BlueprintIdentifier = "56D381FE1CF3FA1E004801B9"
+            BuildableName = "libSDDI.a"
             BlueprintName = "SDDI"
             ReferencedContainer = "container:SDD.xcodeproj">
          </BuildableReference>
@@ -63,8 +63,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "56AD9AAA1CEADE8A003EC9B7"
-            BuildableName = "SDDI.framework"
+            BlueprintIdentifier = "56D381FE1CF3FA1E004801B9"
+            BuildableName = "libSDDI.a"
             BlueprintName = "SDDI"
             ReferencedContainer = "container:SDD.xcodeproj">
          </BuildableReference>

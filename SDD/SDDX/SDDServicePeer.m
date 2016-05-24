@@ -48,6 +48,16 @@ NSString * const SDDServerPeerDidDisconnectNotification = @"SDDServerPeerDidDisc
     [_ostream close];
 }
 
+- (void)sendEventImitation:(NSString *)event {
+    [NSJSONSerialization writeJSONObject:@{
+                                          @"proto": @"imitation",
+                                          @"body":  @{ @"event": event }
+                                          }
+                                toStream:_ostream
+                                 options:0
+                                   error:nil];
+}
+
 - (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent {
     switch (streamEvent) {
             
@@ -142,7 +152,7 @@ NSString * const SDDServerPeerDidDisconnectNotification = @"SDDServerPeerDidDisc
             break;
             
         default:
-            NSLog(@"Unknown event");
+            break;
     }
 }
 

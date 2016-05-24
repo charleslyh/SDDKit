@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YZs-hy-Qe5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YZs-hy-Qe5">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -38,7 +38,6 @@
                                 </variation>
                                 <connections>
                                     <segue destination="1X5-Lx-vMt" kind="presentation" identifier="segueToLoginVC" id="VrX-th-Cxn"/>
-<<<<<<< HEAD
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J8C-mj-Bh1">
@@ -46,8 +45,6 @@
                                 <state key="normal" title="定位服务"/>
                                 <connections>
                                     <segue destination="goM-Ym-HPp" kind="show" id="WjX-lm-5oZ"/>
-=======
->>>>>>> charleslyh/master
                                 </connections>
                             </button>
                         </subviews>
@@ -103,7 +100,6 @@
             </objects>
             <point key="canvasLocation" x="294" y="297"/>
         </scene>
-<<<<<<< HEAD
         <!--locationService-->
         <scene sceneID="0S9-Cp-uCv">
             <objects>
@@ -125,7 +121,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dtp-iR-PFl">
                                         <rect key="frame" x="90" y="139" width="197" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ct6-Y3-Xvu">
@@ -137,7 +133,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="地理服务开关" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ms-Ax-nOl">
                                         <rect key="frame" x="138" y="33" width="102" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -188,19 +184,15 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dpq-xp-aSv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1371" y="-449"/>
+            <point key="canvasLocation" x="2145" y="-131.25"/>
         </scene>
         <!--Login-->
-        <scene sceneID="ODg-mq-3Q1">
-=======
-        <!--Login-->
         <scene sceneID="jLl-Zp-Bgr">
->>>>>>> charleslyh/master
             <objects>
                 <viewControllerPlaceholder storyboardName="Login" id="1X5-Lx-vMt" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PHd-C8-Bqb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1974.75" y="297"/>
+            <point key="canvasLocation" x="1923.75" y="529.5"/>
         </scene>
     </scenes>
 </document>
