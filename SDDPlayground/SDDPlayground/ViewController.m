@@ -8,6 +8,7 @@
 
 #import <SDDX/SDDX.h>
 #import "ViewController.h"
+#import "AFNetworking.h"
 
 
 NSString * SDDPGStringNameFromRawState(sdd_state *s) {
@@ -165,6 +166,9 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     BOOL _wantEvents;
     
     NSMutableDictionary *_presenterUpdates;
+    NSMutableDictionary *_leafTransitions;
+    
+    AFHTTPSessionManager* _sessionManager;
 }
 
 - (void)service:(SDDService *)service didReceiveConnection:(SDDServicePeer *)connection {
@@ -174,8 +178,25 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     connection.delegate = self;
 }
 
+/*
+ AFNetworking  默认不支持对contentType为text/html的结果进行json解析，而我们的后台服务并没进行恰当处理。所以必须在客户端手动增加从text/html到json格式解析的支持
+ @see http://blog.csdn.net/nyh1006/article/details/25068255
+ */
+- (void)setupJsonResponseSerializerForManager {
+    AFJSONResponseSerializer* responseSerializer = [[AFJSONResponseSerializer alloc] init];
+    NSMutableSet* acceptableContentTypes = [responseSerializer.acceptableContentTypes mutableCopy];
+    [acceptableContentTypes addObject:@"text/html"];
+    [acceptableContentTypes addObject:@"application/x-json"];
+    responseSerializer.acceptableContentTypes = acceptableContentTypes;
+    _sessionManager.responseSerializer = responseSerializer;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSURL* baseURL = [NSURL URLWithString:@"https://www.websequencediagrams.com"];
+    _sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    [self setupJsonResponseSerializerForManager];
+
     [self.screenshotImageView setImageScaling:NSImageScaleProportionallyDown];
     
     [self resetContent];
@@ -201,7 +222,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
         [self resetContent];
     }];
     
-    _wantEvents = YES;
+    _wantEvents = NO;
     _filterEButton.state = _wantEvents ? NSOnState : NSOffState;
     [self syncHistoryLabelForSelectionChange];
 
@@ -212,6 +233,7 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     _historyItems     = [NSMutableArray array];
     _presenters       = [NSMutableDictionary dictionary];
     _presenterUpdates = [NSMutableDictionary dictionary];
+    _leafTransitions  = [NSMutableDictionary dictionary];
     
     self.screenshotImageView.image = nil;
     self.eventField.stringValue = @"";
@@ -243,6 +265,23 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     return [stateNames componentsJoinedByString:@","];
 }
 
+- (void)markdownScheudlerWithPresenter:(SDDSchedulerPresenter *)presenter transitFrom:(NSString *)from to:(NSString *)to byEvent:(NSString *)event {
+    NSMutableArray *transitions = _leafTransitions[presenter.rootName];
+    if (!transitions) {
+        transitions = [NSMutableArray array];
+        _leafTransitions[presenter.rootName] = transitions;
+    }
+    
+    from = from ? from : @"启动";
+    to   = to   ? to   : @"结束";
+    
+    if (event) {
+        [transitions addObject:[NSString stringWithFormat:@"%@->%@:%@",from,to,event]];
+    } else {
+        [transitions addObject:[NSString stringWithFormat:@"%@->%@:",from,to]];
+    }
+}
+
 - (void)peer:(SDDServicePeer *)peer scheduler:(NSString *)scheduler didStartWithDSL:(NSString *)dsl didActivates:(NSArray<NSString *> *)activates {
     SDDSchedulerPresenter *presenter = [[SDDSchedulerPresenter alloc] init];
     
@@ -254,11 +293,12 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     callback.completionHandler = &SDDPGHandleRootState;
     sdd_parse([dsl UTF8String], &callback);
     
+    [self markdownScheudlerWithPresenter:presenter transitFrom:nil to:activates.lastObject byEvent:nil];
+    
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
     item.shortString = [NSString stringWithFormat:@"<L> [%@]", presenter.rootName];
     item.longString  = [NSString stringWithFormat:@"<Launch  > [%@] {%@}", presenter.rootName, [self namesFromStates:activates]];
     [_historyItems addObject:item];
-    
     [self syncUIByAddingItem:item presenterUpdate:^(ViewController *wself) {
         wself.presenters[scheduler] = presenter;
         
@@ -271,6 +311,8 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 
 - (void)peer:(SDDServicePeer *)peer scheduler:(NSString *)scheduler didStopWithDeactivates:(NSArray<NSString *> *)deactivates {
     SDDSchedulerPresenter *presenter = self.presenters[scheduler];
+    
+    [self markdownScheudlerWithPresenter:presenter transitFrom:deactivates.firstObject to:nil byEvent:nil];
     
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
     item.shortString = [NSString stringWithFormat:@"<S> [%@]", presenter.rootName];
@@ -289,6 +331,8 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
 - (void)peer:(SDDServicePeer *)peer scheduler:(NSString *)scheduler activates:(NSArray<NSString *> *)activates deactivates:(NSArray<NSString *> *)deactivates byEvent:(NSString *)event withScreenshotImage:(NSImage *)screenshot
 {
     SDDSchedulerPresenter *presenter = self.presenters[scheduler];
+    
+    [self markdownScheudlerWithPresenter:presenter transitFrom:deactivates.firstObject to:activates.lastObject byEvent:event];
     
     SDDPGHistoryItem *item = [SDDPGHistoryItem new];
     item.shortString = [NSString stringWithFormat:@"<T> [%@]", presenter.rootName];
@@ -383,9 +427,69 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     });
 }
 
+NSString * SDDPGMakeUUID() {
+    CFUUIDRef uuidObj = CFUUIDCreate(nil);//create a new UUID
+    NSString  *uuidString = (__bridge_transfer NSString *)CFUUIDCreateString(nil, uuidObj);
+    CFRelease(uuidObj);
+    
+    return uuidString ;
+}
+
 - (IBAction)didTouchGenterateEventImitationButton:(id)sender {
-    [_peer sendEventImitation:self.eventField.stringValue];
+    NSString *line = [self.eventField.stringValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
     self.eventField.stringValue = @"";
+
+    NSArray *components = [line componentsSeparatedByString:@":"];
+    if (components.count != 2)
+        return;
+    
+    NSString *cmd   = [components[0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *param = [components[1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if ([cmd isEqualToString:@"event"]) {
+        [_peer sendEventImitation:param];
+    } else if ([cmd isEqualToString:@"diagram"]) {
+        NSMutableArray *transitions = _leafTransitions[param];
+        if (!transitions) {
+            [[NSAlert alertWithMessageText:@"状态不存在"
+                             defaultButton:@"确定"
+                           alternateButton:nil
+                               otherButton:nil
+                 informativeTextWithFormat:@"%@", param]
+             runModal];
+        } else {
+            NSString *diagramString = [transitions componentsJoinedByString:@"\n"];
+            
+            NSDictionary *parameters = @{
+                                         @"message": diagramString,
+                                         @"style": @"modern-blue",
+                                         @"width": @"1024",
+                                         @"apiVersion": @"1",
+                                         };
+            
+            [_sessionManager POST:@"index.php" parameters:parameters success:^(NSURLSessionDataTask * task, NSDictionary *response) {
+                NSString *imageURLString = response[@"img"];
+                
+                NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.websequencediagrams.com/index.php%@", imageURLString]];
+                NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+                
+                NSString *imageNameString = [NSString stringWithFormat:@"%@.png", SDDPGMakeUUID()];
+                [imageData writeToFile:imageNameString atomically:YES];
+                
+                system([[NSString stringWithFormat:@"open %@", imageNameString] UTF8String]);
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"response failure");
+            }];
+            
+        }
+    } else {
+        [[NSAlert alertWithMessageText:@"无法识别该指令"
+                         defaultButton:@"确定"
+                       alternateButton:nil
+                           otherButton:nil
+             informativeTextWithFormat:@"%@", line]
+         runModal];
+    }
 }
 
 - (IBAction)didChangeFilterEValue:(NSButton *)button {

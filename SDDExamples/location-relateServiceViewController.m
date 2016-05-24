@@ -6,14 +6,12 @@
 //  Copyright © 2016年 yy. All rights reserved.
 //
 
-#import "location-relateServiceViewController.h"
-#import <SDDI.h>
 #import <CoreLocation/CoreLocation.h>
+#import "location-relateServiceViewController.h"
+#import "SDDI.h"
 #import "Context.h"
 
 
-static NSString * const kLRServiceEventUpdatePaused = @"LocationServicePaused";
-static NSString * const kLRServiceEventUpdateResumed = @"LocationServiceResumed";
 static NSString * const kLRServiceEventUpdateFailed = @"LocationServiceFailed";
 static NSString * const kLRServiceEventUpdating = @"LocationServiceUpdating";
 static NSString * const kLRServiceEventFree = @"LocationServiceFree";
@@ -276,18 +274,5 @@ static NSString * const KLRServiceEventAuthorizationDisabled = @"LocationService
 {
     [self scheduleEvent:kLRServiceEventUpdateFailed withParam:error];
 }
-
-- (void) locationManagerDidPauseLocationUpdates:(CLLocationManager *)manager
-{
-    [self scheduleEvent:kLRServiceEventUpdatePaused withParam:nil];
-}
-
-- (void) locationManagerDidResumeLocationUpdates:(CLLocationManager *)manager
-{
-    [self scheduleEvent:kLRServiceEventUpdateResumed withParam:nil];
-}
-
-
-
 
 @end
