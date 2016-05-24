@@ -874,5 +874,39 @@
             </objects>
             <point key="canvasLocation" x="75" y="885.5"/>
         </scene>
+        <!--Sequence Diagram Controller-->
+        <scene sceneID="VGz-ac-8d6">
+            <objects>
+                <viewController storyboardIdentifier="SequenceDiagramController" id="N9H-ha-6ze" customClass="SDDPGSequenceDiagramController" sceneMemberID="viewController">
+                    <view key="view" id="Zbv-TF-NH2">
+                        <rect key="frame" x="0.0" y="0.0" width="670" height="493"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lGg-1C-LOc">
+                                <rect key="frame" x="0.0" y="0.0" width="670" height="493"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="7K4-SN-LV3"/>
+                            </imageView>
+                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Ad9-e9-KjF">
+                                <rect key="frame" x="319" y="230" width="32" height="32"/>
+                            </progressIndicator>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="lGg-1C-LOc" firstAttribute="leading" secondItem="Zbv-TF-NH2" secondAttribute="leading" id="D1I-R7-dqs"/>
+                            <constraint firstItem="Ad9-e9-KjF" firstAttribute="centerX" secondItem="Zbv-TF-NH2" secondAttribute="centerX" id="PQt-1Z-KeX"/>
+                            <constraint firstAttribute="bottom" secondItem="lGg-1C-LOc" secondAttribute="bottom" id="PVd-3Q-oVK"/>
+                            <constraint firstAttribute="trailing" secondItem="lGg-1C-LOc" secondAttribute="trailing" id="eCD-Qi-nw0"/>
+                            <constraint firstItem="Ad9-e9-KjF" firstAttribute="centerY" secondItem="Zbv-TF-NH2" secondAttribute="centerY" id="qaY-xV-SJb"/>
+                            <constraint firstItem="lGg-1C-LOc" firstAttribute="top" secondItem="Zbv-TF-NH2" secondAttribute="top" id="yhk-hs-iwE"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="lGg-1C-LOc" id="94S-nU-CvB"/>
+                        <outlet property="loadingIndicator" destination="Ad9-e9-KjF" id="Mlx-T2-yHh"/>
+                    </connections>
+                </viewController>
+                <customObject id="ZK0-3b-YJw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="975" y="885.5"/>
+        </scene>
     </scenes>
 </document>

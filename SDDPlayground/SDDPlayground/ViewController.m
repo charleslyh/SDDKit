@@ -8,7 +8,7 @@
 
 #import <SDDX/SDDX.h>
 #import "ViewController.h"
-#import "AFNetworking.h"
+#import "SDDPGSequenceDiagramController.h"
 
 
 NSString * SDDPGStringNameFromRawState(sdd_state *s) {
@@ -167,8 +167,6 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     
     NSMutableDictionary *_presenterUpdates;
     NSMutableDictionary *_leafTransitions;
-    
-    AFHTTPSessionManager* _sessionManager;
 }
 
 - (void)service:(SDDService *)service didReceiveConnection:(SDDServicePeer *)connection {
@@ -178,25 +176,9 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     connection.delegate = self;
 }
 
-/*
- AFNetworking  默认不支持对contentType为text/html的结果进行json解析，而我们的后台服务并没进行恰当处理。所以必须在客户端手动增加从text/html到json格式解析的支持
- @see http://blog.csdn.net/nyh1006/article/details/25068255
- */
-- (void)setupJsonResponseSerializerForManager {
-    AFJSONResponseSerializer* responseSerializer = [[AFJSONResponseSerializer alloc] init];
-    NSMutableSet* acceptableContentTypes = [responseSerializer.acceptableContentTypes mutableCopy];
-    [acceptableContentTypes addObject:@"text/html"];
-    [acceptableContentTypes addObject:@"application/x-json"];
-    responseSerializer.acceptableContentTypes = acceptableContentTypes;
-    _sessionManager.responseSerializer = responseSerializer;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSURL* baseURL = [NSURL URLWithString:@"https://www.websequencediagrams.com"];
-    _sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
-    [self setupJsonResponseSerializerForManager];
-
     [self.screenshotImageView setImageScaling:NSImageScaleProportionallyDown];
     
     [self resetContent];
@@ -427,14 +409,6 @@ void SDDPGHandleRootState(void *contextObj, sdd_state *root) {
     });
 }
 
-NSString * SDDPGMakeUUID() {
-    CFUUIDRef uuidObj = CFUUIDCreate(nil);//create a new UUID
-    NSString  *uuidString = (__bridge_transfer NSString *)CFUUIDCreateString(nil, uuidObj);
-    CFRelease(uuidObj);
-    
-    return uuidString ;
-}
-
 - (IBAction)didTouchGenterateEventImitationButton:(id)sender {
     NSString *line = [self.eventField.stringValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
@@ -458,29 +432,11 @@ NSString * SDDPGMakeUUID() {
                  informativeTextWithFormat:@"%@", param]
              runModal];
         } else {
-            NSString *diagramString = [transitions componentsJoinedByString:@"\n"];
+            SDDPGSequenceDiagramController *diagramController = [self.storyboard instantiateControllerWithIdentifier:@"SequenceDiagramController"];
             
-            NSDictionary *parameters = @{
-                                         @"message": diagramString,
-                                         @"style": @"modern-blue",
-                                         @"width": @"1024",
-                                         @"apiVersion": @"1",
-                                         };
-            
-            [_sessionManager POST:@"index.php" parameters:parameters success:^(NSURLSessionDataTask * task, NSDictionary *response) {
-                NSString *imageURLString = response[@"img"];
-                
-                NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.websequencediagrams.com/index.php%@", imageURLString]];
-                NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-                
-                NSString *imageNameString = [NSString stringWithFormat:@"%@.png", SDDPGMakeUUID()];
-                [imageData writeToFile:imageNameString atomically:YES];
-                
-                system([[NSString stringWithFormat:@"open %@", imageNameString] UTF8String]);
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                NSLog(@"response failure");
-            }];
-            
+            diagramController.title = param;
+            diagramController.stringValue = [transitions componentsJoinedByString:@"\n"];
+            [self presentViewControllerAsModalWindow:diagramController];
         }
     } else {
         [[NSAlert alertWithMessageText:@"无法识别该指令"
