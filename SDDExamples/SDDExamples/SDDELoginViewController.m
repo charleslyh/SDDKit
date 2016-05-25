@@ -324,6 +324,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
     
     [_domain.epool addSubscriber:globalContext.reporter];
     globalContext.reporter.delegate = self;
+    [globalContext.reporter setScreenshotForTransitionEnabled:YES];
     
     [self setupSMSButtonState];
     [self setupPhoneNumberFieldState];
