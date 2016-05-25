@@ -1,0 +1,12 @@
+[VerifyButton ~[Disabled]
+ [Disabled      e:disableVerifyButton]
+ [Normal        e:enableVerifyButton]
+ [Verifying     e:dismissKeyboard]
+ [Success       e:disableVerifyButton handleLoginSuccess]
+ ]
+
+[Disabled]     ->  [Normal]:    DidChangeTextFields(isValidInput)
+[Normal]       ->  [Disabled]:  DidChangeTextFields(!isValidInput)
+[Normal]       ->  [Verifying]: DidTouchVerifyButton/performLogin
+[Verifying]    ->  [Normal]:    DoneVerifying(!isLoginSucceed)
+[Verifying]    ->  [Success]:   DoneVerifying(isLoginSucceed)
