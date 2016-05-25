@@ -16,6 +16,7 @@ static NSString * const kLRServiceEventUpdateFailed = @"LocationServiceFailed";
 static NSString * const kLRServiceEventUpdating = @"LocationServiceUpdating";
 static NSString * const kLRServiceEventFree = @"LocationServiceFree";
 static NSString * const kLRServiceEventClose = @"LocatonServiceClose";
+static NSString * const kLRServiceEventOpen = @"LocatonServiceOpen";
 
 
 static NSString * const kCLAuthorizationStatusAuthorizationChanged = @"LocationServiceAuthorizationChanged";
@@ -95,14 +96,12 @@ static NSString * const KLRServiceEventAuthorizationDisabled = @"LocationService
 
 - (void) IndicatorViewUpdateState
 {
-    return;
     self.locationUpdateIndicatorView.hidden = NO;
     [self.locationUpdateIndicatorView startAnimating];
 }
 
 - (void) IndicatorViewStopState
 {
-    return;
     self.locationUpdateIndicatorView.hidden = NO;
     [self.locationUpdateIndicatorView stopAnimating];
 }
@@ -140,7 +139,7 @@ static NSString * const KLRServiceEventAuthorizationDisabled = @"LocationService
         if (![self.locationContentLabel.text isEqualToString:labelContent]) {
             self.locationContentLabel.text = labelContent;
         }
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [self scheduleEvent:kLRServiceEventFree withParam:nil];
         });
     }
@@ -155,7 +154,7 @@ static NSString * const KLRServiceEventAuthorizationDisabled = @"LocationService
 - (IBAction)locationServiceSwitchUpdate:(id)sender {
     if (self.locationServiceSwitch.enabled) {
         if (self.locationServiceSwitch.on) {
-            [self scheduleEvent:kLRServiceEventFree withParam:nil];
+            [self scheduleEvent:kLRServiceEventOpen withParam:nil];
         }else{
             [self scheduleEvent:kLRServiceEventClose withParam:nil];
         }
@@ -199,15 +198,17 @@ static NSString * const KLRServiceEventAuthorizationDisabled = @"LocationService
      [locationManager ~[start]
       [start e:configLocationManager contentLabelStartState]
       [disabled e:closeLocationService disableSwitch IndicatorViewStartState contentLabelStartState]
-      [enabled e:openLocationService enableSwitch  ~[free]
-       [free e:IndicatorViewStopState  setLocationServiceSwitchOnState]
-       [update e:IndicatorViewUpdateState contentLabelUpdateState]
-       [close e:setLocationServiceSwitchOffState contentLabelStartState]
+      [enabled   ~[open]
+       [open e:enableSwitch openLocationService ~[free]
+        [free e:IndicatorViewStopState  setLocationServiceSwitchOnState]
+        [update e:IndicatorViewUpdateState contentLabelUpdateState]
+        ]
+       
+       [close e:setLocationServiceSwitchOffState contentLabelStartState IndicatorViewStartState]
        ]
       ]
-     [close] -> [free]  : LocationServiceFree
-     [free] -> [close]  : LocatonServiceClose
-     [update] -> [close] : LocatonServiceClose
+     [close] -> [open]  : LocatonServiceOpen
+     [open] -> [close]  : LocatonServiceClose
      [free] -> [update] : LocationServiceUpdating
      [update] -> [free] : LocationServiceFree
      [start] -> [enabled] : LocationServiceEnabled
@@ -273,7 +274,10 @@ static NSString * const KLRServiceEventAuthorizationDisabled = @"LocationService
 {
     CLLocation *firstLocation = locations.firstObject;
     
-    [self scheduleEvent:kLRServiceEventUpdating withParam:firstLocation];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self scheduleEvent:kLRServiceEventUpdating withParam:firstLocation];
+    });
+    
 }
 
 - (void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
