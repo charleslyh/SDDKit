@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0FAD8BD51CF6E1750094A17F /* SDDEStringMatchingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FAD8BD41CF6E1750094A17F /* SDDEStringMatchingViewController.m */; };
 		5673C5821C5EFBB900482DBA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5811C5EFBB900482DBA /* main.m */; };
 		5673C5851C5EFBB900482DBA /* SDDEAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5841C5EFBB900482DBA /* SDDEAppDelegate.m */; };
 		5673C58B1C5EFBB900482DBA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5673C5891C5EFBB900482DBA /* Main.storyboard */; };
@@ -45,6 +46,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0FAD8BD31CF6E1750094A17F /* SDDEStringMatchingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDEStringMatchingViewController.h; sourceTree = "<group>"; };
+		0FAD8BD41CF6E1750094A17F /* SDDEStringMatchingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDEStringMatchingViewController.m; sourceTree = "<group>"; };
 		5673C57D1C5EFBB900482DBA /* SDDExamples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDDExamples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5673C5811C5EFBB900482DBA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5673C5831C5EFBB900482DBA /* SDDEAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDDEAppDelegate.h; sourceTree = "<group>"; };
@@ -115,6 +118,8 @@
 				6B8762D21CEEF39800AFD2D2 /* SDDELBSServiceViewController.m */,
 				D4E1E8CA1CEC1421000C73EA /* SDDELoginViewController.h */,
 				D4E1E8CB1CEC1421000C73EA /* SDDELoginViewController.m */,
+				0FAD8BD31CF6E1750094A17F /* SDDEStringMatchingViewController.h */,
+				0FAD8BD41CF6E1750094A17F /* SDDEStringMatchingViewController.m */,
 				5673C5891C5EFBB900482DBA /* Main.storyboard */,
 				5673C58E1C5EFBB900482DBA /* LaunchScreen.storyboard */,
 				5673C58C1C5EFBB900482DBA /* Assets.xcassets */,
@@ -250,6 +255,7 @@
 				5673C5851C5EFBB900482DBA /* SDDEAppDelegate.m in Sources */,
 				6B8762D31CEEF39800AFD2D2 /* SDDELBSServiceViewController.m in Sources */,
 				D4D4AA221CEDAE77006E6409 /* SDDEContext.m in Sources */,
+				0FAD8BD51CF6E1750094A17F /* SDDEStringMatchingViewController.m in Sources */,
 				5673C5821C5EFBB900482DBA /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

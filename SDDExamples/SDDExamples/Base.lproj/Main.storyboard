@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YZs-hy-Qe5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YZs-hy-Qe5">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -12,6 +12,7 @@
             <objects>
                 <tableViewController title="功能演示" id="knq-kL-qqu" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" rowHeight="64" sectionHeaderHeight="28" sectionFooterHeight="28" id="Vo2-Bf-HhQ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -19,11 +20,14 @@
                             <tableViewSection id="9u1-EE-XPv">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="uy1-jc-D18" imageView="QT0-BK-o1h" style="IBUITableViewCellStyleDefault" id="J40-fV-GNC">
+                                        <rect key="frame" x="0.0" y="64" width="600" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="J40-fV-GNC" id="gb3-gx-dwJ">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="63.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="地理定位" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uy1-jc-D18">
+                                                    <rect key="frame" x="72" y="0.0" width="513" height="63.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -33,6 +37,7 @@
                                                     </variation>
                                                 </label>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="thumbnail" id="QT0-BK-o1h">
+                                                    <rect key="frame" x="15" y="10" width="42" height="42"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </imageView>
                                             </subviews>
@@ -42,11 +47,14 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="TIU-AY-BFn" imageView="5VU-0D-vKe" style="IBUITableViewCellStyleDefault" id="XC9-XL-PYU">
+                                        <rect key="frame" x="0.0" y="128" width="600" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XC9-XL-PYU" id="jAf-rS-NUd">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="63.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="登录验权" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TIU-AY-BFn">
+                                                    <rect key="frame" x="72" y="0.0" width="513" height="63.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -56,12 +64,40 @@
                                                     </variation>
                                                 </label>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="key" id="5VU-0D-vKe">
+                                                    <rect key="frame" x="15" y="10" width="42" height="42"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
                                             <segue destination="YKu-ZN-XAO" kind="show" id="uUH-0F-GIT"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="pYm-Fj-s6z" imageView="Epf-ej-jAd" style="IBUITableViewCellStyleDefault" id="YEk-n7-f5Z">
+                                        <rect key="frame" x="0.0" y="192" width="600" height="64"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YEk-n7-f5Z" id="MQf-dG-gJg">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="63.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="字符串匹配" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pYm-Fj-s6z">
+                                                    <rect key="frame" x="72" y="0.0" width="513" height="63.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    </variation>
+                                                </label>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="key" id="Epf-ej-jAd">
+                                                    <rect key="frame" x="15" y="10" width="42" height="42"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </imageView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="uu0-GT-HCs" kind="show" id="Iku-60-0Rk"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -415,23 +451,23 @@
                                         <exclude reference="6al-Vm-tbP"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <exclude reference="Lrk-fc-RkT"/>
-                                        <exclude reference="RYH-Nn-lGL"/>
-                                        <exclude reference="ZQT-Fh-KU6"/>
-                                        <exclude reference="oHG-Fd-vwC"/>
+                                        <exclude reference="5Yc-wD-FDZ"/>
+                                        <exclude reference="LfM-5f-xKQ"/>
+                                        <exclude reference="q5E-Dj-7j5"/>
+                                        <exclude reference="vM6-WR-VuE"/>
                                         <exclude reference="Gx7-CP-93v"/>
                                         <exclude reference="jkH-ge-qZ8"/>
                                         <exclude reference="ndy-dJ-XQ0"/>
                                         <exclude reference="paF-ny-XZh"/>
+                                        <exclude reference="Lrk-fc-RkT"/>
+                                        <exclude reference="RYH-Nn-lGL"/>
+                                        <exclude reference="ZQT-Fh-KU6"/>
+                                        <exclude reference="oHG-Fd-vwC"/>
                                         <exclude reference="3Vi-qd-4wk"/>
                                         <exclude reference="hiO-ut-5Q4"/>
                                         <exclude reference="2ZR-3l-ftM"/>
                                         <exclude reference="39u-Fa-Row"/>
                                         <exclude reference="Ubx-OA-inO"/>
-                                        <exclude reference="5Yc-wD-FDZ"/>
-                                        <exclude reference="LfM-5f-xKQ"/>
-                                        <exclude reference="q5E-Dj-7j5"/>
-                                        <exclude reference="vM6-WR-VuE"/>
                                         <exclude reference="QNZ-Oc-oGc"/>
                                         <exclude reference="vlg-0x-HUH"/>
                                         <exclude reference="Ael-Qj-LNI"/>
@@ -456,23 +492,23 @@
                                         <include reference="6al-Vm-tbP"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <include reference="Lrk-fc-RkT"/>
-                                        <include reference="RYH-Nn-lGL"/>
-                                        <include reference="ZQT-Fh-KU6"/>
-                                        <include reference="oHG-Fd-vwC"/>
+                                        <include reference="5Yc-wD-FDZ"/>
+                                        <include reference="LfM-5f-xKQ"/>
+                                        <include reference="q5E-Dj-7j5"/>
+                                        <include reference="vM6-WR-VuE"/>
                                         <include reference="Gx7-CP-93v"/>
                                         <include reference="jkH-ge-qZ8"/>
                                         <include reference="ndy-dJ-XQ0"/>
                                         <include reference="paF-ny-XZh"/>
+                                        <include reference="Lrk-fc-RkT"/>
+                                        <include reference="RYH-Nn-lGL"/>
+                                        <include reference="ZQT-Fh-KU6"/>
+                                        <include reference="oHG-Fd-vwC"/>
                                         <include reference="3Vi-qd-4wk"/>
                                         <include reference="hiO-ut-5Q4"/>
                                         <include reference="2ZR-3l-ftM"/>
                                         <include reference="39u-Fa-Row"/>
                                         <include reference="Ubx-OA-inO"/>
-                                        <include reference="5Yc-wD-FDZ"/>
-                                        <include reference="LfM-5f-xKQ"/>
-                                        <include reference="q5E-Dj-7j5"/>
-                                        <include reference="vM6-WR-VuE"/>
                                         <include reference="QNZ-Oc-oGc"/>
                                         <include reference="vlg-0x-HUH"/>
                                         <include reference="Ael-Qj-LNI"/>
@@ -632,9 +668,60 @@ COS4i+S4gOatpQ
             </objects>
             <point key="canvasLocation" x="2145" y="609"/>
         </scene>
+        <!--字符串匹配-->
+        <scene sceneID="u9L-Hf-e6X">
+            <objects>
+                <viewController title="字符串匹配" id="uu0-GT-HCs" userLabel="字符串匹配" customClass="SDDEStringMatchingViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="RGS-hi-JD0"/>
+                        <viewControllerLayoutGuide type="bottom" id="NQV-OX-OMS"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Llv-Y9-inw">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="源字符串：abcbababaabcbab" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C6u-2t-sEj">
+                                <rect key="frame" x="20" y="105" width="560" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="搜索字符串：ababaca" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XRm-kw-rET">
+                                <rect key="frame" x="20" y="145" width="560" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="stateTable" translatesAutoresizingMaskIntoConstraints="NO" id="UzM-N1-jKw">
+                                <rect key="frame" x="91" y="185" width="247" height="166"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="状态表：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CVq-SV-f1T">
+                                <rect key="frame" x="20" y="185" width="68" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YJy-Kz-Htu">
+                                <rect key="frame" x="184" y="382" width="60" height="30"/>
+                                <state key="normal" title="开始搜索">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="onClickStartSearch:" destination="uu0-GT-HCs" eventType="touchUpInside" id="gbb-ed-4nW"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NlD-A8-TSH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2145" y="1421"/>
+        </scene>
     </scenes>
     <resources>
         <image name="key" width="42" height="42"/>
+        <image name="stateTable" width="364" height="276"/>
         <image name="thumbnail" width="42" height="42"/>
     </resources>
 </document>
