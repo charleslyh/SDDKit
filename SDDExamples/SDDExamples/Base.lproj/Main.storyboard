@@ -90,7 +90,7 @@
                                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     </variation>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="key" id="Epf-ej-jAd">
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="stringmatch" id="Epf-ej-jAd">
                                                     <rect key="frame" x="15" y="10" width="42" height="42"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </imageView>
@@ -722,6 +722,7 @@ COS4i+S4gOatpQ
     <resources>
         <image name="key" width="42" height="42"/>
         <image name="stateTable" width="364" height="276"/>
+        <image name="stringmatch" width="42" height="42"/>
         <image name="thumbnail" width="42" height="42"/>
     </resources>
 </document>
