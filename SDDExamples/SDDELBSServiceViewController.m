@@ -103,17 +103,26 @@
 }
 
 - (void) setupLBSSwitchState {
-    [_sddBuilder hostSchedulerWithContext:self dsl:SDDOCLanguage
-     ([Switch ~[Disabled]
-       [Disabled e:disableLBSSwitch turnOffLBSSwitch]
-       [Enabled e:enableLBSSwitch]
-       ]
-      
-      [Switch] -> [Disabled]: UIViewDidLoad (!isLBSAvailable)
-      [Switch] -> [Enabled]:  UIViewDidLoad (isLBSAvailable)
-      [Switch] -> [Disabled]: LBSDidChangeAuthorization(!isLBSAvailable)
-      [Switch] -> [Enabled]:  LBSDidChangeAuthorization(isLBSAvailable)
-     )];
+    NSString *dsl = SDDOCLanguage
+    ([Switch ~[Disabled]
+      [Disabled e:disableLBSSwitch turnOffLBSSwitch]
+      [Enabled e:enableLBSSwitch]
+      ]
+     
+     [Switch] -> [Disabled]: UIViewDidLoad (!isLBSAvailable)
+     [Switch] -> [Enabled]:  UIViewDidLoad (isLBSAvailable)
+     [Switch] -> [Disabled]: LBSDidChangeAuthorization(!isLBSAvailable)
+     [Switch] -> [Enabled]:  LBSDidChangeAuthorization(isLBSAvailable)
+     );
+    
+    
+    NSError *err;
+    NSString *serverDSL = [NSString stringWithContentsOfURL:[NSURL URLWithString:@"http://localhost:5000/app/config/LBSSwitchStateCorrect"] encoding:NSUTF8StringEncoding error:&err];
+    NSString *aDSL = (err || [serverDSL isEqualToString:@""]) ? dsl : serverDSL;
+    [_sddBuilder hostSchedulerWithContext:self dsl:aDSL];
+    
+    
+
 }
 
 #pragma mark - Widget: Location Manager
