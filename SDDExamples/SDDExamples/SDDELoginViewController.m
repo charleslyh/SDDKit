@@ -6,9 +6,9 @@
 //  Copyright © 2016年 yy. All rights reserved.
 //
 
-#import "LoginViewController.h"
-#import <SDDI/SDDI.h>
-#import "Context.h"
+#import "SDDELoginViewController.h"
+#import "SDDI.h"
+#import "SDDEContext.h"
 
 static NSString* const kLVCTimesUp                  = @"TimesUp";
 static NSString* const kLVCDidTouchSMSCodeButton    = @"DidTouchSMSCodeButton";
@@ -279,8 +279,15 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         [Verifying]    ->  [Normal]:    DoneVerifying(!isLoginSucceed)
         [Verifying]    ->  [Success]:   DoneVerifying(isLoginSucceed)
     );
-    
-    [_domain hostSchedulerWithContext:self dsl:dsl];
+    __weak typeof(self) wself = self;
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSError *err;
+        NSString *serverDSL = [NSString stringWithContentsOfURL:[NSURL URLWithString:@"http://localhost:5000/app/config/verifyButtonStateConfig"] encoding:NSUTF8StringEncoding error:&err];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *aDSL = (err || [serverDSL isEqualToString:@""]) ? dsl : serverDSL;
+            [_domain hostSchedulerWithContext:wself dsl:aDSL];
+        });
+    });
 }
 
 -(void)setupActivityIndicatorState {
@@ -324,6 +331,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
     
     [_domain.epool addSubscriber:globalContext.reporter];
     globalContext.reporter.delegate = self;
+    [globalContext.reporter setScreenshotForTransitionEnabled:YES];
     
     [self setupSMSButtonState];
     [self setupPhoneNumberFieldState];

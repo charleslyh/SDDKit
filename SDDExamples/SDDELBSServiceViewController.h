@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <CoreLocation/CoreLocation.h>
 
-@interface location_relateServiceViewController : UIViewController
+@interface SDDELBServiceViewController : UIViewController
 
 @end

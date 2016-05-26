@@ -20,6 +20,7 @@
 		56D382401CF41F8F004801B9 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 56D382381CF41F8F004801B9 /* AFURLRequestSerialization.m */; };
 		56D382411CF41F8F004801B9 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 56D3823A1CF41F8F004801B9 /* AFURLResponseSerialization.m */; };
 		56D382421CF41F8F004801B9 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 56D3823C1CF41F8F004801B9 /* AFURLSessionManager.m */; };
+		56D382451CF44BDA004801B9 /* SDDPGSequenceDiagramController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56D382441CF44BDA004801B9 /* SDDPGSequenceDiagramController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,8 @@
 		56D3823A1CF41F8F004801B9 /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		56D3823B1CF41F8F004801B9 /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		56D3823C1CF41F8F004801B9 /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
+		56D382431CF44BDA004801B9 /* SDDPGSequenceDiagramController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDPGSequenceDiagramController.h; sourceTree = "<group>"; };
+		56D382441CF44BDA004801B9 /* SDDPGSequenceDiagramController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDPGSequenceDiagramController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +110,8 @@
 				5696AA0B1CE72F7900CAB7CC /* AppDelegate.m */,
 				5696AA101CE72F7900CAB7CC /* ViewController.h */,
 				5696AA111CE72F7900CAB7CC /* ViewController.m */,
+				56D382431CF44BDA004801B9 /* SDDPGSequenceDiagramController.h */,
+				56D382441CF44BDA004801B9 /* SDDPGSequenceDiagramController.m */,
 				5696AA131CE72F7900CAB7CC /* Assets.xcassets */,
 				5696AA151CE72F7900CAB7CC /* Main.storyboard */,
 				5696AA181CE72F7900CAB7CC /* Info.plist */,
@@ -260,6 +265,7 @@
 				56D382401CF41F8F004801B9 /* AFURLRequestSerialization.m in Sources */,
 				56D382411CF41F8F004801B9 /* AFURLResponseSerialization.m in Sources */,
 				56D3823D1CF41F8F004801B9 /* AFHTTPSessionManager.m in Sources */,
+				56D382451CF44BDA004801B9 /* SDDPGSequenceDiagramController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

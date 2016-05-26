@@ -26,5 +26,7 @@
 - (void)start;
 - (void)stop;
 
+- (void)setScreenshotForTransitionEnabled:(BOOL)enabled;
+
 @end
 

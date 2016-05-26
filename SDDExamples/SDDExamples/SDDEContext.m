@@ -6,7 +6,7 @@
 //  Copyright © 2016年 yy. All rights reserved.
 //
 
-#import "Context.h"
+#import "SDDEContext.h"
 #import <SDDI/SDDI.h>
 
 Context* globalContext;

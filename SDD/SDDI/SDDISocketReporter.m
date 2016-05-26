@@ -12,6 +12,7 @@
 
 
 @interface SDDISocketReporter ()<NSStreamDelegate>
+@property (nonatomic) BOOL screenshotEnabled;
 @end
 
 @implementation SDDISocketReporter {
@@ -70,6 +71,10 @@
             }
         }
     });
+}
+
+- (void)setScreenshotForTransitionEnabled:(BOOL)enabled {
+    self.screenshotEnabled = enabled;
 }
 
 - (void)closeSendingLoop {
@@ -150,10 +155,13 @@
           byEvent:(SDDEvent *)event
 {
     NSString *imageString = @"";
-    UIImage *screenshot = [self captureFullScreen];
-    if (screenshot != nil) {
-        NSData *ssData = UIImageJPEGRepresentation(screenshot, 0.75);
-        imageString = [ssData base64EncodedStringWithOptions:0];
+    
+    if (self.screenshotEnabled) {
+        UIImage *screenshot = [self captureFullScreen];
+        if (screenshot != nil) {
+            NSData *ssData = UIImageJPEGRepresentation(screenshot, 0.75);
+            imageString = [ssData base64EncodedStringWithOptions:0];
+        }
     }
 
     [self sendPacketWithProto:@"transit"

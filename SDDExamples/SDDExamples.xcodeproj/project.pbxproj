@@ -7,10 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		564711F51CEF56580079C43A /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 564711F31CEF56580079C43A /* Login.storyboard */; };
 		5673C5821C5EFBB900482DBA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5811C5EFBB900482DBA /* main.m */; };
-		5673C5851C5EFBB900482DBA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5841C5EFBB900482DBA /* AppDelegate.m */; };
-		5673C5881C5EFBB900482DBA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5871C5EFBB900482DBA /* ViewController.m */; };
+		5673C5851C5EFBB900482DBA /* SDDEAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5841C5EFBB900482DBA /* SDDEAppDelegate.m */; };
 		5673C58B1C5EFBB900482DBA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5673C5891C5EFBB900482DBA /* Main.storyboard */; };
 		5673C58D1C5EFBB900482DBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5673C58C1C5EFBB900482DBA /* Assets.xcassets */; };
 		5673C5901C5EFBB900482DBA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5673C58E1C5EFBB900482DBA /* LaunchScreen.storyboard */; };
@@ -18,9 +16,9 @@
 		5673C5B11C5EFC3F00482DBA /* SDDBuilderDSLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5B01C5EFC3F00482DBA /* SDDBuilderDSLTests.m */; };
 		56D3822C1CF3FBA6004801B9 /* libSDDI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 56D3822B1CF3FBA6004801B9 /* libSDDI.a */; };
 		56E788391CE4BDE20049D3CA /* SDDMockFlows.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E788381CE4BDE20049D3CA /* SDDMockFlows.m */; };
-		6B8762D31CEEF39800AFD2D2 /* location-relateServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8762D21CEEF39800AFD2D2 /* location-relateServiceViewController.m */; };
-		D4D4AA221CEDAE77006E6409 /* Context.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D4AA211CEDAE77006E6409 /* Context.m */; };
-		D4E1E8CC1CEC1421000C73EA /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4E1E8CB1CEC1421000C73EA /* LoginViewController.m */; };
+		6B8762D31CEEF39800AFD2D2 /* SDDELBSServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8762D21CEEF39800AFD2D2 /* SDDELBSServiceViewController.m */; };
+		D4D4AA221CEDAE77006E6409 /* SDDEContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D4AA211CEDAE77006E6409 /* SDDEContext.m */; };
+		D4E1E8CC1CEC1421000C73EA /* SDDELoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4E1E8CB1CEC1421000C73EA /* SDDELoginViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,13 +45,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		564711F41CEF56580079C43A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
 		5673C57D1C5EFBB900482DBA /* SDDExamples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDDExamples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5673C5811C5EFBB900482DBA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		5673C5831C5EFBB900482DBA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		5673C5841C5EFBB900482DBA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		5673C5861C5EFBB900482DBA /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		5673C5871C5EFBB900482DBA /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		5673C5831C5EFBB900482DBA /* SDDEAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDDEAppDelegate.h; sourceTree = "<group>"; };
+		5673C5841C5EFBB900482DBA /* SDDEAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDDEAppDelegate.m; sourceTree = "<group>"; };
 		5673C58A1C5EFBB900482DBA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5673C58C1C5EFBB900482DBA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5673C58F1C5EFBB900482DBA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -65,12 +60,12 @@
 		56D3822B1CF3FBA6004801B9 /* libSDDI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDDI.a; path = "../../../../Library/Developer/Xcode/DerivedData/SDDKit-caodxadizwyqrsgjbwppiasvwxxv/Build/Products/Debug-iphonesimulator/libSDDI.a"; sourceTree = "<group>"; };
 		56E788371CE4BDE20049D3CA /* SDDMockFlows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDMockFlows.h; sourceTree = "<group>"; };
 		56E788381CE4BDE20049D3CA /* SDDMockFlows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDMockFlows.m; sourceTree = "<group>"; };
-		6B8762D11CEEF39800AFD2D2 /* location-relateServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "location-relateServiceViewController.h"; path = "../location-relateServiceViewController.h"; sourceTree = "<group>"; };
-		6B8762D21CEEF39800AFD2D2 /* location-relateServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "location-relateServiceViewController.m"; path = "../location-relateServiceViewController.m"; sourceTree = "<group>"; };
-		D4D4AA201CEDAE76006E6409 /* Context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Context.h; sourceTree = "<group>"; };
-		D4D4AA211CEDAE77006E6409 /* Context.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Context.m; sourceTree = "<group>"; };
-		D4E1E8CA1CEC1421000C73EA /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		D4E1E8CB1CEC1421000C73EA /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		6B8762D11CEEF39800AFD2D2 /* SDDELBSServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDDELBSServiceViewController.h; path = ../SDDELBSServiceViewController.h; sourceTree = "<group>"; };
+		6B8762D21CEEF39800AFD2D2 /* SDDELBSServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDDELBSServiceViewController.m; path = ../SDDELBSServiceViewController.m; sourceTree = "<group>"; };
+		D4D4AA201CEDAE76006E6409 /* SDDEContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDEContext.h; sourceTree = "<group>"; };
+		D4D4AA211CEDAE77006E6409 /* SDDEContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDEContext.m; sourceTree = "<group>"; };
+		D4E1E8CA1CEC1421000C73EA /* SDDELoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDELoginViewController.h; sourceTree = "<group>"; };
+		D4E1E8CB1CEC1421000C73EA /* SDDELoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDELoginViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,20 +109,17 @@
 		5673C57F1C5EFBB900482DBA /* SDDExamples */ = {
 			isa = PBXGroup;
 			children = (
-				5673C5831C5EFBB900482DBA /* AppDelegate.h */,
-				6B8762D21CEEF39800AFD2D2 /* location-relateServiceViewController.m */,
-				6B8762D11CEEF39800AFD2D2 /* location-relateServiceViewController.h */,
-				5673C5841C5EFBB900482DBA /* AppDelegate.m */,
-				D4D4AA201CEDAE76006E6409 /* Context.h */,
-				D4D4AA211CEDAE77006E6409 /* Context.m */,
-				5673C5861C5EFBB900482DBA /* ViewController.h */,
-				5673C5871C5EFBB900482DBA /* ViewController.m */,
-				D4E1E8CA1CEC1421000C73EA /* LoginViewController.h */,
-				D4E1E8CB1CEC1421000C73EA /* LoginViewController.m */,
+				5673C5831C5EFBB900482DBA /* SDDEAppDelegate.h */,
+				5673C5841C5EFBB900482DBA /* SDDEAppDelegate.m */,
+				6B8762D11CEEF39800AFD2D2 /* SDDELBSServiceViewController.h */,
+				6B8762D21CEEF39800AFD2D2 /* SDDELBSServiceViewController.m */,
+				D4E1E8CA1CEC1421000C73EA /* SDDELoginViewController.h */,
+				D4E1E8CB1CEC1421000C73EA /* SDDELoginViewController.m */,
 				5673C5891C5EFBB900482DBA /* Main.storyboard */,
-				564711F31CEF56580079C43A /* Login.storyboard */,
 				5673C58E1C5EFBB900482DBA /* LaunchScreen.storyboard */,
 				5673C58C1C5EFBB900482DBA /* Assets.xcassets */,
+				D4D4AA201CEDAE76006E6409 /* SDDEContext.h */,
+				D4D4AA211CEDAE77006E6409 /* SDDEContext.m */,
 				5673C5801C5EFBB900482DBA /* Supporting Files */,
 			);
 			path = SDDExamples;
@@ -204,7 +196,6 @@
 				TargetAttributes = {
 					5673C57C1C5EFBB900482DBA = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 9Y3DN22XWF;
 					};
 					5673C5951C5EFBB900482DBA = {
 						CreatedOnToolsVersion = 7.2;
@@ -235,7 +226,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				564711F51CEF56580079C43A /* Login.storyboard in Resources */,
 				5673C5901C5EFBB900482DBA /* LaunchScreen.storyboard in Resources */,
 				5673C58D1C5EFBB900482DBA /* Assets.xcassets in Resources */,
 				5673C58B1C5EFBB900482DBA /* Main.storyboard in Resources */,
@@ -256,11 +246,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4E1E8CC1CEC1421000C73EA /* LoginViewController.m in Sources */,
-				5673C5881C5EFBB900482DBA /* ViewController.m in Sources */,
-				5673C5851C5EFBB900482DBA /* AppDelegate.m in Sources */,
-				6B8762D31CEEF39800AFD2D2 /* location-relateServiceViewController.m in Sources */,
-				D4D4AA221CEDAE77006E6409 /* Context.m in Sources */,
+				D4E1E8CC1CEC1421000C73EA /* SDDELoginViewController.m in Sources */,
+				5673C5851C5EFBB900482DBA /* SDDEAppDelegate.m in Sources */,
+				6B8762D31CEEF39800AFD2D2 /* SDDELBSServiceViewController.m in Sources */,
+				D4D4AA221CEDAE77006E6409 /* SDDEContext.m in Sources */,
 				5673C5821C5EFBB900482DBA /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -286,14 +275,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		564711F31CEF56580079C43A /* Login.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				564711F41CEF56580079C43A /* Base */,
-			);
-			name = Login.storyboard;
-			sourceTree = "<group>";
-		};
 		5673C5891C5EFBB900482DBA /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -406,7 +387,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDExampleswewe;
+				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDExamples;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -424,7 +405,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDExampleswewe;
+				PRODUCT_BUNDLE_IDENTIFIER = Flash.SDDExamples;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "";
