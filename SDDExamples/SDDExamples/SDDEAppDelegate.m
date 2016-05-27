@@ -13,7 +13,7 @@
 @implementation SDDEAppDelegate
 
 - (void)setupGlobalContext {
-    SDDISocketReporter* reporter = [[SDDISocketReporter alloc] initWithHost:@"192.168.3.5" port:9800];
+    SDDISocketReporter* reporter = [[SDDISocketReporter alloc] initWithHost:@"172.26.163.70" port:9800];
     [reporter start];
     
     globalContext = [[Context alloc] initWithReporter:reporter];
