@@ -103,17 +103,22 @@
 }
 
 - (void) setupLBSSwitchState {
-    [_sddBuilder hostSchedulerWithContext:self dsl:SDDOCLanguage
-     ([Switch ~[Disabled]
-       [Disabled e:disableLBSSwitch turnOffLBSSwitch]
-       [Enabled e:enableLBSSwitch]
-       ]
-      
-      [Switch] -> [Disabled]: UIViewDidLoad (!isLBSAvailable)
-      [Switch] -> [Enabled]:  UIViewDidLoad (isLBSAvailable)
-      [Switch] -> [Disabled]: LBSDidChangeAuthorization(!isLBSAvailable)
-      [Switch] -> [Enabled]:  LBSDidChangeAuthorization(isLBSAvailable)
-     )];
+    NSString *dsl = SDDOCLanguage
+    ([Switch ~[Disabled]
+      [Disabled e:disableLBSSwitch turnOffLBSSwitch]
+      [Enabled e:enableLBSSwitch]
+      ]
+     
+     [Switch] -> [Disabled]: UIViewDidLoad (!isLBSAvailable)
+     [Switch] -> [Enabled]:  UIViewDidLoad (isLBSAvailable)
+     [Switch] -> [Disabled]: LBSDidChangeAuthorization(!isLBSAvailable)
+     [Switch] -> [Enabled]:  LBSDidChangeAuthorization(isLBSAvailable)
+     );
+    
+    [_sddBuilder hostSchedulerWithContext:self dsl:dsl];
+    
+    
+
 }
 
 #pragma mark - Widget: Location Manager
