@@ -713,7 +713,7 @@ COS4i+S4gOatpQ
                                     <action selector="onClickStartSearch:" destination="uu0-GT-HCs" eventType="touchUpInside" id="gbb-ed-4nW"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oUE-mg-nOb">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="accabccabcdabc" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oUE-mg-nOb">
                                 <rect key="frame" x="136" y="101" width="444" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="3da-TD-oTa"/>
@@ -721,7 +721,7 @@ COS4i+S4gOatpQ
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="arB-tr-N6M">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="abcd" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="arB-tr-N6M">
                                 <rect key="frame" x="136" y="141" width="444" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="3rW-QU-cAb"/>

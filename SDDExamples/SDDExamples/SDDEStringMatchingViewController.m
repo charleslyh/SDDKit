@@ -84,9 +84,9 @@
     for (int i = 0; i < [stateTable count] - 1; i++) {
         NSArray *cArr = [stateTable objectAtIndex:i];
         for (int j = 0; j < [cArr count]; j++) {
-            NSString *triggerChar = [NSString stringWithFormat:@"%c", j+97];
+            NSString *str = [NSString stringWithFormat:@"%c", j+97];
             int nextState = [((NSNumber *)[cArr objectAtIndex:j]) intValue];
-            stateTransmitDSL = [stateTransmitDSL stringByAppendingString:[NSString stringWithFormat:@"[step_%d] -> [step_%d] : %@", i, nextState, triggerChar]];
+            stateTransmitDSL = [stateTransmitDSL stringByAppendingString:[NSString stringWithFormat:@"[step_%d] -> [step_%d] : %@", i, nextState, str]];
         }
     }
     
@@ -144,9 +144,6 @@
 
 #pragma mark - Action
 - (IBAction)onClickStartSearch:(id)sender {
-    
-    NSParameterAssert(originTxtField.text);
-    NSParameterAssert(patternTxtField.text);
     
     [self setupSDD];
     
