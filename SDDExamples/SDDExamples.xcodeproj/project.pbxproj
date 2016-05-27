@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		566BA8C61CF6CAD4003DC388 /* libSDDI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 56D3822B1CF3FBA6004801B9 /* libSDDI.a */; };
 		5673C5821C5EFBB900482DBA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5811C5EFBB900482DBA /* main.m */; };
 		5673C5851C5EFBB900482DBA /* SDDEAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5673C5841C5EFBB900482DBA /* SDDEAppDelegate.m */; };
 		5673C58B1C5EFBB900482DBA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5673C5891C5EFBB900482DBA /* Main.storyboard */; };
@@ -81,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				566BA8C61CF6CAD4003DC388 /* libSDDI.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
