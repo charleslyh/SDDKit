@@ -115,11 +115,7 @@
      [Switch] -> [Enabled]:  LBSDidChangeAuthorization(isLBSAvailable)
      );
     
-    
-    NSError *err;
-    NSString *serverDSL = [NSString stringWithContentsOfURL:[NSURL URLWithString:@"http://localhost:5000/app/config/LBSSwitchState"] encoding:NSUTF8StringEncoding error:&err];
-    NSString *aDSL = (err || [serverDSL isEqualToString:@""]) ? dsl : serverDSL;
-    [_sddBuilder hostSchedulerWithContext:self dsl:aDSL];
+    [_sddBuilder hostSchedulerWithContext:self dsl:dsl];
     
     
 

@@ -1,6 +1,7 @@
 from flask import Flask, send_from_directory
 import os.path
 import socket
+
 # patch socket module
 socket.socket._bind = socket.socket.bind
 def my_socket_bind(self, *args, **kwargs):
@@ -23,4 +24,4 @@ def get_app_config(configName):
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.1.116')
+    app.run()
