@@ -78,7 +78,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :path => '.' }
+  s.source       = { :git => "https://github.com/charleslyh/SDDKit.git", :tag = "1.0.0" }
   # s.source       = { :git => "https://github.com/charleslyh/SDDKit.git", :tag => "1.0.0" }
 
 
