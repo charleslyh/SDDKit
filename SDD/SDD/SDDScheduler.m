@@ -169,8 +169,6 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     NSMutableDictionary* _parents;
     NSMutableDictionary* _defaults;
     NSMutableDictionary* _descendants;
-    
-    id<SDDSchedulerLogger> _logger;
 }
 
 - (instancetype)initWithOperationQueue:(NSOperationQueue *)queue logger:(id<SDDSchedulerLogger>)logger {

@@ -27,6 +27,7 @@
 #include "sdd_builder.h"
 #include "sdd_array.h"
 
+
 void SDDBuilderInit(SDDBuilder* builder, SDDMarkdownFn markdown, sdd_parser_callback* callback) {
 	builder->procedures  = sdd_array_new();
 	builder->state_names = sdd_array_new();

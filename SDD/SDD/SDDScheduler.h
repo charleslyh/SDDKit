@@ -52,6 +52,9 @@ typedef void (^SDDDeactivation)();
         activates:(nonnull NSArray<SDDState *>*)activatedStates
       deactivates:(nonnull NSArray<SDDState *>*)deactivatedStates
           byEvent:(nonnull SDDEvent *)event;
+
+@optional
+- (void)didLaunchContextMethodWithName:(nonnull NSString *)methodName;
 @end
 
 
@@ -72,6 +75,8 @@ typedef NS_OPTIONS(NSInteger, SDDSchedulerLogMasks) {
 
 
 @interface SDDScheduler : NSObject
+@property (strong, nonatomic, readonly) __nullable id<SDDSchedulerLogger> logger;
+
 - (nullable instancetype)init UNAVAILABLE_ATTRIBUTE;
 - (nonnull instancetype)initWithOperationQueue:(nonnull NSOperationQueue*)queue logger:(nullable id<SDDSchedulerLogger>)logger;
 

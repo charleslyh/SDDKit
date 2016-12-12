@@ -125,6 +125,7 @@ static SDDAugmentedActionImp SDDAugmentedAction = (SDDAugmentedActionImp)objc_ms
 
 void SDDSchedulerAddState(void* contextObj, sdd_state* raw_state) {
     __weak SDDParserContext* pcontext = (__bridge SDDParserContext*)contextObj;
+    __weak SDDScheduler* scheduler = pcontext.scheduler;
     __weak id context = pcontext.runtimeContext;
     
     NSString* entries = [NSString stringWithCString:raw_state->entries encoding:NSUTF8StringEncoding];
@@ -148,9 +149,13 @@ void SDDSchedulerAddState(void* contextObj, sdd_state* raw_state) {
                                                   @"action":  act,
                                                   }] raise];
             }
+
+            if ([scheduler.logger respondsToSelector:@selector(didLaunchContextMethodWithName:)]) {
+                [scheduler.logger didLaunchContextMethodWithName:act];
+            }
         }
     };
-    
+
     SDDDeactivation deactivation = ^{
         NSArray* acts = [exits sddNamedComponents];
         for (NSString* act in acts) {
@@ -165,9 +170,13 @@ void SDDSchedulerAddState(void* contextObj, sdd_state* raw_state) {
                                                   @"action":  act,
                                                   }] raise];
             }
+
+            if ([scheduler.logger respondsToSelector:@selector(didLaunchContextMethodWithName:)]) {
+                [scheduler.logger didLaunchContextMethodWithName:act];
+            }
         }
     };
-    
+
     NSString* name = [NSString stringWithCString:raw_state->name encoding:NSUTF8StringEncoding];
     SDDState* state = [[SDDState alloc] initWithActivation:activation deactivation:deactivation];
     state.sddName = name;
@@ -191,6 +200,7 @@ void SDDSchedulerSetDescendants(void* contextObj, sdd_state* raw_master, sdd_arr
 
 void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
     __weak SDDParserContext* pcontext = (__bridge SDDParserContext*)contextObj;
+    __weak SDDScheduler* scheduler = pcontext.scheduler;
     __weak id context = pcontext.runtimeContext;
     
     SDDEvent* event = [NSString stringWithCString:t->event encoding:NSUTF8StringEncoding];
@@ -215,6 +225,10 @@ void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
                                                   @"context": context ? context : @"null",
                                                   @"action":  act,
                                                   }] raise];
+            }
+
+            if ([scheduler.logger respondsToSelector:@selector(didLaunchContextMethodWithName:)]) {
+                [scheduler.logger didLaunchContextMethodWithName:act];
             }
         }
     };
