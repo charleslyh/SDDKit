@@ -90,6 +90,8 @@ static const void* kSDDStateBuilderDomainKey     = &kSDDStateBuilderDomainKey;
 
 #pragma mark -
 
+static const void* kSDDStateNameKey       = &kSDDStateNameKey;
+
 @interface SDDState (SDDProperties)
 @property (copy, nonatomic) NSString *sddName;
 @end
@@ -97,11 +99,11 @@ static const void* kSDDStateBuilderDomainKey     = &kSDDStateBuilderDomainKey;
 @implementation SDDState (SDDProperties)
 
 - (void)setSddName:(NSString *)sddName {
-    objc_setAssociatedObject(self, kSDDStateBuilderDSLKey, sddName, OBJC_ASSOCIATION_COPY);
+    objc_setAssociatedObject(self, kSDDStateNameKey, sddName, OBJC_ASSOCIATION_COPY);
 }
 
 - (NSString *)sddName {
-    return objc_getAssociatedObject(self, kSDDStateBuilderNameKey);
+    return objc_getAssociatedObject(self, kSDDStateNameKey);
 }
 
 @end
