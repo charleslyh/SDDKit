@@ -24,24 +24,58 @@
 #import <objc/runtime.h>
 #import "SDDSchedulerBuilder.h"
 #import "SDDScheduler.h"
-#import "VCPDynamic.h"
 #import "sdd_parser.h"
 #import "sdd_array.h"
 
-static const void* kSDDStateBuilderNameKey = &kSDDStateBuilderNameKey;
-static const void* kSDDStateBuilderDSLKey  = &kSDDStateBuilderDSLKey;
+static const void* kSDDStateBuilderNameKey       = &kSDDStateBuilderNameKey;
+static const void* kSDDStateBuilderDSLKey        = &kSDDStateBuilderDSLKey;
+static const void* kSDDStateBuilderIdentifierKey = &kSDDStateBuilderIdentifierKey;
+static const void* kSDDStateBuilderDomainKey     = &kSDDStateBuilderDomainKey;
 
-@interface SDDScheduler(SDDProperties) <VCPDynamic> @end
+@interface SDDScheduler(SDDProperties)
+@property (copy, nonatomic) NSString *sddName;
+@property (copy, nonatomic) NSString *sddDSL;
+@property (copy, nonatomic) NSString *sddIdentifier;
+@property (copy, nonatomic) NSString *sddDomain;
+@end
+
 @implementation SDDScheduler(SDDProperties)
-
-+ (NSArray *)vcp_propertyNames {
-    return @[@"sddIdentifier", @"sddName", @"sddDSL", @"sddDomain"];
-}
 
 @end
 
 @implementation SDDScheduler (SDDLogSupport)
-@dynamic sddIdentifier, sddDSL, sddName, sddDomain;
+
+- (void)setSddDSL:(NSString *)sddDSL {
+    objc_setAssociatedObject(self, kSDDStateBuilderDSLKey, sddDSL, OBJC_ASSOCIATION_COPY);
+}
+
+- (NSString *)sddDSL {
+    return objc_getAssociatedObject(self, kSDDStateBuilderDSLKey);
+}
+
+- (void)setSddName:(NSString *)sddName {
+    objc_setAssociatedObject(self, kSDDStateBuilderDSLKey, sddName, OBJC_ASSOCIATION_COPY);
+}
+
+- (NSString *)sddName {
+    return objc_getAssociatedObject(self, kSDDStateBuilderNameKey);
+}
+
+- (void)setSddIdentifier:(NSString *)sddIdentifier {
+    objc_setAssociatedObject(self, kSDDStateBuilderIdentifierKey, sddIdentifier, OBJC_ASSOCIATION_COPY);
+}
+
+- (NSString *)sddIdentifier {
+    return objc_getAssociatedObject(self, kSDDStateBuilderIdentifierKey);
+}
+
+- (void)setSddDomain:(NSString *)sddDomain {
+    objc_setAssociatedObject(self, kSDDStateBuilderDomainKey, sddDomain, OBJC_ASSOCIATION_COPY);
+}
+
+- (NSString *)sddDomain {
+    return objc_getAssociatedObject(self, kSDDStateBuilderDomainKey);
+}
 
 - (NSString*)description {
     NSString *name = [self sddName];
@@ -56,11 +90,18 @@ static const void* kSDDStateBuilderDSLKey  = &kSDDStateBuilderDSLKey;
 
 #pragma mark -
 
-@interface SDDState (SDDProperties) <VCPDynamic> @end
+@interface SDDState (SDDProperties)
+@property (copy, nonatomic) NSString *sddName;
+@end
+
 @implementation SDDState (SDDProperties)
 
-+ (NSArray *)vcp_propertyNames {
-    return @[@"sddName"];
+- (void)setSddName:(NSString *)sddName {
+    objc_setAssociatedObject(self, kSDDStateBuilderDSLKey, sddName, OBJC_ASSOCIATION_COPY);
+}
+
+- (NSString *)sddName {
+    return objc_getAssociatedObject(self, kSDDStateBuilderNameKey);
 }
 
 @end
