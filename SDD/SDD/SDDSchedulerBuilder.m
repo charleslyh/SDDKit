@@ -54,7 +54,7 @@ static const void* kSDDStateBuilderDomainKey     = &kSDDStateBuilderDomainKey;
 }
 
 - (void)setSddName:(NSString *)sddName {
-    objc_setAssociatedObject(self, kSDDStateBuilderDSLKey, sddName, OBJC_ASSOCIATION_COPY);
+    objc_setAssociatedObject(self, kSDDStateBuilderNameKey, sddName, OBJC_ASSOCIATION_COPY);
 }
 
 - (NSString *)sddName {
