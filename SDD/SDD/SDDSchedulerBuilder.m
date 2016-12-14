@@ -284,7 +284,7 @@ void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
         
         NSMutableArray* evalStack = [NSMutableArray array];
         for (NSString* p in components) {
-            BOOL exprValue;
+            BOOL exprValue = YES;
             if ([p isEqualToString:@"!"]) {
                 BOOL value = [[evalStack lastObject] boolValue]; [evalStack removeLastObject];
                 exprValue = !value;

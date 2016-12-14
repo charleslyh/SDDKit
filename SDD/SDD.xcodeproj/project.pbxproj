@@ -13,7 +13,6 @@
 		56D3820B1CF3FA79004801B9 /* sdd_builder.tab.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA3C1CE8C79B00CAB7CC /* sdd_builder.tab.c */; };
 		56D3820C1CF3FA79004801B9 /* sdd_builder.yy.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA3E1CE8C79B00CAB7CC /* sdd_builder.yy.c */; };
 		56D3820D1CF3FA79004801B9 /* sdd_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA3F1CE8C79B00CAB7CC /* sdd_parser.c */; };
-		56D3820E1CF3FA79004801B9 /* VCPDynamic.m in Sources */ = {isa = PBXBuildFile; fileRef = 564711F01CEF523E0079C43A /* VCPDynamic.m */; };
 		56D3820F1CF3FA79004801B9 /* SDDEventsPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA54F1CE5EB4D00861684 /* SDDEventsPool.m */; };
 		56D382101CF3FA79004801B9 /* SDDScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA5511CE5EB4D00861684 /* SDDScheduler.m */; };
 		56D382111CF3FA79004801B9 /* SDDSchedulerBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA5531CE5EB4D00861684 /* SDDSchedulerBuilder.m */; };
@@ -22,7 +21,6 @@
 		56D382211CF3FAEB004801B9 /* sdd_builder.tab.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA3C1CE8C79B00CAB7CC /* sdd_builder.tab.c */; };
 		56D382221CF3FAEB004801B9 /* sdd_builder.yy.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA3E1CE8C79B00CAB7CC /* sdd_builder.yy.c */; };
 		56D382231CF3FAEB004801B9 /* sdd_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 5696AA3F1CE8C79B00CAB7CC /* sdd_parser.c */; };
-		56D382241CF3FAEB004801B9 /* VCPDynamic.m in Sources */ = {isa = PBXBuildFile; fileRef = 564711F01CEF523E0079C43A /* VCPDynamic.m */; };
 		56D382251CF3FAEB004801B9 /* SDDEventsPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA54F1CE5EB4D00861684 /* SDDEventsPool.m */; };
 		56D382261CF3FAEB004801B9 /* SDDScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA5511CE5EB4D00861684 /* SDDScheduler.m */; };
 		56D382271CF3FAEB004801B9 /* SDDSchedulerBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CA5531CE5EB4D00861684 /* SDDSchedulerBuilder.m */; };
@@ -51,8 +49,6 @@
 		562CA5511CE5EB4D00861684 /* SDDScheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDScheduler.m; sourceTree = "<group>"; };
 		562CA5521CE5EB4D00861684 /* SDDSchedulerBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDSchedulerBuilder.h; sourceTree = "<group>"; };
 		562CA5531CE5EB4D00861684 /* SDDSchedulerBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDSchedulerBuilder.m; sourceTree = "<group>"; };
-		564711EF1CEF523E0079C43A /* VCPDynamic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCPDynamic.h; sourceTree = "<group>"; };
-		564711F01CEF523E0079C43A /* VCPDynamic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCPDynamic.m; sourceTree = "<group>"; };
 		5696AA381CE8C79B00CAB7CC /* sdd_array.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_array.c; sourceTree = "<group>"; };
 		5696AA391CE8C79B00CAB7CC /* sdd_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdd_array.h; sourceTree = "<group>"; };
 		5696AA3A1CE8C79B00CAB7CC /* sdd_builder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_builder.c; sourceTree = "<group>"; };
@@ -125,8 +121,6 @@
 				5696AA3E1CE8C79B00CAB7CC /* sdd_builder.yy.c */,
 				5696AA3F1CE8C79B00CAB7CC /* sdd_parser.c */,
 				5696AA401CE8C79B00CAB7CC /* sdd_parser.h */,
-				564711EF1CEF523E0079C43A /* VCPDynamic.h */,
-				564711F01CEF523E0079C43A /* VCPDynamic.m */,
 				562CA54E1CE5EB4D00861684 /* SDDEventsPool.h */,
 				562CA54F1CE5EB4D00861684 /* SDDEventsPool.m */,
 				562CA5501CE5EB4D00861684 /* SDDScheduler.h */,
@@ -215,7 +209,7 @@
 		562CA5311CE5EB1F00861684 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = Flash;
 				TargetAttributes = {
 					56D381FE1CF3FA1E004801B9 = {
@@ -255,7 +249,6 @@
 				56D3820F1CF3FA79004801B9 /* SDDEventsPool.m in Sources */,
 				56D3820C1CF3FA79004801B9 /* sdd_builder.yy.c in Sources */,
 				56D3820B1CF3FA79004801B9 /* sdd_builder.tab.c in Sources */,
-				56D3820E1CF3FA79004801B9 /* VCPDynamic.m in Sources */,
 				56D382081CF3FA6C004801B9 /* SDDISocketReporter.m in Sources */,
 				56D3820A1CF3FA79004801B9 /* sdd_builder.c in Sources */,
 				56D382101CF3FA79004801B9 /* SDDScheduler.m in Sources */,
@@ -270,7 +263,6 @@
 				56D382271CF3FAEB004801B9 /* SDDSchedulerBuilder.m in Sources */,
 				56D382291CF3FAEB004801B9 /* SDDServicePeer.m in Sources */,
 				56D382231CF3FAEB004801B9 /* sdd_parser.c in Sources */,
-				56D382241CF3FAEB004801B9 /* VCPDynamic.m in Sources */,
 				56D382251CF3FAEB004801B9 /* SDDEventsPool.m in Sources */,
 				56D3822A1CF3FAEB004801B9 /* TCPServer.m in Sources */,
 				56D382221CF3FAEB004801B9 /* sdd_builder.yy.c in Sources */,
@@ -298,8 +290,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -321,10 +315,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -343,8 +337,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -360,7 +356,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
@@ -372,7 +368,7 @@
 		56D382061CF3FA1E004801B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -382,7 +378,7 @@
 		56D382071CF3FA1E004801B9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -430,6 +426,7 @@
 				56D382071CF3FA1E004801B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		56D3821C1CF3FADC004801B9 /* Build configuration list for PBXNativeTarget "SDDX" */ = {
 			isa = XCConfigurationList;
@@ -438,6 +435,7 @@
 				56D3821E1CF3FADC004801B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

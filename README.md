@@ -1,8 +1,10 @@
 # SDDKit - State Driven Development Kit
-A visual way of impletementing UI / Complex systems
+Easiest way for implementing hierarchical state machine (HSM) based programs in Objective-C.
 
 ## Installation
-The easiest way for installing SDDKit is by using [Pods](https://cocoapods.org/). For one line configuration as below.
+Clone or download source codes directly, or by using [CocoaPods](https://cocoapods.org/), the later is preferred.
+
 ```
 pod 'SDDKit', :git => 'https://github.com/charleslyh/SDDKit.git'
+
 ```
