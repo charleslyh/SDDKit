@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "SDDKit"
-  s.version      = "1.0.5"
+  s.version      = "1.0.6"
   s.license      = "MIT"
   s.summary      = "Easiest way for implementing hierarchical state machine(HSM) based programs in Objective-C."
   s.homepage     = "https://github.com/charleslyh/SDDKit"
@@ -9,9 +9,9 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/charleslyh/SDDKit.git", :tag => s.version, :submodules => true }
   s.requires_arc = true
 
-  s.public_header_files = 'SDDKit/SDDKit.h'
   s.source_files = 'SDDKit/SDDKit.h'
-
+  s.public_header_files = 'SDDKit/SDDKit.h'
+  
   s.subspec 'Core' do |ss|
     ss.source_files = 'SDDKit/lex.yy.c', 'SDDKit/y.tab.{h,c}', 'SDDKit/sdd_*.{h,c}'
   end
