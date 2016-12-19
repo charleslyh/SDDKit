@@ -1,0 +1,21 @@
+#! /bin/sh
+
+if [ ! -d ./bin ]; then
+	mkdir ./bin
+fi
+
+if [ -f ./bin/sdd ]; then
+	rm ./bin/sdd
+fi
+
+lex sdd.lex
+yacc -d sdd.y
+gcc example.c sdd_builder.c sdd_parser.c sdd_array.c lex.yy.c y.tab.c -o ./bin/sdd
+
+if [ -f ./bin/sdd ]; then
+	./bin/sdd
+	rm -rf ./bin
+	
+	cp *.h *.c ../SDDKit
+	rm y.tab.h y.tab.c lex.yy.c
+fi

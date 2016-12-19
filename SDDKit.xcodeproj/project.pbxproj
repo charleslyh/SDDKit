@@ -13,9 +13,9 @@
 		561A73CF1E07B4B30024A508 /* sdd_array.h in Headers */ = {isa = PBXBuildFile; fileRef = 561A73BF1E07B4B30024A508 /* sdd_array.h */; };
 		561A73D01E07B4B30024A508 /* sdd_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 561A73C01E07B4B30024A508 /* sdd_builder.c */; };
 		561A73D11E07B4B30024A508 /* sdd_builder.h in Headers */ = {isa = PBXBuildFile; fileRef = 561A73C11E07B4B30024A508 /* sdd_builder.h */; };
-		561A73D21E07B4B30024A508 /* sdd_builder.tab.c in Sources */ = {isa = PBXBuildFile; fileRef = 561A73C21E07B4B30024A508 /* sdd_builder.tab.c */; };
-		561A73D31E07B4B30024A508 /* sdd_builder.tab.h in Headers */ = {isa = PBXBuildFile; fileRef = 561A73C31E07B4B30024A508 /* sdd_builder.tab.h */; };
-		561A73D41E07B4B30024A508 /* sdd_builder.yy.c in Sources */ = {isa = PBXBuildFile; fileRef = 561A73C41E07B4B30024A508 /* sdd_builder.yy.c */; };
+		561A73D21E07B4B30024A508 /* y.tab.c in Sources */ = {isa = PBXBuildFile; fileRef = 561A73C21E07B4B30024A508 /* y.tab.c */; };
+		561A73D31E07B4B30024A508 /* y.tab.h in Headers */ = {isa = PBXBuildFile; fileRef = 561A73C31E07B4B30024A508 /* y.tab.h */; };
+		561A73D41E07B4B30024A508 /* lex.yy.c in Sources */ = {isa = PBXBuildFile; fileRef = 561A73C41E07B4B30024A508 /* lex.yy.c */; };
 		561A73D51E07B4B30024A508 /* sdd_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 561A73C51E07B4B30024A508 /* sdd_parser.c */; };
 		561A73D61E07B4B30024A508 /* sdd_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 561A73C61E07B4B30024A508 /* sdd_parser.h */; };
 		561A73D81E07B4B30024A508 /* SDDEventsPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 561A73C81E07B4B30024A508 /* SDDEventsPool.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -49,9 +49,9 @@
 		561A73BF1E07B4B30024A508 /* sdd_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdd_array.h; sourceTree = "<group>"; };
 		561A73C01E07B4B30024A508 /* sdd_builder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_builder.c; sourceTree = "<group>"; };
 		561A73C11E07B4B30024A508 /* sdd_builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdd_builder.h; sourceTree = "<group>"; };
-		561A73C21E07B4B30024A508 /* sdd_builder.tab.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_builder.tab.c; sourceTree = "<group>"; };
-		561A73C31E07B4B30024A508 /* sdd_builder.tab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdd_builder.tab.h; sourceTree = "<group>"; };
-		561A73C41E07B4B30024A508 /* sdd_builder.yy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_builder.yy.c; sourceTree = "<group>"; };
+		561A73C21E07B4B30024A508 /* y.tab.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = y.tab.c; sourceTree = "<group>"; };
+		561A73C31E07B4B30024A508 /* y.tab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = y.tab.h; sourceTree = "<group>"; };
+		561A73C41E07B4B30024A508 /* lex.yy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lex.yy.c; sourceTree = "<group>"; };
 		561A73C51E07B4B30024A508 /* sdd_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_parser.c; sourceTree = "<group>"; };
 		561A73C61E07B4B30024A508 /* sdd_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdd_parser.h; sourceTree = "<group>"; };
 		561A73C81E07B4B30024A508 /* SDDEventsPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDEventsPool.h; sourceTree = "<group>"; };
@@ -107,13 +107,11 @@
 			isa = PBXGroup;
 			children = (
 				56E965CB1E07B7110071EDA6 /* Supporting Files */,
+				56E965D11E07BFE20071EDA6 /* lex+yacc */,
 				561A73BE1E07B4B30024A508 /* sdd_array.c */,
 				561A73BF1E07B4B30024A508 /* sdd_array.h */,
 				561A73C01E07B4B30024A508 /* sdd_builder.c */,
 				561A73C11E07B4B30024A508 /* sdd_builder.h */,
-				561A73C21E07B4B30024A508 /* sdd_builder.tab.c */,
-				561A73C31E07B4B30024A508 /* sdd_builder.tab.h */,
-				561A73C41E07B4B30024A508 /* sdd_builder.yy.c */,
 				561A73C51E07B4B30024A508 /* sdd_parser.c */,
 				561A73C61E07B4B30024A508 /* sdd_parser.h */,
 				561A73C81E07B4B30024A508 /* SDDEventsPool.h */,
@@ -155,6 +153,16 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		56E965D11E07BFE20071EDA6 /* lex+yacc */ = {
+			isa = PBXGroup;
+			children = (
+				561A73C21E07B4B30024A508 /* y.tab.c */,
+				561A73C31E07B4B30024A508 /* y.tab.h */,
+				561A73C41E07B4B30024A508 /* lex.yy.c */,
+			);
+			name = "lex+yacc";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -165,7 +173,7 @@
 				561A73D81E07B4B30024A508 /* SDDEventsPool.h in Headers */,
 				561A73CF1E07B4B30024A508 /* sdd_array.h in Headers */,
 				561A73DC1E07B4B30024A508 /* SDDSchedulerBuilder.h in Headers */,
-				561A73D31E07B4B30024A508 /* sdd_builder.tab.h in Headers */,
+				561A73D31E07B4B30024A508 /* y.tab.h in Headers */,
 				561A73B51E07B45D0024A508 /* SDDKit.h in Headers */,
 				561A73D61E07B4B30024A508 /* sdd_parser.h in Headers */,
 				561A73DA1E07B4B30024A508 /* SDDScheduler.h in Headers */,
@@ -275,10 +283,10 @@
 				561A73DD1E07B4B30024A508 /* SDDSchedulerBuilder.m in Sources */,
 				561A73CE1E07B4B30024A508 /* sdd_array.c in Sources */,
 				561A73D01E07B4B30024A508 /* sdd_builder.c in Sources */,
-				561A73D41E07B4B30024A508 /* sdd_builder.yy.c in Sources */,
+				561A73D41E07B4B30024A508 /* lex.yy.c in Sources */,
 				561A73D51E07B4B30024A508 /* sdd_parser.c in Sources */,
 				561A73DB1E07B4B30024A508 /* SDDScheduler.m in Sources */,
-				561A73D21E07B4B30024A508 /* sdd_builder.tab.c in Sources */,
+				561A73D21E07B4B30024A508 /* y.tab.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

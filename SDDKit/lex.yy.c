@@ -484,7 +484,7 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "sdd.lex"
 #line 2 "sdd.lex"
- #include "sdd_builder.tab.h"
+ #include "y.tab.h"
  #include <stdio.h>
  #include <string.h>
 #line 472 "lex.yy.c"
