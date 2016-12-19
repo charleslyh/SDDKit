@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:SDDKit.xcodeproj">
+      location = "self:SDDKit.xcodeproj">
    </FileRef>
 </Workspace>

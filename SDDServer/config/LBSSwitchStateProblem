@@ -1,7 +1,0 @@
-[Switch ~[Disabled]
-       [Disabled e:disableLBSSwitch turnOffLBSSwitch]
-       [Enabled e:enableLBSSwitch]
-       ]     
-      [Switch] -> [Disabled]: UIViewDidLoad (!isLBSAvailable)
-      [Switch] -> [Enabled]:  UIViewDidLoad (isLBSAvailable)
-

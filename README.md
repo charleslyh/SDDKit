@@ -2,9 +2,9 @@
 Easiest way for implementing hierarchical state machine (HSM) based programs in Objective-C.
 
 ## Installation
-Clone or download source codes directly, or by using [CocoaPods](https://cocoapods.org/), the later is preferred.
+Clone or download source codes directly, or by using [CocoaPods](https://cocoapods.org/).
 
 ```
-pod 'SDDKit', :git => 'https://github.com/charleslyh/SDDKit.git'
+pod 'SDDKit'
 
 ```

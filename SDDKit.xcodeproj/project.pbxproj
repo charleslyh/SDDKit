@@ -1,0 +1,491 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		561A73AE1E07B45D0024A508 /* SDDKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 561A73A41E07B45D0024A508 /* SDDKit.framework */; };
+		561A73B51E07B45D0024A508 /* SDDKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 561A73A71E07B45D0024A508 /* SDDKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		561A73CE1E07B4B30024A508 /* sdd_array.c in Sources */ = {isa = PBXBuildFile; fileRef = 561A73BE1E07B4B30024A508 /* sdd_array.c */; };
+		561A73CF1E07B4B30024A508 /* sdd_array.h in Headers */ = {isa = PBXBuildFile; fileRef = 561A73BF1E07B4B30024A508 /* sdd_array.h */; };
+		561A73D01E07B4B30024A508 /* sdd_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 561A73C01E07B4B30024A508 /* sdd_builder.c */; };
+		561A73D11E07B4B30024A508 /* sdd_builder.h in Headers */ = {isa = PBXBuildFile; fileRef = 561A73C11E07B4B30024A508 /* sdd_builder.h */; };
+		561A73D21E07B4B30024A508 /* sdd_builder.tab.c in Sources */ = {isa = PBXBuildFile; fileRef = 561A73C21E07B4B30024A508 /* sdd_builder.tab.c */; };
+		561A73D31E07B4B30024A508 /* sdd_builder.tab.h in Headers */ = {isa = PBXBuildFile; fileRef = 561A73C31E07B4B30024A508 /* sdd_builder.tab.h */; };
+		561A73D41E07B4B30024A508 /* sdd_builder.yy.c in Sources */ = {isa = PBXBuildFile; fileRef = 561A73C41E07B4B30024A508 /* sdd_builder.yy.c */; };
+		561A73D51E07B4B30024A508 /* sdd_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 561A73C51E07B4B30024A508 /* sdd_parser.c */; };
+		561A73D61E07B4B30024A508 /* sdd_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 561A73C61E07B4B30024A508 /* sdd_parser.h */; };
+		561A73D81E07B4B30024A508 /* SDDEventsPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 561A73C81E07B4B30024A508 /* SDDEventsPool.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		561A73D91E07B4B30024A508 /* SDDEventsPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 561A73C91E07B4B30024A508 /* SDDEventsPool.m */; };
+		561A73DA1E07B4B30024A508 /* SDDScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 561A73CA1E07B4B30024A508 /* SDDScheduler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		561A73DB1E07B4B30024A508 /* SDDScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 561A73CB1E07B4B30024A508 /* SDDScheduler.m */; };
+		561A73DC1E07B4B30024A508 /* SDDSchedulerBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 561A73CC1E07B4B30024A508 /* SDDSchedulerBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		561A73DD1E07B4B30024A508 /* SDDSchedulerBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 561A73CD1E07B4B30024A508 /* SDDSchedulerBuilder.m */; };
+		56E965C81E07B6F90071EDA6 /* SDDBuilderDSLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E965C41E07B6F90071EDA6 /* SDDBuilderDSLTests.m */; };
+		56E965C91E07B6F90071EDA6 /* SDDMockFlows.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E965C61E07B6F90071EDA6 /* SDDMockFlows.m */; };
+		56E965CA1E07B6F90071EDA6 /* SDDSchedulerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E965C71E07B6F90071EDA6 /* SDDSchedulerTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		561A73AF1E07B45D0024A508 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 561A739B1E07B45D0024A508 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 561A73A31E07B45D0024A508;
+			remoteInfo = SDDKit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		561A73A41E07B45D0024A508 /* SDDKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SDDKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		561A73A71E07B45D0024A508 /* SDDKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDDKit.h; sourceTree = "<group>"; };
+		561A73A81E07B45D0024A508 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		561A73AD1E07B45D0024A508 /* SDDKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SDDKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		561A73B41E07B45D0024A508 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		561A73BE1E07B4B30024A508 /* sdd_array.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_array.c; sourceTree = "<group>"; };
+		561A73BF1E07B4B30024A508 /* sdd_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdd_array.h; sourceTree = "<group>"; };
+		561A73C01E07B4B30024A508 /* sdd_builder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_builder.c; sourceTree = "<group>"; };
+		561A73C11E07B4B30024A508 /* sdd_builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdd_builder.h; sourceTree = "<group>"; };
+		561A73C21E07B4B30024A508 /* sdd_builder.tab.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_builder.tab.c; sourceTree = "<group>"; };
+		561A73C31E07B4B30024A508 /* sdd_builder.tab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdd_builder.tab.h; sourceTree = "<group>"; };
+		561A73C41E07B4B30024A508 /* sdd_builder.yy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_builder.yy.c; sourceTree = "<group>"; };
+		561A73C51E07B4B30024A508 /* sdd_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdd_parser.c; sourceTree = "<group>"; };
+		561A73C61E07B4B30024A508 /* sdd_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdd_parser.h; sourceTree = "<group>"; };
+		561A73C81E07B4B30024A508 /* SDDEventsPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDEventsPool.h; sourceTree = "<group>"; };
+		561A73C91E07B4B30024A508 /* SDDEventsPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDEventsPool.m; sourceTree = "<group>"; };
+		561A73CA1E07B4B30024A508 /* SDDScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDScheduler.h; sourceTree = "<group>"; };
+		561A73CB1E07B4B30024A508 /* SDDScheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDScheduler.m; sourceTree = "<group>"; };
+		561A73CC1E07B4B30024A508 /* SDDSchedulerBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDSchedulerBuilder.h; sourceTree = "<group>"; };
+		561A73CD1E07B4B30024A508 /* SDDSchedulerBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDSchedulerBuilder.m; sourceTree = "<group>"; };
+		56E965C41E07B6F90071EDA6 /* SDDBuilderDSLTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDBuilderDSLTests.m; sourceTree = "<group>"; };
+		56E965C51E07B6F90071EDA6 /* SDDMockFlows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDMockFlows.h; sourceTree = "<group>"; };
+		56E965C61E07B6F90071EDA6 /* SDDMockFlows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDMockFlows.m; sourceTree = "<group>"; };
+		56E965C71E07B6F90071EDA6 /* SDDSchedulerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDSchedulerTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		561A73A01E07B45D0024A508 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		561A73AA1E07B45D0024A508 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				561A73AE1E07B45D0024A508 /* SDDKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		561A739A1E07B45D0024A508 = {
+			isa = PBXGroup;
+			children = (
+				561A73A61E07B45D0024A508 /* SDDKit */,
+				561A73B11E07B45D0024A508 /* SDDKitTests */,
+				561A73A51E07B45D0024A508 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		561A73A51E07B45D0024A508 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				561A73A41E07B45D0024A508 /* SDDKit.framework */,
+				561A73AD1E07B45D0024A508 /* SDDKitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		561A73A61E07B45D0024A508 /* SDDKit */ = {
+			isa = PBXGroup;
+			children = (
+				56E965CB1E07B7110071EDA6 /* Supporting Files */,
+				561A73BE1E07B4B30024A508 /* sdd_array.c */,
+				561A73BF1E07B4B30024A508 /* sdd_array.h */,
+				561A73C01E07B4B30024A508 /* sdd_builder.c */,
+				561A73C11E07B4B30024A508 /* sdd_builder.h */,
+				561A73C21E07B4B30024A508 /* sdd_builder.tab.c */,
+				561A73C31E07B4B30024A508 /* sdd_builder.tab.h */,
+				561A73C41E07B4B30024A508 /* sdd_builder.yy.c */,
+				561A73C51E07B4B30024A508 /* sdd_parser.c */,
+				561A73C61E07B4B30024A508 /* sdd_parser.h */,
+				561A73C81E07B4B30024A508 /* SDDEventsPool.h */,
+				561A73C91E07B4B30024A508 /* SDDEventsPool.m */,
+				561A73CA1E07B4B30024A508 /* SDDScheduler.h */,
+				561A73CB1E07B4B30024A508 /* SDDScheduler.m */,
+				561A73CC1E07B4B30024A508 /* SDDSchedulerBuilder.h */,
+				561A73CD1E07B4B30024A508 /* SDDSchedulerBuilder.m */,
+			);
+			path = SDDKit;
+			sourceTree = "<group>";
+		};
+		561A73B11E07B45D0024A508 /* SDDKitTests */ = {
+			isa = PBXGroup;
+			children = (
+				56E965CC1E07B7BE0071EDA6 /* Supporting Files */,
+				56E965C51E07B6F90071EDA6 /* SDDMockFlows.h */,
+				56E965C61E07B6F90071EDA6 /* SDDMockFlows.m */,
+				56E965C41E07B6F90071EDA6 /* SDDBuilderDSLTests.m */,
+				56E965C71E07B6F90071EDA6 /* SDDSchedulerTests.m */,
+			);
+			path = SDDKitTests;
+			sourceTree = "<group>";
+		};
+		56E965CB1E07B7110071EDA6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				561A73A71E07B45D0024A508 /* SDDKit.h */,
+				561A73A81E07B45D0024A508 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		56E965CC1E07B7BE0071EDA6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				561A73B41E07B45D0024A508 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		561A73A11E07B45D0024A508 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				561A73D81E07B4B30024A508 /* SDDEventsPool.h in Headers */,
+				561A73CF1E07B4B30024A508 /* sdd_array.h in Headers */,
+				561A73DC1E07B4B30024A508 /* SDDSchedulerBuilder.h in Headers */,
+				561A73D31E07B4B30024A508 /* sdd_builder.tab.h in Headers */,
+				561A73B51E07B45D0024A508 /* SDDKit.h in Headers */,
+				561A73D61E07B4B30024A508 /* sdd_parser.h in Headers */,
+				561A73DA1E07B4B30024A508 /* SDDScheduler.h in Headers */,
+				561A73D11E07B4B30024A508 /* sdd_builder.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		561A73A31E07B45D0024A508 /* SDDKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 561A73B81E07B45D0024A508 /* Build configuration list for PBXNativeTarget "SDDKit" */;
+			buildPhases = (
+				561A739F1E07B45D0024A508 /* Sources */,
+				561A73A01E07B45D0024A508 /* Frameworks */,
+				561A73A11E07B45D0024A508 /* Headers */,
+				561A73A21E07B45D0024A508 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SDDKit;
+			productName = SDDKit;
+			productReference = 561A73A41E07B45D0024A508 /* SDDKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		561A73AC1E07B45D0024A508 /* SDDKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 561A73BB1E07B45D0024A508 /* Build configuration list for PBXNativeTarget "SDDKitTests" */;
+			buildPhases = (
+				561A73A91E07B45D0024A508 /* Sources */,
+				561A73AA1E07B45D0024A508 /* Frameworks */,
+				561A73AB1E07B45D0024A508 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				561A73B01E07B45D0024A508 /* PBXTargetDependency */,
+			);
+			name = SDDKitTests;
+			productName = SDDKitTests;
+			productReference = 561A73AD1E07B45D0024A508 /* SDDKitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		561A739B1E07B45D0024A508 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = Capsule;
+				TargetAttributes = {
+					561A73A31E07B45D0024A508 = {
+						CreatedOnToolsVersion = 8.2;
+						ProvisioningStyle = Automatic;
+					};
+					561A73AC1E07B45D0024A508 = {
+						CreatedOnToolsVersion = 8.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 561A739E1E07B45D0024A508 /* Build configuration list for PBXProject "SDDKit" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 561A739A1E07B45D0024A508;
+			productRefGroup = 561A73A51E07B45D0024A508 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				561A73A31E07B45D0024A508 /* SDDKit */,
+				561A73AC1E07B45D0024A508 /* SDDKitTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		561A73A21E07B45D0024A508 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		561A73AB1E07B45D0024A508 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		561A739F1E07B45D0024A508 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				561A73D91E07B4B30024A508 /* SDDEventsPool.m in Sources */,
+				561A73DD1E07B4B30024A508 /* SDDSchedulerBuilder.m in Sources */,
+				561A73CE1E07B4B30024A508 /* sdd_array.c in Sources */,
+				561A73D01E07B4B30024A508 /* sdd_builder.c in Sources */,
+				561A73D41E07B4B30024A508 /* sdd_builder.yy.c in Sources */,
+				561A73D51E07B4B30024A508 /* sdd_parser.c in Sources */,
+				561A73DB1E07B4B30024A508 /* SDDScheduler.m in Sources */,
+				561A73D21E07B4B30024A508 /* sdd_builder.tab.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		561A73A91E07B45D0024A508 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				56E965C81E07B6F90071EDA6 /* SDDBuilderDSLTests.m in Sources */,
+				56E965C91E07B6F90071EDA6 /* SDDMockFlows.m in Sources */,
+				56E965CA1E07B6F90071EDA6 /* SDDSchedulerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		561A73B01E07B45D0024A508 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 561A73A31E07B45D0024A508 /* SDDKit */;
+			targetProxy = 561A73AF1E07B45D0024A508 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		561A73B61E07B45D0024A508 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		561A73B71E07B45D0024A508 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		561A73B91E07B45D0024A508 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = SDDKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.charlesliyh.SDDKit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		561A73BA1E07B45D0024A508 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = SDDKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.charlesliyh.SDDKit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		561A73BC1E07B45D0024A508 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = SDDKitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.charleslyh.SDDKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		561A73BD1E07B45D0024A508 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = SDDKitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.charleslyh.SDDKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		561A739E1E07B45D0024A508 /* Build configuration list for PBXProject "SDDKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				561A73B61E07B45D0024A508 /* Debug */,
+				561A73B71E07B45D0024A508 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		561A73B81E07B45D0024A508 /* Build configuration list for PBXNativeTarget "SDDKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				561A73B91E07B45D0024A508 /* Debug */,
+				561A73BA1E07B45D0024A508 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		561A73BB1E07B45D0024A508 /* Build configuration list for PBXNativeTarget "SDDKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				561A73BC1E07B45D0024A508 /* Debug */,
+				561A73BD1E07B45D0024A508 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 561A739B1E07B45D0024A508 /* Project object */;
+}
