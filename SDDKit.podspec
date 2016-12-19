@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Parser' do |ss|
     ss.source_files = 'SDDKit', 'SDDKit/SDD{EventsPool,Scheduler,SchedulerBuilder}.{h.m}'
-    ss.public_header_files = 'SDDKit/SDD{EventsPool,Scheduler,SchedulerBuilder}.{h.m}'
+    ss.public_header_files = 'SDDKit/SDD{EventsPool,Scheduler,SchedulerBuilder}.h'
   end
 
 end
