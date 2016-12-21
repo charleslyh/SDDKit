@@ -1,0 +1,339 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		56A0439D1E0A128200130EC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56A0439C1E0A128200130EC1 /* Assets.xcassets */; };
+		56A043A01E0A128200130EC1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A0439E1E0A128200130EC1 /* LaunchScreen.storyboard */; };
+		56A043A91E0A136600130EC1 /* SDDKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56A043A81E0A136600130EC1 /* SDDKit.framework */; };
+		56A043AC1E0A13D400130EC1 /* SDDELBSServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A043AB1E0A13D400130EC1 /* SDDELBSServiceViewController.m */; };
+		56A043B51E0A13F500130EC1 /* SDDEAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A043AE1E0A13F500130EC1 /* SDDEAppDelegate.m */; };
+		56A043B61E0A13F500130EC1 /* SDDEContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A043B01E0A13F500130EC1 /* SDDEContext.m */; };
+		56A043B71E0A13F500130EC1 /* SDDELoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A043B21E0A13F500130EC1 /* SDDELoginViewController.m */; };
+		56A043B81E0A13F500130EC1 /* SDDEStringMatchingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A043B41E0A13F500130EC1 /* SDDEStringMatchingViewController.m */; };
+		56A043BA1E0A141500130EC1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A043B91E0A141500130EC1 /* main.m */; };
+		56A043BC1E0A142200130EC1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A043BB1E0A142200130EC1 /* Main.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		56A0438D1E0A128200130EC1 /* SDDExamples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDDExamples.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		56A0439C1E0A128200130EC1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		56A0439F1E0A128200130EC1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		56A043A11E0A128200130EC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56A043A81E0A136600130EC1 /* SDDKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDDKit.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/SDDKit-bxmbxywovvkxpkazeacdulgwlaye/Build/Products/Debug-iphonesimulator/SDDKit.framework"; sourceTree = "<group>"; };
+		56A043AA1E0A13D400130EC1 /* SDDELBSServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDELBSServiceViewController.h; sourceTree = "<group>"; };
+		56A043AB1E0A13D400130EC1 /* SDDELBSServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDELBSServiceViewController.m; sourceTree = "<group>"; };
+		56A043AD1E0A13F500130EC1 /* SDDEAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDEAppDelegate.h; sourceTree = "<group>"; };
+		56A043AE1E0A13F500130EC1 /* SDDEAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDEAppDelegate.m; sourceTree = "<group>"; };
+		56A043AF1E0A13F500130EC1 /* SDDEContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDEContext.h; sourceTree = "<group>"; };
+		56A043B01E0A13F500130EC1 /* SDDEContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDEContext.m; sourceTree = "<group>"; };
+		56A043B11E0A13F500130EC1 /* SDDELoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDELoginViewController.h; sourceTree = "<group>"; };
+		56A043B21E0A13F500130EC1 /* SDDELoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDELoginViewController.m; sourceTree = "<group>"; };
+		56A043B31E0A13F500130EC1 /* SDDEStringMatchingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDEStringMatchingViewController.h; sourceTree = "<group>"; };
+		56A043B41E0A13F500130EC1 /* SDDEStringMatchingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDEStringMatchingViewController.m; sourceTree = "<group>"; };
+		56A043B91E0A141500130EC1 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		56A043BB1E0A142200130EC1 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		56A0438A1E0A128200130EC1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				56A043A91E0A136600130EC1 /* SDDKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		56A043841E0A128200130EC1 = {
+			isa = PBXGroup;
+			children = (
+				56A0438F1E0A128200130EC1 /* SDDExamples */,
+				56A0438E1E0A128200130EC1 /* Products */,
+				56A043A71E0A136600130EC1 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		56A0438E1E0A128200130EC1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				56A0438D1E0A128200130EC1 /* SDDExamples.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		56A0438F1E0A128200130EC1 /* SDDExamples */ = {
+			isa = PBXGroup;
+			children = (
+				56A043AD1E0A13F500130EC1 /* SDDEAppDelegate.h */,
+				56A043AE1E0A13F500130EC1 /* SDDEAppDelegate.m */,
+				56A043AF1E0A13F500130EC1 /* SDDEContext.h */,
+				56A043B01E0A13F500130EC1 /* SDDEContext.m */,
+				56A043B11E0A13F500130EC1 /* SDDELoginViewController.h */,
+				56A043B21E0A13F500130EC1 /* SDDELoginViewController.m */,
+				56A043B31E0A13F500130EC1 /* SDDEStringMatchingViewController.h */,
+				56A043B41E0A13F500130EC1 /* SDDEStringMatchingViewController.m */,
+				56A043AA1E0A13D400130EC1 /* SDDELBSServiceViewController.h */,
+				56A043AB1E0A13D400130EC1 /* SDDELBSServiceViewController.m */,
+				56A0439C1E0A128200130EC1 /* Assets.xcassets */,
+				56A0439E1E0A128200130EC1 /* LaunchScreen.storyboard */,
+				56A043BB1E0A142200130EC1 /* Main.storyboard */,
+				56A043901E0A128200130EC1 /* Supporting Files */,
+			);
+			path = SDDExamples;
+			sourceTree = "<group>";
+		};
+		56A043901E0A128200130EC1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				56A043B91E0A141500130EC1 /* main.m */,
+				56A043A11E0A128200130EC1 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		56A043A71E0A136600130EC1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				56A043A81E0A136600130EC1 /* SDDKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		56A0438C1E0A128200130EC1 /* SDDExamples */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 56A043A41E0A128200130EC1 /* Build configuration list for PBXNativeTarget "SDDExamples" */;
+			buildPhases = (
+				56A043891E0A128200130EC1 /* Sources */,
+				56A0438A1E0A128200130EC1 /* Frameworks */,
+				56A0438B1E0A128200130EC1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SDDExamples;
+			productName = SDDExamples;
+			productReference = 56A0438D1E0A128200130EC1 /* SDDExamples.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		56A043851E0A128200130EC1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = Capsule;
+				TargetAttributes = {
+					56A0438C1E0A128200130EC1 = {
+						CreatedOnToolsVersion = 8.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 56A043881E0A128200130EC1 /* Build configuration list for PBXProject "SDDExamples" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 56A043841E0A128200130EC1;
+			productRefGroup = 56A0438E1E0A128200130EC1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				56A0438C1E0A128200130EC1 /* SDDExamples */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		56A0438B1E0A128200130EC1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				56A043BC1E0A142200130EC1 /* Main.storyboard in Resources */,
+				56A043A01E0A128200130EC1 /* LaunchScreen.storyboard in Resources */,
+				56A0439D1E0A128200130EC1 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		56A043891E0A128200130EC1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				56A043B81E0A13F500130EC1 /* SDDEStringMatchingViewController.m in Sources */,
+				56A043B51E0A13F500130EC1 /* SDDEAppDelegate.m in Sources */,
+				56A043AC1E0A13D400130EC1 /* SDDELBSServiceViewController.m in Sources */,
+				56A043B61E0A13F500130EC1 /* SDDEContext.m in Sources */,
+				56A043BA1E0A141500130EC1 /* main.m in Sources */,
+				56A043B71E0A13F500130EC1 /* SDDELoginViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		56A0439E1E0A128200130EC1 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				56A0439F1E0A128200130EC1 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		56A043A21E0A128200130EC1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		56A043A31E0A128200130EC1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		56A043A51E0A128200130EC1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SDDExamples/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.charleslyh.SDDExamples;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		56A043A61E0A128200130EC1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SDDExamples/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.charleslyh.SDDExamples;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		56A043881E0A128200130EC1 /* Build configuration list for PBXProject "SDDExamples" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				56A043A21E0A128200130EC1 /* Debug */,
+				56A043A31E0A128200130EC1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		56A043A41E0A128200130EC1 /* Build configuration list for PBXNativeTarget "SDDExamples" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				56A043A51E0A128200130EC1 /* Debug */,
+				56A043A61E0A128200130EC1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 56A043851E0A128200130EC1 /* Project object */;
+}
