@@ -46,10 +46,10 @@
     _activated = YES;
 }
 
-- (void)deactivate {
+- (void)deactivate:(id)param {
     NSAssert(_activated, @"<%@> 状态尚未激活", self);
     
-    _deactivation();
+    _deactivation(param);
     _activated = NO;
 }
 
@@ -362,7 +362,7 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     
     for (int i=(int)currentPath.count - 1; i > lastSolidIdx; --i) {
         SDDState* s = currentPath[i];
-        [s deactivate];
+        [s deactivate:argument];
 
         [deactivates addObject:s];
     }

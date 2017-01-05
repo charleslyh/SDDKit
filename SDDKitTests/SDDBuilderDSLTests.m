@@ -644,4 +644,24 @@
     }];
 }
 
+- (void)markArgument:(NSString *)argument {
+    [self.flows addFlow:argument];
+}
+
+- (void)testMarkDeactivatingArgument {
+    NSString* const dsl = SDDOCLanguage
+    (
+     [A ~[B]
+      [B x:markArgument]
+      [C]
+      ]
+     
+     [B]->[C]: Event
+     );
+    
+    [self performTestWithDSL:dsl expectedFlows:@"TheFinalizeArgument" customActions:^(SDDEventsPool *p) {
+        [p scheduleEvent:@"Event" withParam:@"TheFinalizeArgument"];
+    }];
+}
+
 @end

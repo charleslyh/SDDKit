@@ -41,7 +41,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
 }
 
 - (SDDState*)makeStateWithFlows:(__weak SDDMockFlows*)flows name:(NSString*)name preFlow:(NSString*)preflow postLFow:(NSString*)postflow {
-    SDDState* s = [[SDDState alloc] initWithActivation:^(id _){ [flows addFlow:preflow]; } deactivation:^{ [flows addFlow:postflow]; }];
+    SDDState* s = [[SDDState alloc] initWithActivation:^(id _){ [flows addFlow:preflow]; } deactivation:^(id _) { [flows addFlow:postflow]; }];
     [s setName:name];
     return s;
 }

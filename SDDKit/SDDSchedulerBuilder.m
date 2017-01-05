@@ -199,12 +199,16 @@ void SDDSchedulerAddState(void* contextObj, sdd_state* raw_state) {
         }
     };
 
-    SDDDeactivation deactivation = ^{
+    SDDDeactivation deactivation = ^(id argument) {
         NSArray* acts = [exits sddNamedComponents];
         for (NSString* act in acts) {
             SEL simpleSel    = NSSelectorFromString(act);
+            SEL augmentedSel = NSSelectorFromString([NSString stringWithFormat:@"%@:", act]);
+
             if ([context respondsToSelector:simpleSel]) {
                 SDDSimpleAction(context, simpleSel);
+            } else if ([context respondsToSelector:augmentedSel]) {
+                SDDAugmentedAction(context, augmentedSel, argument);
             } else if (context != nil) {
                 [[NSException exceptionWithName:@"SDDSchedulerBuilderException"
                                          reason:[NSString stringWithFormat:@"无法在上下文:%@ 对象中找到 %@ 方法", context, act]

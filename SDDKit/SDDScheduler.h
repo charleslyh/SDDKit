@@ -27,7 +27,7 @@
 typedef BOOL (^SDDCondition)(_Nullable id param);
 typedef void (^SDDAction)(_Nullable id param);
 typedef void (^SDDActivation)(_Nullable id param);
-typedef void (^SDDDeactivation)();
+typedef void (^SDDDeactivation)(_Nullable id param);
 
 
 #pragma mark -
@@ -37,7 +37,7 @@ typedef void (^SDDDeactivation)();
 - (nonnull instancetype)initWithActivation:(nonnull SDDActivation)activation deactivation:(nonnull SDDDeactivation)deactivation;
 
 - (void)activate:(nullable id)argument;
-- (void)deactivate;
+- (void)deactivate:(nullable id)argument;
 @end
 
 #pragma mark -
