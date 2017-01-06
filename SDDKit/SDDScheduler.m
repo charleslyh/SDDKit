@@ -136,13 +136,15 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
 }
 
 - (void)didStartScheduler:(SDDScheduler *)scheduler activates:(NSArray<SDDState *> *)activatedStates {
-    if (_masks & SDDSchedulerLogMaskStart)
-        NSLog(@"[SDD][L][%@] {%@}", scheduler, [self statesString:activatedStates]);
+    if (_masks & SDDSchedulerLogMaskStart) {
+        NSLog(@"[SDD][%@(%p)][L] {%@}", scheduler, scheduler, [self statesString:activatedStates]);
+    }
 }
 
 - (void)didStopScheduler:(SDDScheduler *)scheduler deactivates:(NSArray<SDDState *> *)deactivatedStates {
-    if (_masks & SDDSchedulerLogMaskStop)
-        NSLog(@"[SDD][S][%@] {%@}", scheduler, [self statesString:deactivatedStates]);
+    if (_masks & SDDSchedulerLogMaskStop) {
+        NSLog(@"[SDD][%@(%p)][S] {%@}", scheduler, scheduler, [self statesString:deactivatedStates]);
+    }
 }
 
 - (void)scheduler:(SDDScheduler *)scheduler
@@ -150,13 +152,16 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
       deactivates:(NSArray<SDDState *> *)deactivatedStates
           byEvent:(SDDEvent *)event
 {
-    if (_masks & SDDSchedulerLogMaskTransition)
-        NSLog(@"[SDD][T][%@] event:%@\n deactivates:{%@}\n activates:{%@}",
-              scheduler, event, [self statesString:deactivatedStates], [self statesString:activatedStates]);
+    if (_masks & SDDSchedulerLogMaskTransition) {
+        NSLog(@"[SDD][%@(%p)][T] %@ | {%@} -> {%@}",
+              scheduler, scheduler, event, [self statesString:deactivatedStates], [self statesString:activatedStates]);
+    }
 }
 
-- (void)didLaunchContextMethodWithName:(NSString *)methodName {
-    NSLog(@"[SDD][C] %@", methodName);
+- (void)scheduler:(nonnull SDDScheduler *)scheduler didCallMethodNamed:(nonnull NSString *)name {
+    if (_masks & SDDSchedulerLogMaskCalls) {
+        NSLog(@"[SDD][%@(%p)][C] %@", scheduler, scheduler, name);
+    }
 }
 
 @end

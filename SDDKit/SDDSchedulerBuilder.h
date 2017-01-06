@@ -49,6 +49,6 @@
                            logger:(id<SDDSchedulerLogger>)logger
                             queue:(NSOperationQueue*)queue;
 
-- (void)hostSchedulerWithContext:(id)context dsl:(NSString *)dsl;
-- (void)hostSchedulerWithContext:(id)context dsl:(NSString *)dsl initialArgument:(id)argument;
+- (SDDScheduler *)hostSchedulerWithContext:(id)context dsl:(NSString *)dsl;
+- (SDDScheduler *)hostSchedulerWithContext:(id)context dsl:(NSString *)dsl initialArgument:(id)argument;
 @end

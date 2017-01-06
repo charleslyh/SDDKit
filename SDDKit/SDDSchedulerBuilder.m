@@ -193,8 +193,8 @@ void SDDSchedulerAddState(void* contextObj, sdd_state* raw_state) {
                                                   }] raise];
             }
 
-            if ([scheduler.logger respondsToSelector:@selector(didLaunchContextMethodWithName:)]) {
-                [scheduler.logger didLaunchContextMethodWithName:act];
+            if ([scheduler.logger respondsToSelector:@selector(scheduler:didCallMethodNamed:)]) {
+                [scheduler.logger scheduler:scheduler didCallMethodNamed:act];
             }
         }
     };
@@ -218,8 +218,8 @@ void SDDSchedulerAddState(void* contextObj, sdd_state* raw_state) {
                                                   }] raise];
             }
 
-            if ([scheduler.logger respondsToSelector:@selector(didLaunchContextMethodWithName:)]) {
-                [scheduler.logger didLaunchContextMethodWithName:act];
+            if ([scheduler.logger respondsToSelector:@selector(scheduler:didCallMethodNamed:)]) {
+                [scheduler.logger scheduler:scheduler didCallMethodNamed:act];
             }
         }
     };
@@ -274,8 +274,8 @@ void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
                                                   }] raise];
             }
 
-            if ([scheduler.logger respondsToSelector:@selector(didLaunchContextMethodWithName:)]) {
-                [scheduler.logger didLaunchContextMethodWithName:act];
+            if ([scheduler.logger respondsToSelector:@selector(scheduler:didCallMethodNamed:)]) {
+                [scheduler.logger scheduler:scheduler didCallMethodNamed:act];
             }
         }
     };
@@ -387,8 +387,8 @@ void SDDSchedulerBuilderHandleCompletion(void *contextObj, sdd_state *root_state
     return scheduler;
 }
 
-- (void)hostSchedulerWithContext:(id)context dsl:(NSString *)dsl {
-    [self hostSchedulerWithContext:context dsl:dsl initialArgument:nil];
+- (SDDScheduler *)hostSchedulerWithContext:(id)context dsl:(NSString *)dsl {
+    return [self hostSchedulerWithContext:context dsl:dsl initialArgument:nil];
 }
 
 NSString * SDDMakeUUID() {
@@ -399,12 +399,13 @@ NSString * SDDMakeUUID() {
     return uuidString ;
 }
 
-- (void)hostSchedulerWithContext:(id)context dsl:(NSString *)dsl initialArgument:(id)argument {
+- (SDDScheduler *)hostSchedulerWithContext:(id)context dsl:(NSString *)dsl initialArgument:(id)argument {
     SDDScheduler *scheduler = [self schedulerWithContext:context dsl:dsl];
     scheduler.sddIdentifier = SDDMakeUUID();
     
     [scheduler startWithEventsPool:_epool initialArgument:argument];
     [_schedulers addObject:scheduler];
+    return scheduler;
 }
 
 @end

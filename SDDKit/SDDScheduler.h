@@ -54,7 +54,7 @@ typedef void (^SDDDeactivation)(_Nullable id param);
           byEvent:(nonnull SDDEvent *)event;
 
 @optional
-- (void)didLaunchContextMethodWithName:(nonnull NSString *)methodName;
+- (void)scheduler:(nonnull SDDScheduler *)scheduler didCallMethodNamed:(nonnull NSString *)name;
 @end
 
 
