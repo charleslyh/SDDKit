@@ -62,6 +62,7 @@ typedef NS_OPTIONS(NSInteger, SDDSchedulerLogMasks) {
     SDDSchedulerLogMaskStart      = 1 << 0,
     SDDSchedulerLogMaskStop       = 1 << 1,
     SDDSchedulerLogMaskTransition = 1 << 2,
+    SDDSchedulerLogMaskCalls      = 1 << 3,
     SDDSchedulerLogMaskAll        = 0xFFFF,
 };
 
@@ -70,6 +71,8 @@ typedef NS_OPTIONS(NSInteger, SDDSchedulerLogMasks) {
 @interface SDDSchedulerConsoleLogger : NSObject<SDDSchedulerLogger>
 - (nullable)init UNAVAILABLE_ATTRIBUTE;
 - (nonnull instancetype)initWithMasks:(SDDSchedulerLogMasks)masks;
+
++ (nonnull instancetype)defaultLogger;
 @end
 
 

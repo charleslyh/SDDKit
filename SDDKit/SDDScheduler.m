@@ -110,11 +110,13 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     SDDSchedulerLogMasks _masks;
 }
 
-- (instancetype)init {
-    if (self = [super init]) {
-        _masks = SDDSchedulerLogMaskAll;
-    }
-    return self;
++ (instancetype)defaultLogger {
+    static SDDSchedulerConsoleLogger *loggerInstance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        loggerInstance = [[SDDSchedulerConsoleLogger alloc] initWithMasks:SDDSchedulerLogMaskAll];
+    });
+    return loggerInstance;
 }
 
 - (nonnull instancetype)initWithMasks:(SDDSchedulerLogMasks)masks {
@@ -151,6 +153,10 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     if (_masks & SDDSchedulerLogMaskTransition)
         NSLog(@"[SDD][T][%@] event:%@\n deactivates:{%@}\n activates:{%@}",
               scheduler, event, [self statesString:deactivatedStates], [self statesString:activatedStates]);
+}
+
+- (void)didLaunchContextMethodWithName:(NSString *)methodName {
+    NSLog(@"[SDD][C] %@", methodName);
 }
 
 @end
