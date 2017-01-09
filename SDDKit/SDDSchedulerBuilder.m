@@ -338,7 +338,6 @@ void SDDSchedulerBuilderHandleCompletion(void *contextObj, sdd_state *root_state
 }
 
 @implementation SDDSchedulerBuilder {
-    NSString*              _namespace;
     id<SDDSchedulerLogger> _logger;
     NSOperationQueue       *_queue;
     SDDEventsPool          *_epool;
@@ -346,9 +345,8 @@ void SDDSchedulerBuilderHandleCompletion(void *contextObj, sdd_state *root_state
     NSMutableArray         *_schedulers;
 }
 
-- (instancetype)initWithNamespace:(NSString*)namespc logger:(id<SDDSchedulerLogger>)logger epool:(SDDEventsPool *)epool {
+- (instancetype)initWithLogger:(id<SDDSchedulerLogger>)logger epool:(SDDEventsPool *)epool {
     if (self = [super init]) {
-        _namespace  = namespc;
         _logger     = logger;
         _epool      = epool;
         _schedulers = [NSMutableArray array];
@@ -363,7 +361,7 @@ void SDDSchedulerBuilderHandleCompletion(void *contextObj, sdd_state *root_state
 }
 
 - (SDDScheduler*)schedulerWithContext:(id)context dsl:(NSString*)dsl {
-    SDDScheduler* scheduler = [[SDDScheduler alloc] initWithOperationQueue:_queue logger:_logger];
+    SDDScheduler* scheduler = [[SDDScheduler alloc] initWithLogger:_logger];
     scheduler.sddDSL = dsl;
     
     NSMutableDictionary* states = [NSMutableDictionary dictionary];

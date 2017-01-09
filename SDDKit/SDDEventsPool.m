@@ -39,8 +39,6 @@
 
 @end
 
-//@implementation SDDEInitialTransition @end
-//@implementation SDDEFinalTransition @end
 
 #pragma mark -
 

@@ -36,9 +36,6 @@
 #define SDDELiteral(name)            [[SDDELiteralEvent alloc] initWithName:@#name param:nil]
 #define SDDELiteral2(name, paramObj) [[SDDELiteralEvent alloc] initWithName:@#name param:paramObj]
 
-//@interface SDDEInitialTransition : NSObject <SDDEvent> @end
-//@interface SDDEFinalTransition   : NSObject <SDDEvent> @end
-
 @protocol SDDEventSubscriber <NSObject>
 - (void)onEvent:(nonnull id<SDDEvent>)event;
 @end

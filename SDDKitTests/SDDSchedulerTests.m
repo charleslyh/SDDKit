@@ -57,7 +57,7 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_epool open];
     
     _flows = [[SDDMockFlows alloc] init];
-    _scheduler = [[SDDScheduler alloc] initWithOperationQueue:[SDDDirectExecutionQueue new] logger:nil];
+    _scheduler = [[SDDScheduler alloc] initWithLogger:nil];
 
     A = [self makeStateWithFlows:_flows name:@"A" preFlow:@"a" postLFow:@"1"];
     B = [self makeStateWithFlows:_flows name:@"B" preFlow:@"b" postLFow:@"2"];

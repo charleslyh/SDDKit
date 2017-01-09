@@ -82,7 +82,7 @@ typedef NS_OPTIONS(NSInteger, SDDSchedulerLogMasks) {
 @property (strong, nonatomic, readonly) __nullable id<SDDSchedulerLogger> logger;
 
 - (nullable instancetype)init UNAVAILABLE_ATTRIBUTE;
-- (nonnull instancetype)initWithOperationQueue:(nonnull NSOperationQueue*)queue logger:(nullable id<SDDSchedulerLogger>)logger;
+- (nonnull instancetype)initWithLogger:(nullable id<SDDSchedulerLogger>)logger;
 
 - (void)addState:(nonnull SDDState*)state;
 - (void)state:(nonnull SDDState*)state addMonoStates:(nonnull NSArray<SDDState*>*)states;

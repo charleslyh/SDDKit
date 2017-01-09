@@ -165,7 +165,6 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
 @interface SDDScheduler ()<SDDEventSubscriber> @end
 
 @implementation SDDScheduler {
-    NSOperationQueue* _queue;
     SDDEventsPool* _epool;
     
     NSMutableSet* _states;
@@ -177,9 +176,8 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
     NSMutableDictionary* _descendants;
 }
 
-- (instancetype)initWithOperationQueue:(NSOperationQueue *)queue logger:(id<SDDSchedulerLogger>)logger {
+- (instancetype)initWithLogger:(id<SDDSchedulerLogger>)logger {
     if (self = [super init]) {
-        _queue       = queue;
         _logger      = logger ? logger : [SDDNilLogger new];
         _states      = [NSMutableSet set];
         _jumpTables  = [NSMutableDictionary dictionary];

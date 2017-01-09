@@ -42,9 +42,8 @@
     
     // Inorder to trigger -[SDDSchedulerBuilder dealloc] method, we have to put belows into an auto release pool
     @autoreleasepool {
-        SDDSchedulerBuilder* builder = [[SDDSchedulerBuilder alloc] initWithNamespace:@""
-                                                                               logger:[[SDDSchedulerConsoleLogger alloc] initWithMasks:SDDSchedulerLogMaskAll]
-                                                                                epool:_epool];
+        SDDSchedulerBuilder* builder = [[SDDSchedulerBuilder alloc] initWithLogger:[[SDDSchedulerConsoleLogger alloc] initWithMasks:SDDSchedulerLogMaskAll]
+                                                                             epool:_epool];
         [builder hostSchedulerWithContext:self dsl:dsl];
         
         if (customActions != nil) {
