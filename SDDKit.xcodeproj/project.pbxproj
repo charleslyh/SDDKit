@@ -24,6 +24,7 @@
 		561A73DB1E07B4B30024A508 /* SDDScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 561A73CB1E07B4B30024A508 /* SDDScheduler.m */; };
 		561A73DC1E07B4B30024A508 /* SDDSchedulerBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 561A73CC1E07B4B30024A508 /* SDDSchedulerBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		561A73DD1E07B4B30024A508 /* SDDSchedulerBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 561A73CD1E07B4B30024A508 /* SDDSchedulerBuilder.m */; };
+		56424B111E2158A5009F10A4 /* SDDDirectExecutionQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 56424B101E2158A5009F10A4 /* SDDDirectExecutionQueue.m */; };
 		56E965C81E07B6F90071EDA6 /* SDDBuilderDSLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E965C41E07B6F90071EDA6 /* SDDBuilderDSLTests.m */; };
 		56E965C91E07B6F90071EDA6 /* SDDMockFlows.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E965C61E07B6F90071EDA6 /* SDDMockFlows.m */; };
 		56E965CA1E07B6F90071EDA6 /* SDDSchedulerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E965C71E07B6F90071EDA6 /* SDDSchedulerTests.m */; };
@@ -60,6 +61,8 @@
 		561A73CB1E07B4B30024A508 /* SDDScheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDScheduler.m; sourceTree = "<group>"; };
 		561A73CC1E07B4B30024A508 /* SDDSchedulerBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDSchedulerBuilder.h; sourceTree = "<group>"; };
 		561A73CD1E07B4B30024A508 /* SDDSchedulerBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDSchedulerBuilder.m; sourceTree = "<group>"; };
+		56424B0F1E2158A5009F10A4 /* SDDDirectExecutionQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDDirectExecutionQueue.h; sourceTree = "<group>"; };
+		56424B101E2158A5009F10A4 /* SDDDirectExecutionQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDDirectExecutionQueue.m; sourceTree = "<group>"; };
 		56E965C41E07B6F90071EDA6 /* SDDBuilderDSLTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDBuilderDSLTests.m; sourceTree = "<group>"; };
 		56E965C51E07B6F90071EDA6 /* SDDMockFlows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDMockFlows.h; sourceTree = "<group>"; };
 		56E965C61E07B6F90071EDA6 /* SDDMockFlows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDMockFlows.m; sourceTree = "<group>"; };
@@ -130,6 +133,8 @@
 				56E965CC1E07B7BE0071EDA6 /* Supporting Files */,
 				56E965C51E07B6F90071EDA6 /* SDDMockFlows.h */,
 				56E965C61E07B6F90071EDA6 /* SDDMockFlows.m */,
+				56424B0F1E2158A5009F10A4 /* SDDDirectExecutionQueue.h */,
+				56424B101E2158A5009F10A4 /* SDDDirectExecutionQueue.m */,
 				56E965C41E07B6F90071EDA6 /* SDDBuilderDSLTests.m */,
 				56E965C71E07B6F90071EDA6 /* SDDSchedulerTests.m */,
 			);
@@ -297,6 +302,7 @@
 				56E965C81E07B6F90071EDA6 /* SDDBuilderDSLTests.m in Sources */,
 				56E965C91E07B6F90071EDA6 /* SDDMockFlows.m in Sources */,
 				56E965CA1E07B6F90071EDA6 /* SDDSchedulerTests.m in Sources */,
+				56424B111E2158A5009F10A4 /* SDDDirectExecutionQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

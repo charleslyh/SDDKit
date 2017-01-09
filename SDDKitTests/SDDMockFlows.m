@@ -35,12 +35,3 @@
 }
 
 @end
-
-
-@implementation SDDDirectExecutionQueue
-
-- (void)addOperationWithBlock:(void (^)(void))block {
-    block();
-}
-
-@end

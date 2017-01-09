@@ -12,6 +12,3 @@
 - (void)addFlow:(NSString*)flow;
 @end
 
-
-@interface SDDDirectExecutionQueue : NSOperationQueue
-@end

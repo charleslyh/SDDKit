@@ -250,49 +250,37 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
 }
 
 - (void)onEvent:(SDDEvent *)event withParam:(id)argument {
-    /* 假设
-     <a>
-     [A]->[B]: E1 / generates E2
-     <b>
-     [C]->[D]: E1
-     [C]->[F]: E2
-     [D]->[G]: E2
-     当E1激发时，系统行为会非常奇怪，<a>会由于E1转换到B，然后又激发了E2，而E2又导致<b>进入了F状态。但是，使用者更倾向于认为，既然E1先被激发，那么<b>应该先转换为D，而后，由于E2再转换到G。这类似于传统算法的“广度优先搜索”和“深度优先搜索”处理的问题。这里应该选择“广度优先”处理策略，也就是当E1激发时，应先把所有E1可能导致的转换全部处理完成，然后再处理可能产生的更多事件和转换。
-     要实现这种语义，有很多种方案，例如使用独立线程+生产者、消费者机制等等。但是，本质上来说，其实这就是一个“排队”问题。所以，可以利用OC提供的Operation Queue机制更轻松地实现为：将所有可能导致Action，Event激发的行为“丢”到队列中处理，而不是立即执行。这样的话，即使有新的事件被激发，其触发的状态转换和Action都会再次被排队。而它们前面，肯定已经排好了此前E1激发的其它转换。
-     */
-    [_queue addOperationWithBlock:^{
-        SDDTransition* trans;
-        SDDState *trigger;
-        NSArray* path = [self pathOfState:_currentState];
-        for (NSInteger i=path.count - 1; i>=0; --i) {
-            trigger = path[i];
-            
-            SDDJumpTable* jtable = _jumpTables[trigger];
-            if (!jtable)
-                continue;
-            
-            NSArray* transitions = jtable[event];
-            for (SDDTransition* t in transitions) {
-                if (t.condition(argument)) {
-                    trans = t;
-                    break;
-                }
-            }
-            
-            // 正常情况下，对于某个指定的Event，应该最多仅存在唯一的一个可用转换，即使“不小心”创造了多个，我们认为其行为是“未定义”的。从实现来说，我们只会选用第一个满足条件的转换，而弃用其它的。所以，保证这种唯一性，是上层状态机设计者的职责。
-            if (trans)
+    SDDTransition* trans;
+    SDDState *trigger;
+    NSArray* path = [self pathOfState:_currentState];
+    for (NSInteger i=path.count - 1; i>=0; --i) {
+        trigger = path[i];
+        
+        SDDJumpTable* jtable = _jumpTables[trigger];
+        if (!jtable)
+            continue;
+        
+        NSArray* transitions = jtable[event];
+        for (SDDTransition* t in transitions) {
+            if (t.condition(argument)) {
+                trans = t;
                 break;
+            }
         }
         
-        SDDState* newState = trans.targetState;
-        if (newState) {
-            [self activateState:newState triggerState:trigger withArgument:argument completion:^(NSArray *deactivates, NSArray *activates) {
-                trans.postAct(argument);
-                
-                [_logger scheduler:self activates:activates deactivates:deactivates byEvent:event];
-            }];
-        }
-    }];
+        // 正常情况下，对于某个指定的Event，应该最多仅存在唯一的一个可用转换，即使“不小心”创造了多个，我们认为其行为是“未定义”的。从实现来说，我们只会选用第一个满足条件的转换，而弃用其它的。所以，保证这种唯一性，是上层状态机设计者的职责。
+        if (trans)
+            break;
+    }
+    
+    SDDState* newState = trans.targetState;
+    if (newState) {
+        [self activateState:newState triggerState:trigger withArgument:argument completion:^(NSArray *deactivates, NSArray *activates) {
+            trans.postAct(argument);
+            
+            [_logger scheduler:self activates:activates deactivates:deactivates byEvent:event];
+        }];
+    }
 }
 
 - (NSArray*)pathOfState:(SDDState *)state {

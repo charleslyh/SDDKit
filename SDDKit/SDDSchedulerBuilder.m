@@ -347,14 +347,12 @@ void SDDSchedulerBuilderHandleCompletion(void *contextObj, sdd_state *root_state
     NSMutableArray         *_schedulers;
 }
 
-- (instancetype)initWithNamespace:(NSString*)namespc logger:(id<SDDSchedulerLogger>)logger queue:(NSOperationQueue*)queue {
+- (instancetype)initWithNamespace:(NSString*)namespc logger:(id<SDDSchedulerLogger>)logger epool:(SDDEventsPool *)epool {
     if (self = [super init]) {
         _namespace  = namespc;
         _logger     = logger;
-        _queue      = queue;
-        
+        _epool      = epool;
         _schedulers = [NSMutableArray array];
-        _epool      = [[SDDEventsPool alloc] init];
     }
     return self;
 }

@@ -6,10 +6,12 @@
 //  Copyright © 2016年 yy. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
-#import <objc/runtime.h>
 #import "SDDKit.h"
 #import "SDDMockFlows.h"
+#import "SDDDirectExecutionQueue.h"
+
+#import <XCTest/XCTest.h>
+#import <objc/runtime.h>
 
 @interface SDDState (Name)
 @property (nonatomic) NSString* name;
@@ -52,8 +54,10 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
 - (void)setUp {
     [super setUp];
     
+    _epool = [[SDDEventsPool alloc] init];
+    [_epool open];
+    
     _flows = [[SDDMockFlows alloc] init];
-    _epool = [SDDEventsPool defaultPool];
     _scheduler = [[SDDScheduler alloc] initWithOperationQueue:[SDDDirectExecutionQueue new] logger:nil];
 
     A = [self makeStateWithFlows:_flows name:@"A" preFlow:@"a" postLFow:@"1"];
@@ -67,6 +71,8 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
 
 - (void)tearDown {
     [super tearDown];
+    
+    [_epool close];
 }
 
 - (void)testRunWithSingleState {
@@ -325,8 +331,9 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_epool scheduleEvent:@"α" withParam:nil];
     [_epool scheduleEvent:@"γ" withParam:nil];
     [_epool scheduleEvent:@"β" withParam:nil];
-    [_epool scheduleEvent:@"δ" withParam:nil];
-    XCTAssertEqualObjects(_flows, @"eb2da1c34b2dc");
+    [_epool scheduleEvent:@"δ" withParam:nil completion:^{
+        XCTAssertEqualObjects(_flows, @"eb2da1c34b2dc");
+    }];
 }
 
 // [E d:[B] [D [A][C]] [B]]

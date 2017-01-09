@@ -28,13 +28,22 @@ typedef NSString SDDEvent;
 - (void)onEvent:(nonnull SDDEvent *)event withParam:(nullable id)param;
 @end
 
+typedef void (^SDDEventCompletion)();
+
 @interface SDDEventsPool : NSObject
 
-+ (nonnull instancetype)defaultPool;
+- (nonnull instancetype)init;
++ (nonnull instancetype)sharedPool;
+
+- (void)open;
+- (void)close;
 
 - (void)addSubscriber:(nonnull id<SDDEventSubscriber>)subscriber;
 - (void)removeSubscriber:(nonnull id<SDDEventSubscriber>)subscriber;
 
 - (void)scheduleEvent:(nonnull SDDEvent*)event;
 - (void)scheduleEvent:(nonnull SDDEvent*)event withParam:(nullable id)param;
+- (void)scheduleEvent:(nonnull SDDEvent*)event withCompletion:(nullable SDDEventCompletion)completion;
+- (void)scheduleEvent:(nonnull SDDEvent*)event withParam:(nullable id)param completion:(nullable SDDEventCompletion)completion;
+
 @end

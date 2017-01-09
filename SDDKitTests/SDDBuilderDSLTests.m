@@ -9,12 +9,29 @@
 #import <XCTest/XCTest.h>
 #import "SDDKit.h"
 #import "SDDMockFlows.h"
+#import "SDDDirectExecutionQueue.h"
 
 @interface SDDBuilderDSLTests : XCTestCase
 @property (nonatomic) SDDMockFlows* flows;
 @end
 
-@implementation SDDBuilderDSLTests
+@implementation SDDBuilderDSLTests {
+    SDDEventsPool *_epool;
+    dispatch_semaphore_t _doneE4;
+}
+
+- (void)setUp {
+    [super setUp];
+
+    _epool = [[SDDEventsPool alloc] init];
+    [_epool open];
+}
+
+- (void)tearDown {
+    [super tearDown];
+    
+    [_epool close];
+}
 
 - (void)performTestWithDSL:(NSString*)dsl expectedFlows:(NSString*)expectedFlows customActions:(void (^)(SDDEventsPool*))customActions {
     [self performTestWithDSL:dsl expectedFlows:expectedFlows initialArgument:nil customActions:customActions];
@@ -25,11 +42,21 @@
     
     // Inorder to trigger -[SDDSchedulerBuilder dealloc] method, we have to put belows into an auto release pool
     @autoreleasepool {
-        SDDSchedulerBuilder* builder = [[SDDSchedulerBuilder alloc] initWithNamespace:@"" logger:nil queue:[SDDDirectExecutionQueue new]];
+        SDDSchedulerBuilder* builder = [[SDDSchedulerBuilder alloc] initWithNamespace:@""
+                                                                               logger:[[SDDSchedulerConsoleLogger alloc] initWithMasks:SDDSchedulerLogMaskAll]
+                                                                                epool:_epool];
         [builder hostSchedulerWithContext:self dsl:dsl initialArgument:argument];
         
-        if (customActions != NULL)
+        if (customActions != nil) {
             customActions(builder.epool);
+        }
+        
+        dispatch_semaphore_t done = dispatch_semaphore_create(0);
+        [_epool scheduleEvent:@"WaitForAllDone" withCompletion:^{
+            // 为了让customActions的事件全部处理完成，这里特意
+            dispatch_semaphore_signal(done);
+        }];
+        dispatch_semaphore_wait(done, DISPATCH_TIME_FOREVER);
     }
     
     XCTAssertEqualObjects([_flows description], expectedFlows);
@@ -661,6 +688,36 @@
     
     [self performTestWithDSL:dsl expectedFlows:@"TheFinalizeArgument" customActions:^(SDDEventsPool *p) {
         [p scheduleEvent:@"Event" withParam:@"TheFinalizeArgument"];
+    }];
+}
+
+- (void)scheduleE2 { [_epool scheduleEvent:@"E2"]; }
+- (void)scheduleE3 { [_epool scheduleEvent:@"E3"]; }
+- (void)scheduleE4 {
+    [_epool scheduleEvent:@"E4" withCompletion:^{
+        dispatch_semaphore_signal(_doneE4);
+    }];
+}
+
+- (void)testTripleTransitionCausedByOneEvent {
+    NSString* const dsl = SDDOCLanguage
+    (
+     [Top ~[A]
+      [A e: ma]
+      [B e: mb]
+      [C e: mc]
+      [D e: md]
+      ]
+     
+     [A] -> [B]: E1 / scheduleE2
+     [B] -> [C]: E2 / scheduleE3
+     [C] -> [D]: E3 / scheduleE4
+     );
+    
+    _doneE4 = dispatch_semaphore_create(0);
+    [self performTestWithDSL:dsl expectedFlows:@"abcd" customActions:^(SDDEventsPool *p) {
+        [p scheduleEvent:@"E1"];
+        dispatch_semaphore_wait(_doneE4, dispatch_time(DISPATCH_TIME_NOW, (uint64_t)(1 * NSEC_PER_SEC)));
     }];
 }
 
