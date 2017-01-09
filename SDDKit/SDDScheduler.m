@@ -39,17 +39,17 @@
     return self;
 }
 
-- (void)activate:(id)param {
+- (void)activate:(id<SDDEvent>)event {
     NSAssert(!_activated, @"<%@> 状态不允许重复激活", self);
     
-    _activation(param);
+    _activation(event);
     _activated = YES;
 }
 
-- (void)deactivate:(id)param {
+- (void)deactivate:(id<SDDEvent>)event {
     NSAssert(_activated, @"<%@> 状态尚未激活", self);
     
-    _deactivation(param);
+    _deactivation(event);
     _activated = NO;
 }
 
@@ -64,15 +64,10 @@
 @property (nonatomic, weak, readonly) SDDState* targetState;
 @property (nonatomic, copy, readonly) SDDAction postAct;
 
-- (id)init __attribute__((deprecated));
+- (id)init NS_UNAVAILABLE;
 @end
 
 @implementation SDDTransition
-
-- (id)init {
-    [self doesNotRecognizeSelector:_cmd];
-    return nil;
-}
 
 - (id)initWithCondition:(SDDCondition)condition targetState:(SDDState*)state postAction:(SDDAction)action {
     if (self = [super init]) {
@@ -86,7 +81,7 @@
 @end
 
 
-typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpTable;
+typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJumpTable;
 
 @interface SDDState(NSCopying)<NSCopying> @end
 @implementation SDDState(NSCopying)
@@ -102,7 +97,7 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
 - (void)scheduler:(SDDScheduler *)scheduler
         activates:(NSArray<SDDState *> *)activatedStates
       deactivates:(NSArray<SDDState *> *)deactivatedStates
-          byEvent:(SDDEvent *)event {}
+          byEvent:(id<SDDEvent>)event {}
 @end
 
 
@@ -150,7 +145,7 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
 - (void)scheduler:(SDDScheduler *)scheduler
         activates:(NSArray<SDDState *> *)activatedStates
       deactivates:(NSArray<SDDState *> *)deactivatedStates
-          byEvent:(SDDEvent *)event
+          byEvent:(id<SDDEvent>)event
 {
     if (_masks & SDDSchedulerLogMaskTransition) {
         NSLog(@"[SDD][%@(%p)][T] %@ | {%@} -> {%@}",
@@ -218,13 +213,12 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     _rootState = state;
 }
 
-- (void)when:(SDDEvent *)event
+- (void)when:(NSString *)eventID
    satisfied:(SDDCondition)condition
  transitFrom:(SDDState *)from
           to:(SDDState *)to
   postAction:(SDDAction)postAction
 {
-    NSAssert(event != nil, @"[%@] event参数不允许为nil", NSStringFromSelector(_cmd));
     NSAssert([_states containsObject:from], @"[%@] SDDScheduler尚未添加from状态:%@", NSStringFromSelector(_cmd), from);
     NSAssert([_states containsObject:to],   @"[%@] SDDScheduler尚未添加to状态:%@",   NSStringFromSelector(_cmd), to);
     
@@ -238,18 +232,27 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
         _jumpTables[from] = table;
     }
     
-    NSMutableArray* transitions = table[event];
+    NSMutableArray* transitions = table[eventID];
     if (transitions == nil) {
         // 对于指定状态的跳转表，如果首次处理某个事件，则需要新增一个跳转集
         transitions = [NSMutableArray array];
-        table[event] = transitions;
+        table[eventID] = transitions;
     }
     
     SDDTransition* trans = [[SDDTransition alloc] initWithCondition:condition targetState:to postAction:postAction];
     [transitions addObject:trans];
 }
 
-- (void)onEvent:(SDDEvent *)event withParam:(id)argument {
+- (NSString *)idFromEvent:(id<SDDEvent>)event {
+    if ([event isMemberOfClass:[SDDELiteralEvent class]]) {
+        SDDELiteralEvent *literal = (SDDELiteralEvent *)event;
+        return literal.name;
+    } else {
+        return NSStringFromClass([event class]);
+    }
+}
+
+- (void)onEvent:(id<SDDEvent>)event {
     SDDTransition* trans;
     SDDState *trigger;
     NSArray* path = [self pathOfState:_currentState];
@@ -260,9 +263,10 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
         if (!jtable)
             continue;
         
-        NSArray* transitions = jtable[event];
+        NSString *eventID = [self idFromEvent:event];
+        NSArray* transitions = jtable[eventID];
         for (SDDTransition* t in transitions) {
-            if (t.condition(argument)) {
+            if (t.condition(event)) {
                 trans = t;
                 break;
             }
@@ -275,8 +279,8 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     
     SDDState* newState = trans.targetState;
     if (newState) {
-        [self activateState:newState triggerState:trigger withArgument:argument completion:^(NSArray *deactivates, NSArray *activates) {
-            trans.postAct(argument);
+        [self activateState:newState triggerState:trigger withEvent:event completion:^(NSArray *deactivates, NSArray *activates) {
+            trans.postAct(event);
             
             [_logger scheduler:self activates:activates deactivates:deactivates byEvent:event];
         }];
@@ -323,7 +327,7 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
 
 - (void)activateState:(SDDState *)state
          triggerState:(SDDState *)triggerState
-         withArgument:(id)argument
+            withEvent:(id<SDDEvent>)event
            completion:(void (^)(NSArray* deactivates, NSArray* activates))completion
 {
     NSArray* currentPath = [self pathOfState:_currentState];
@@ -361,14 +365,14 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
     
     for (int i=(int)currentPath.count - 1; i > lastSolidIdx; --i) {
         SDDState* s = currentPath[i];
-        [s deactivate:argument];
+        [s deactivate:event];
 
         [deactivates addObject:s];
     }
     
     for (NSInteger i=lastSolidIdx+1; i < nextPath.count; ++i) {
         SDDState* s = nextPath[i];
-        [s activate:argument];
+        [s activate:event];
 
         [activates addObject:s];
     }
@@ -380,17 +384,14 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
 }
 
 - (void)startWithEventsPool:(SDDEventsPool*)epool {
-    [self startWithEventsPool:epool initialArgument:nil];
-}
-
-- (void)startWithEventsPool:(nonnull SDDEventsPool*)epool initialArgument:(id)argument {
     NSAssert(_currentState==nil, @"不允许重复执行SDDScheduler的[%@]方法", NSStringFromSelector(_cmd));
     NSAssert(_rootState != nil, @"[%@] rootState不允许为nil", NSStringFromSelector(_cmd));
     NSAssert([_states containsObject:_rootState], @"[%@] rootState必须为已添加的状态之一", NSStringFromSelector(_cmd));
     
     _epool = epool;
     [_epool addSubscriber:self];
-    [self activateState:_rootState triggerState:nil withArgument:argument completion:^(NSArray *_, NSArray *activates) {
+    
+    [self activateState:_rootState triggerState:nil withEvent:SDDELiteral(SDDE_InitialTranition) completion:^(NSArray *_, NSArray *activates) {
         [_logger didStartScheduler:self activates:activates];
     }];
 }
@@ -399,7 +400,7 @@ typedef NSMutableDictionary<SDDEvent*, NSMutableArray<SDDTransition*>*> SDDJumpT
 - (void)stop {
     NSAssert(_currentState!=nil, @"执行[SDDSchdeuler stop]之前，请确保其已经运行");
     
-    [self activateState:nil triggerState:_currentState withArgument:nil completion:^(NSArray *deactivates, NSArray *_) {
+    [self activateState:nil triggerState:_currentState withEvent:SDDELiteral(SDDE_FinalTranition) completion:^(NSArray *deactivates, NSArray *_) {
         [_logger didStopScheduler:self deactivates:deactivates];
     }];
     

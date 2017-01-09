@@ -50,5 +50,4 @@
                             epool:(SDDEventsPool *)epool;
 
 - (SDDScheduler *)hostSchedulerWithContext:(id)context dsl:(NSString *)dsl;
-- (SDDScheduler *)hostSchedulerWithContext:(id)context dsl:(NSString *)dsl initialArgument:(id)argument;
 @end

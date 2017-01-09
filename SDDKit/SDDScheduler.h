@@ -24,20 +24,21 @@
 #import "SDDEventsPool.h"
 
 
-typedef BOOL (^SDDCondition)(_Nullable id param);
-typedef void (^SDDAction)(_Nullable id param);
-typedef void (^SDDActivation)(_Nullable id param);
-typedef void (^SDDDeactivation)(_Nullable id param);
+typedef BOOL (^SDDCondition)(_Nullable id<SDDEvent> e);
+typedef void (^SDDAction)(_Nullable id<SDDEvent> e);
+typedef void (^SDDActivation)(_Nullable id<SDDEvent> e);
+typedef void (^SDDDeactivation)(_Nullable id<SDDEvent> e);
 
 
 #pragma mark -
+
 
 @interface SDDState : NSObject
 - (nullable)init UNAVAILABLE_ATTRIBUTE;
 - (nonnull instancetype)initWithActivation:(nonnull SDDActivation)activation deactivation:(nonnull SDDDeactivation)deactivation;
 
-- (void)activate:(nullable id)argument;
-- (void)deactivate:(nullable id)argument;
+- (void)activate:(nullable id<SDDEvent>)event;
+- (void)deactivate:(nullable id<SDDEvent>)event;
 @end
 
 #pragma mark -
@@ -51,7 +52,7 @@ typedef void (^SDDDeactivation)(_Nullable id param);
 - (void)scheduler:(nonnull SDDScheduler *)scheduler
         activates:(nonnull NSArray<SDDState *>*)activatedStates
       deactivates:(nonnull NSArray<SDDState *>*)deactivatedStates
-          byEvent:(nonnull SDDEvent *)event;
+          byEvent:(nonnull id<SDDEvent>)event;
 
 @optional
 - (void)scheduler:(nonnull SDDScheduler *)scheduler didCallMethodNamed:(nonnull NSString *)name;
@@ -88,13 +89,12 @@ typedef NS_OPTIONS(NSInteger, SDDSchedulerLogMasks) {
 - (void)setState:(nonnull SDDState *)state defaultState:(nonnull SDDState*)defaultState;
 - (void)setRootState:(nonnull SDDState*)state;
 
-- (void)when:(nonnull SDDEvent*)event
+- (void)when:(nonnull NSString *)eventID
    satisfied:(nullable SDDCondition)condition
  transitFrom:(nonnull SDDState*)from
           to:(nonnull SDDState*)to
   postAction:(nullable SDDAction)postAction;
 
 - (void)startWithEventsPool:(nonnull SDDEventsPool*)epool;
-- (void)startWithEventsPool:(nonnull SDDEventsPool*)epool initialArgument:(nullable id)argument;
 - (void)stop;
 @end

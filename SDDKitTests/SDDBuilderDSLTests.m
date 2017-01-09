@@ -16,7 +16,7 @@
 @end
 
 @implementation SDDBuilderDSLTests {
-    SDDEventsPool *_epool;
+    SDDEventsPool       *_epool;
     dispatch_semaphore_t _doneE4;
 }
 
@@ -34,10 +34,10 @@
 }
 
 - (void)performTestWithDSL:(NSString*)dsl expectedFlows:(NSString*)expectedFlows customActions:(void (^)(SDDEventsPool*))customActions {
-    [self performTestWithDSL:dsl expectedFlows:expectedFlows initialArgument:nil customActions:customActions];
+    [self performTestWithDSL:dsl expectedFlows:expectedFlows initialParam:nil customActions:customActions];
 }
 
-- (void)performTestWithDSL:(NSString*)dsl expectedFlows:(NSString*)expectedFlows initialArgument:(id)argument customActions:(void (^)(SDDEventsPool*))customActions {
+- (void)performTestWithDSL:(NSString*)dsl expectedFlows:(NSString*)expectedFlows initialParam:(id)param customActions:(void (^)(SDDEventsPool*))customActions {
     self.flows = [[SDDMockFlows alloc] init];
     
     // Inorder to trigger -[SDDSchedulerBuilder dealloc] method, we have to put belows into an auto release pool
@@ -45,14 +45,14 @@
         SDDSchedulerBuilder* builder = [[SDDSchedulerBuilder alloc] initWithNamespace:@""
                                                                                logger:[[SDDSchedulerConsoleLogger alloc] initWithMasks:SDDSchedulerLogMaskAll]
                                                                                 epool:_epool];
-        [builder hostSchedulerWithContext:self dsl:dsl initialArgument:argument];
+        [builder hostSchedulerWithContext:self dsl:dsl];
         
         if (customActions != nil) {
             customActions(builder.epool);
         }
         
         dispatch_semaphore_t done = dispatch_semaphore_create(0);
-        [_epool scheduleEvent:@"WaitForAllDone" withCompletion:^{
+        [_epool scheduleEvent:SDDELiteral(WaitForAllDone) withCompletion:^{
             // 为了让customActions的事件全部处理完成，这里特意
             dispatch_semaphore_signal(done);
         }];
@@ -79,14 +79,14 @@
 - (void)p3 { [self.flows addFlow:@"γ"]; }
 - (void)p4 { [self.flows addFlow:@"δ"]; }
 
-- (void)times2:(NSNumber*)number { [self.flows addFlow:[@([number integerValue] * 2) description]]; }
-- (void)times3:(NSNumber*)number { [self.flows addFlow:[@([number integerValue] * 3) description]]; }
-- (void)times4:(NSNumber*)number { [self.flows addFlow:[@([number integerValue] * 4) description]]; }
+- (void)times2:(SDDELiteralEvent *)e { [self.flows addFlow:[@([e.param integerValue] * 2) description]]; }
+- (void)times3:(SDDELiteralEvent *)e { [self.flows addFlow:[@([e.param integerValue] * 3) description]]; }
+- (void)times4:(SDDELiteralEvent *)e { [self.flows addFlow:[@([e.param integerValue] * 4) description]]; }
 
 
 - (BOOL)yes { return YES; }
 - (BOOL)no  { return NO;  }
-- (BOOL)isOdd:(NSNumber*)number { return [number integerValue] & 1; }
+- (BOOL)isOdd:(SDDELiteralEvent *)e { return [e.param integerValue] & 1; }
 
 - (void)testSingleRootState {
     NSString* const dsl = SDDOCLanguage
@@ -167,11 +167,11 @@
       [C e:mc x:m3]
       ]
      
-     [B]->[C]: Event
+     [B]->[C]: E1
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"ab2c31" customActions:^(SDDEventsPool* p){
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -183,13 +183,13 @@
       [C e:mc x:m3]
       ]
      
-     [B]->[C]: Foward
-     [C]->[B]: Back
+     [B]->[C]: Forward
+     [C]->[B]: Backward
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"ab2c3b21" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Foward"];
-        [p scheduleEvent:@"Back"];
+        [p scheduleEvent:SDDELiteral(Forward)];
+        [p scheduleEvent:SDDELiteral(Backward)];
     }];
 }
 
@@ -214,19 +214,19 @@
 
 - (void)testMultipleTransitions {
     [self performTestWithDSL:[self Figure2_1] expectedFlows:@"eb2da1c34b2dc345" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"E1"];
-        [p scheduleEvent:@"E3"];
-        [p scheduleEvent:@"E2"];
-        [p scheduleEvent:@"E4"];
+        [p scheduleEvent:SDDELiteral(E1)];
+        [p scheduleEvent:SDDELiteral(E3)];
+        [p scheduleEvent:SDDELiteral(E2)];
+        [p scheduleEvent:SDDELiteral(E4)];
     }];
 }
 
 - (void)testMultipleTransitions2 {
     [self performTestWithDSL:[self Figure2_1] expectedFlows:@"eb2da14b2dc345" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"E1"];
-        [p scheduleEvent:@"E2"];
-        [p scheduleEvent:@"E3"];
-        [p scheduleEvent:@"E4"];
+        [p scheduleEvent:SDDELiteral(E1)];
+        [p scheduleEvent:SDDELiteral(E2)];
+        [p scheduleEvent:SDDELiteral(E3)];
+        [p scheduleEvent:SDDELiteral(E4)];
     }];
 }
 
@@ -238,12 +238,12 @@
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: Event (yes)
+     [B] -> [C]: E1 (yes)
     );
 
     [self performTestWithDSL:dsl expectedFlows:@"b2c3" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -255,11 +255,11 @@
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: Event (no)
+     [B] -> [C]: E1 (no)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -271,11 +271,11 @@
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: Event (!no)
+     [B] -> [C]: E1 (!no)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2c3" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -287,11 +287,11 @@
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: Event (!yes)
+     [B] -> [C]: E1 (!yes)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -303,11 +303,11 @@
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: Event (no & no)
+     [B] -> [C]: E1 (no & no)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -319,11 +319,11 @@
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: Event (no & yes)
+     [B] -> [C]: E1 (no & yes)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -335,11 +335,11 @@
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: Event (yes & no)
+     [B] -> [C]: E1 (yes & no)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -351,11 +351,11 @@
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: Event (yes & yes)
+     [B] -> [C]: E1 (yes & yes)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2c3" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -367,11 +367,11 @@
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: Event (no | no)
+     [B] -> [C]: E1 (no | no)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -383,11 +383,11 @@
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: Event (no | yes)
+     [B] -> [C]: E1 (no | yes)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2c3" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -399,11 +399,11 @@
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: Event (yes | no)
+     [B] -> [C]: E1 (yes | no)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2c3" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -415,11 +415,11 @@
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: Event (yes | yes)
+     [B] -> [C]: E1 (yes | yes)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2c3" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -431,11 +431,11 @@
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: Event (no ^ no)
+     [B] -> [C]: E1 (no ^ no)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -447,11 +447,11 @@
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: Event (no ^ yes)
+     [B] -> [C]: E1 (no ^ yes)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2c3" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -463,11 +463,11 @@
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: Event (yes ^ no)
+     [B] -> [C]: E1 (yes ^ no)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2c3" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -479,11 +479,11 @@
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: Event (yes ^ yes)
+     [B] -> [C]: E1 (yes ^ yes)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -496,11 +496,11 @@
       ]
      
      // no & no | yes   => yes
-     [B] -> [C]: Event (no & no | yes)
+     [B] -> [C]: E1 (no & no | yes)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2c3" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -515,11 +515,11 @@
      // no & no | yes   => yes
      // no & (no | yes) => no
      // 括号应该改变运算优先级
-     [B] -> [C]: Event (no & (no | yes))
+     [B] -> [C]: E1 (no & (no | yes))
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -531,11 +531,11 @@
       [C e:mc x:m3]
       ]
 
-     [B]->[C]: Event / p1
+     [B]->[C]: E1 / p1
      );
 
     [self performTestWithDSL:dsl expectedFlows:@"b2cα3" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -547,11 +547,11 @@
       [C e:mc x:m3]
       ]
      
-     [B]->[C]: Event / p1 p2
+     [B]->[C]: E1 / p1 p2
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2cαβ3" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -563,13 +563,13 @@
       [C e:mc x:m3]
       ]
      
-     [B]->[C]: Event1 / p1 p2
-     [C]->[B]: Event2 / p3
+     [B]->[C]: E1 / p1 p2
+     [C]->[B]: E2 / p3
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2cαβ3bγ2" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event1"];
-        [p scheduleEvent:@"Event2"];
+        [p scheduleEvent:SDDELiteral(E1)];
+        [p scheduleEvent:SDDELiteral(E2)];
     }];
 }
 
@@ -581,11 +581,11 @@
       [C e:mc x:m3]
       ]
      
-     [B]->[C]: Trigger (no) / p1
+     [B]->[C]: E1 (no) / p1
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Trigger"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -597,11 +597,11 @@
       [C e:mc x:m3]
       ]
      
-     [B]->[C]: Trigger (yes) / p3
+     [B]->[C]: E1 (yes) / p3
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2cγ3" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Trigger"];
+        [p scheduleEvent:SDDELiteral(E1)];
     }];
 }
 
@@ -613,13 +613,12 @@
       [C e:mc times3 x:p3]
       ]
      
-     [B]->[C]: Trigger / times4
+     [B]->[C]: E1 / times4
      );
     
     NSNumber* seven = @7;
-    NSNumber* nine  = @9;
-    [self performTestWithDSL:dsl expectedFlows:@"b18βc2128γ" initialArgument:nine customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Trigger" withParam:seven];
+    [self performTestWithDSL:dsl expectedFlows:@"b0βc2128γ" customActions:^(SDDEventsPool* p) {
+        [p scheduleEvent:SDDELiteral2(E1, seven)];
     }];
 }
 
@@ -631,11 +630,11 @@
       [C e:mc x:m3]
       ]
      
-     [B]->[C]: Event (isOdd)
+     [B]->[C]: E1 (isOdd)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2c3" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event" withParam:@1];
+        [p scheduleEvent:SDDELiteral2(E1, @1)];
     }];
 }
 
@@ -647,11 +646,11 @@
       [C e:mc x:m3]
       ]
      
-     [B]->[C]: Event (isOdd)
+     [B]->[C]: E1 (isOdd)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event" withParam:@2];
+        [p scheduleEvent:SDDELiteral2(E1, @2)];
     }];
 }
 
@@ -663,16 +662,16 @@
       [C e:mc x:m3]
       ]
      
-     [B]->[C]: Event (isOdd | yes)
+     [B]->[C]: E1 (isOdd | yes)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2c3" customActions:^(SDDEventsPool* p) {
-        [p scheduleEvent:@"Event" withParam:@2];
+        [p scheduleEvent:SDDELiteral2(E1, @2)];
     }];
 }
 
-- (void)markArgument:(NSString *)argument {
-    [self.flows addFlow:argument];
+- (void)markArgument:(SDDELiteralEvent *)literal {
+    [self.flows addFlow:literal.param];
 }
 
 - (void)testMarkDeactivatingArgument {
@@ -683,18 +682,18 @@
       [C]
       ]
      
-     [B]->[C]: Event
+     [B]->[C]: E1
      );
     
-    [self performTestWithDSL:dsl expectedFlows:@"TheFinalizeArgument" customActions:^(SDDEventsPool *p) {
-        [p scheduleEvent:@"Event" withParam:@"TheFinalizeArgument"];
+    [self performTestWithDSL:dsl expectedFlows:@"LastArgument" customActions:^(SDDEventsPool *p) {
+        [p scheduleEvent:SDDELiteral2(E1, @"LastArgument")];
     }];
 }
 
-- (void)scheduleE2 { [_epool scheduleEvent:@"E2"]; }
-- (void)scheduleE3 { [_epool scheduleEvent:@"E3"]; }
+- (void)scheduleE2 { [_epool scheduleEvent:SDDELiteral(E2)]; }
+- (void)scheduleE3 { [_epool scheduleEvent:SDDELiteral(E3)]; }
 - (void)scheduleE4 {
-    [_epool scheduleEvent:@"E4" withCompletion:^{
+    [_epool scheduleEvent:SDDELiteral(E4) withCompletion:^{
         dispatch_semaphore_signal(_doneE4);
     }];
 }
@@ -716,7 +715,7 @@
     
     _doneE4 = dispatch_semaphore_create(0);
     [self performTestWithDSL:dsl expectedFlows:@"abcd" customActions:^(SDDEventsPool *p) {
-        [p scheduleEvent:@"E1"];
+        [p scheduleEvent:SDDELiteral(E1)];
         dispatch_semaphore_wait(_doneE4, dispatch_time(DISPATCH_TIME_NOW, (uint64_t)(1 * NSEC_PER_SEC)));
     }];
 }

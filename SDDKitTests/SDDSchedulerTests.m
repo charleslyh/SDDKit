@@ -31,7 +31,6 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
 
 @end
 
-
 @interface SDDSchedulerTests : XCTestCase
 @end
 
@@ -48,7 +47,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     return s;
 }
 
-static BOOL (^SDDCondAllwaysTrue)(id) = ^BOOL (id _) { return YES; };
+static BOOL (^AllwaysYES)(id) = ^BOOL (id _) { return YES; };
 static void (^SDDNilPostAction)(id) = ^(id _){};
 
 - (void)setUp {
@@ -107,11 +106,12 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
 - (void)testLeafRefreshAtRoot {
     [_scheduler addState:A];
     [_scheduler setRootState:A];
-    [_scheduler when:@"E" satisfied:SDDCondAllwaysTrue transitFrom:A to:A postAction:nil];
+    [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:A to:A postAction:nil];
 
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:@"E" withParam:nil];
-    XCTAssertEqualObjects(_flows, @"a1a");
+    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
+        XCTAssertEqualObjects(_flows, @"a1a");
+    }];
 }
 
 - (void)testLeafRefresh {
@@ -119,11 +119,12 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler addState:B];
     [_scheduler state:A addMonoStates:@[B]];
     [_scheduler setRootState:A];
-    [_scheduler when:@"E" satisfied:SDDCondAllwaysTrue transitFrom:B to:B postAction:nil];
+    [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:B to:B postAction:nil];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:@"E" withParam:nil];
-    XCTAssertEqualObjects(_flows, @"ab2b");
+    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
+        XCTAssertEqualObjects(_flows, @"ab2b");
+    }];
 }
 
 - (void)testTransitFromParentToChild {
@@ -131,11 +132,12 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler addState:B];
     [_scheduler state:A addMonoStates:@[B]];
     [_scheduler setRootState:A];
-    [_scheduler when:@"E" satisfied:SDDCondAllwaysTrue transitFrom:A to:B postAction:nil];
+    [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:A to:B postAction:nil];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:@"E" withParam:nil];
-    XCTAssertEqualObjects(_flows, @"ab2b");
+    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
+        XCTAssertEqualObjects(_flows, @"ab2b");
+    }];
 }
 
 - (void)testTransitFromParentToNoneDefaultChildState {
@@ -145,11 +147,12 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler state:A addMonoStates:@[B, C]];
     [_scheduler setState:A defaultState:B];
     [_scheduler setRootState:A];
-    [_scheduler when:@"E" satisfied:SDDCondAllwaysTrue transitFrom:A to:C postAction:nil];
+    [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:A to:C postAction:nil];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:@"E" withParam:nil];
-    XCTAssertEqualObjects(_flows, @"ab2c");
+    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
+        XCTAssertEqualObjects(_flows, @"ab2c");
+    }];
 }
 
 - (void)testLeafRefreshAcrossMultiStates {
@@ -159,11 +162,12 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler state:A addMonoStates:@[B]];
     [_scheduler state:B addMonoStates:@[C]];
     [_scheduler setRootState:A];
-    [_scheduler when:@"E" satisfied:SDDCondAllwaysTrue transitFrom:A to:C postAction:nil];
+    [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:A to:C postAction:nil];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:@"E" withParam:nil];
-    XCTAssertEqualObjects(_flows, @"abc32bc");
+    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
+        XCTAssertEqualObjects(_flows, @"abc32bc");
+    }];
 }
 
 // [A [B d:[C] [C] [D]]]
@@ -177,11 +181,12 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler state:B addMonoStates:@[C,D]];
     [_scheduler setState:B defaultState:C];
     [_scheduler setRootState:A];
-    [_scheduler when:@"E" satisfied:SDDCondAllwaysTrue transitFrom:A to:D postAction:nil];
+    [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:A to:D postAction:nil];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:@"E" withParam:nil];
-    XCTAssertEqualObjects(_flows, @"abc32bd");
+    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
+        XCTAssertEqualObjects(_flows, @"abc32bd");
+    }];
 }
 
 - (void)testActivateHierarchicalStatesWithImplicitDefaultState {
@@ -227,11 +232,12 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler state:A addMonoStates:@[B,C]];
     [_scheduler setState:A defaultState:B];
     [_scheduler setRootState:A];
-    [_scheduler when:@"E" satisfied:SDDCondAllwaysTrue transitFrom:B to:C postAction:SDDNilPostAction];
+    [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:B to:C postAction:SDDNilPostAction];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:@"E" withParam:nil];
-    XCTAssertEqualObjects(_flows, @"ab2c");
+    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
+        XCTAssertEqualObjects(_flows, @"ab2c");
+    }];
 }
 
 // [A d:[B] [B][C [D]]]
@@ -245,11 +251,12 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler state:C addMonoStates:@[D]];
     [_scheduler setState:A defaultState:B];
     [_scheduler setRootState:A];
-    [_scheduler when:@"E" satisfied:SDDCondAllwaysTrue transitFrom:B to:D postAction:SDDNilPostAction];
+    [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:B to:D postAction:SDDNilPostAction];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:@"E" withParam:nil];
-    XCTAssertEqualObjects(_flows, @"ab2cd");
+    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
+        XCTAssertEqualObjects(_flows, @"ab2cd");
+    }];
 }
 
 // [A d:[C] [B [C]][D]]
@@ -263,11 +270,12 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler state:B addMonoStates:@[C]];
     [_scheduler setState:A defaultState:C];
     [_scheduler setRootState:A];
-    [_scheduler when:@"E" satisfied:SDDCondAllwaysTrue transitFrom:C to:D postAction:SDDNilPostAction];
+    [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:C to:D postAction:SDDNilPostAction];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:@"E" withParam:nil];
-    XCTAssertEqualObjects(_flows, @"abc32d");
+    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
+        XCTAssertEqualObjects(_flows, @"abc32d");
+    }];
 }
 
 // [A d:[B] [B [C]] [D [E]]]
@@ -283,11 +291,12 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler state:D addMonoStates:@[E]];
     [_scheduler setState:A defaultState:C];
     [_scheduler setRootState:A];
-    [_scheduler when:@"E" satisfied:SDDCondAllwaysTrue transitFrom:C to:E postAction:SDDNilPostAction];
+    [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:C to:E postAction:SDDNilPostAction];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:@"E" withParam:nil];
-    XCTAssertEqualObjects(_flows, @"abc32de");
+    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
+        XCTAssertEqualObjects(_flows, @"abc32de");
+    }];
 }
 
 // [A d:[B] [B][C]]
@@ -299,18 +308,19 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler state:A addMonoStates:@[B,C]];
     [_scheduler setState:A defaultState:B];
     [_scheduler setRootState:A];
-    [_scheduler when:@"E" satisfied:SDDCondAllwaysTrue transitFrom:A to:C postAction:SDDNilPostAction];
+    [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:A to:C postAction:SDDNilPostAction];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:@"E" withParam:nil];
-    XCTAssertEqualObjects(_flows, @"ab2c");
+    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
+        XCTAssertEqualObjects(_flows, @"ab2c");
+    }];
 }
 
 // [E d:[B] [D [A][C]] [B]]
-// [B]->[A]: α
-// [D]->[B]: β
-// [A]->[C]: γ
-// [B]->[C]: δ
+// [B]->[A]: Alpha
+// [D]->[B]: Beta
+// [A]->[C]: Gama
+// [B]->[C]: Delta
 - (void)testFig2_1 {
     [_scheduler addState:A];
     [_scheduler addState:B];
@@ -322,25 +332,30 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler setState:E defaultState:B];
     [_scheduler setRootState:E];
     
-    [_scheduler when:@"α" satisfied:SDDCondAllwaysTrue transitFrom:B to:A postAction:SDDNilPostAction];
-    [_scheduler when:@"β" satisfied:SDDCondAllwaysTrue transitFrom:D to:B postAction:SDDNilPostAction];
-    [_scheduler when:@"γ" satisfied:SDDCondAllwaysTrue transitFrom:A to:C postAction:SDDNilPostAction];
-    [_scheduler when:@"δ" satisfied:SDDCondAllwaysTrue transitFrom:B to:C postAction:SDDNilPostAction];
+    [_scheduler when:@"Alpha" satisfied:AllwaysYES transitFrom:B to:A postAction:SDDNilPostAction];
+    [_scheduler when:@"Beta" satisfied:AllwaysYES transitFrom:D to:B postAction:SDDNilPostAction];
+    [_scheduler when:@"Gama" satisfied:AllwaysYES transitFrom:A to:C postAction:SDDNilPostAction];
+    [_scheduler when:@"Delta" satisfied:AllwaysYES transitFrom:B to:C postAction:SDDNilPostAction];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:@"α" withParam:nil];
-    [_epool scheduleEvent:@"γ" withParam:nil];
-    [_epool scheduleEvent:@"β" withParam:nil];
-    [_epool scheduleEvent:@"δ" withParam:nil completion:^{
+    [_epool scheduleEvent:SDDELiteral(Alpha)];
+    [_epool scheduleEvent:SDDELiteral(Gama)];
+    [_epool scheduleEvent:SDDELiteral(Beta)];
+    [_epool scheduleEvent:SDDELiteral(Delta) withCompletion:^{
         XCTAssertEqualObjects(_flows, @"eb2da1c34b2dc");
     }];
 }
 
-// [E d:[B] [D [A][C]] [B]]
-// [B]->[A]: α
-// [D]->[B]: β
-// [A]->[C]: γ
-// [B]->[C]: δ
+// [E ~[B]
+//  [D
+//   [A][C]
+//  ]
+//  [B]
+// ]
+// [B]->[A]: Alpha
+// [D]->[B]: Beta
+// [A]->[C]: Gama
+// [B]->[C]: Delta
 - (void)testFig2_2 {
     [_scheduler addState:A];
     [_scheduler addState:B];
@@ -351,19 +366,20 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler state:D addMonoStates:@[A,C]];
     [_scheduler setState:E defaultState:B];
     [_scheduler setRootState:E];
-    [_scheduler when:@"α" satisfied:SDDCondAllwaysTrue transitFrom:B to:A postAction:SDDNilPostAction];
-    [_scheduler when:@"β" satisfied:SDDCondAllwaysTrue transitFrom:D to:B postAction:SDDNilPostAction];
-    [_scheduler when:@"γ" satisfied:SDDCondAllwaysTrue transitFrom:A to:C postAction:SDDNilPostAction];
-    [_scheduler when:@"δ" satisfied:SDDCondAllwaysTrue transitFrom:B to:C postAction:SDDNilPostAction];
+    [_scheduler when:@"Alpha" satisfied:AllwaysYES transitFrom:B to:A postAction:SDDNilPostAction];
+    [_scheduler when:@"Beta"  satisfied:AllwaysYES transitFrom:D to:B postAction:SDDNilPostAction];
+    [_scheduler when:@"Gama"  satisfied:AllwaysYES transitFrom:A to:C postAction:SDDNilPostAction];
+    [_scheduler when:@"Delta" satisfied:AllwaysYES transitFrom:B to:C postAction:SDDNilPostAction];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:@"α" withParam:nil];
-    [_epool scheduleEvent:@"β" withParam:nil];
-    [_epool scheduleEvent:@"γ" withParam:nil];
-    [_epool scheduleEvent:@"δ" withParam:nil];
-    [_scheduler stop];
     
-    // 遇到被完全忽略的γ事件后，此前记录的状态被清空了，所以容易出现问题
+    [_epool scheduleEvent:SDDELiteral(Alpha)];
+    [_epool scheduleEvent:SDDELiteral(Beta)];
+    [_epool scheduleEvent:SDDELiteral(Gama)];
+    [_epool scheduleEvent:SDDELiteral(Delta)];
+
+    [_scheduler stop];
+    // 遇到被完全忽略的Gama事件后，此前记录的状态被清空了，所以容易出现问题
     XCTAssertEqualObjects(_flows, @"eb2da14b2dc345");
 }
 

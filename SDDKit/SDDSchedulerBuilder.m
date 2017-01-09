@@ -250,10 +250,6 @@ void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
     __weak SDDScheduler* scheduler = pcontext.scheduler;
     __weak id context = pcontext.runtimeContext;
     
-    SDDEvent* event = [NSString stringWithCString:t->event encoding:NSUTF8StringEncoding];
-    SDDState* fromState = [pcontext stateWithCName:t->from];
-    SDDState* toState   = [pcontext stateWithCName:t->to];
-    
     NSString* names = [NSString stringWithCString:t->actions encoding:NSUTF8StringEncoding];
     SDDAction postAction = ^(id argument) {
         NSArray* acts = [names sddNamedComponents];
@@ -327,7 +323,10 @@ void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
         return [[evalStack lastObject] boolValue];
     };
 
-    [pcontext.scheduler when:event satisfied:condition transitFrom:fromState to:toState postAction:postAction];
+    SDDState* fromState = [pcontext stateWithCName:t->from];
+    SDDState* toState   = [pcontext stateWithCName:t->to];
+    NSString* eventID   = [NSString stringWithCString:t->event encoding:NSUTF8StringEncoding];
+    [pcontext.scheduler when:eventID satisfied:condition transitFrom:fromState to:toState postAction:postAction];
 }
 
 void SDDSchedulerBuilderHandleCompletion(void *contextObj, sdd_state *root_state) {
@@ -386,7 +385,12 @@ void SDDSchedulerBuilderHandleCompletion(void *contextObj, sdd_state *root_state
 }
 
 - (SDDScheduler *)hostSchedulerWithContext:(id)context dsl:(NSString *)dsl {
-    return [self hostSchedulerWithContext:context dsl:dsl initialArgument:nil];
+    SDDScheduler *scheduler = [self schedulerWithContext:context dsl:dsl];
+    scheduler.sddIdentifier = SDDMakeUUID();
+    
+    [scheduler startWithEventsPool:_epool];
+    [_schedulers addObject:scheduler];
+    return scheduler;
 }
 
 NSString * SDDMakeUUID() {
@@ -395,15 +399,6 @@ NSString * SDDMakeUUID() {
     CFRelease(uuidObj);
     
     return uuidString ;
-}
-
-- (SDDScheduler *)hostSchedulerWithContext:(id)context dsl:(NSString *)dsl initialArgument:(id)argument {
-    SDDScheduler *scheduler = [self schedulerWithContext:context dsl:dsl];
-    scheduler.sddIdentifier = SDDMakeUUID();
-    
-    [scheduler startWithEventsPool:_epool initialArgument:argument];
-    [_schedulers addObject:scheduler];
-    return scheduler;
 }
 
 @end

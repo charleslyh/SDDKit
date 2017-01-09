@@ -22,10 +22,25 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NSString SDDEvent;
+@protocol SDDEvent <NSObject>
+@end
+
+@interface SDDELiteralEvent : NSObject <SDDEvent>
+@property (copy,   nonatomic, readonly, nonnull)  NSString *name;
+@property (strong, nonatomic, readonly, nullable) id param;
+
+- (nullable instancetype)init NS_UNAVAILABLE;
+- (nonnull instancetype)initWithName:(nonnull NSString *)name param:(nullable id)param;
+@end
+
+#define SDDELiteral(name)            [[SDDELiteralEvent alloc] initWithName:@#name param:nil]
+#define SDDELiteral2(name, paramObj) [[SDDELiteralEvent alloc] initWithName:@#name param:paramObj]
+
+//@interface SDDEInitialTransition : NSObject <SDDEvent> @end
+//@interface SDDEFinalTransition   : NSObject <SDDEvent> @end
 
 @protocol SDDEventSubscriber <NSObject>
-- (void)onEvent:(nonnull SDDEvent *)event withParam:(nullable id)param;
+- (void)onEvent:(nonnull id<SDDEvent>)event;
 @end
 
 typedef void (^SDDEventCompletion)();
@@ -41,9 +56,7 @@ typedef void (^SDDEventCompletion)();
 - (void)addSubscriber:(nonnull id<SDDEventSubscriber>)subscriber;
 - (void)removeSubscriber:(nonnull id<SDDEventSubscriber>)subscriber;
 
-- (void)scheduleEvent:(nonnull SDDEvent*)event;
-- (void)scheduleEvent:(nonnull SDDEvent*)event withParam:(nullable id)param;
-- (void)scheduleEvent:(nonnull SDDEvent*)event withCompletion:(nullable SDDEventCompletion)completion;
-- (void)scheduleEvent:(nonnull SDDEvent*)event withParam:(nullable id)param completion:(nullable SDDEventCompletion)completion;
+- (void)scheduleEvent:(nonnull id<SDDEvent>)event;
+- (void)scheduleEvent:(nonnull id<SDDEvent>)event withCompletion:(nullable SDDEventCompletion)completion;
 
 @end
