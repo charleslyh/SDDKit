@@ -189,10 +189,21 @@ SDDInternalEventBundle * SDDMakeInternalEventBundle(id<SDDEvent> event, SDDEvent
     dispatch_semaphore_signal(_eventSignals);
 }
 
+- (void)showWarningMessageIfNeeded {
+    if ([NSThread isMainThread]) {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            NSLog(@"-[SDDEventsPool scheduleEvent:waitUntilDone:] is calling from main thread with waitUntilDone set to *YES*. It could cause a *DEAD LOCK* if dispatching state actions(activating/deactivating) into main queue. Try using -[SDDEventsPool scheduleEvent:withCompletion:] instead. This message shows only once.");
+        });
+    }
+}
+
 - (void)scheduleEvent:(nonnull id<SDDEvent>)event waitUntilDone:(BOOL)waitUntilDone {
     SDDEventCompletion completion;
     void (^doWaiting)();
     if (waitUntilDone) {
+        [self showWarningMessageIfNeeded];
+        
         dispatch_semaphore_t doneEvent = dispatch_semaphore_create(0);
         completion = ^{
             dispatch_semaphore_signal(doneEvent);
