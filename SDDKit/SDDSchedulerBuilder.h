@@ -47,5 +47,6 @@
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithLogger:(id<SDDSchedulerLogger>)logger epool:(SDDEventsPool *)epool;
 
-- (SDDScheduler *)hostSchedulerWithContext:(id)context dsl:(NSString *)dsl;
+- (SDDScheduler *)addSchedulerWithContext:(id)context dsl:(NSString *)dsl;
+- (void)removeScheduler:(SDDScheduler *)scheduler;
 @end

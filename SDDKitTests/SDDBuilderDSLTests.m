@@ -44,7 +44,7 @@
     @autoreleasepool {
         SDDSchedulerBuilder* builder = [[SDDSchedulerBuilder alloc] initWithLogger:[[SDDSchedulerConsoleLogger alloc] initWithMasks:SDDSchedulerLogMaskAll]
                                                                              epool:_epool];
-        [builder hostSchedulerWithContext:self dsl:dsl];
+        [builder addSchedulerWithContext:self dsl:dsl];
         
         if (customActions != nil) {
             customActions(builder.epool);

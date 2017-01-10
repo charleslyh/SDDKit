@@ -51,7 +51,7 @@
 }
 
 - (void) setupIndicatorView {
-    [self.sddBuilder hostSchedulerWithContext:self dsl:SDDOCLanguage
+    [self.sddBuilder addSchedulerWithContext:self dsl:SDDOCLanguage
      ([Indicator ~[Hidden]
        [Hidden    e:stopUpdatingAnimation]
        [Animating e:startUpdatingAnimation]
@@ -81,7 +81,7 @@
 }
 
 - (void) setupMessageState {
-    [self.sddBuilder hostSchedulerWithContext:self dsl:SDDOCLanguage
+    [self.sddBuilder addSchedulerWithContext:self dsl:SDDOCLanguage
      ([Message]
       
       [Message] -> [Message]: UIViewDidLoad           / showStartingMessage
@@ -114,7 +114,7 @@
      [Switch] -> [Enabled]:  LBSDidChangeAuthorization(isLBSAvailable)
      );
     
-    [_sddBuilder hostSchedulerWithContext:self dsl:dsl];
+    [_sddBuilder addSchedulerWithContext:self dsl:dsl];
     
     
 
@@ -170,7 +170,7 @@
 }
 
 - (void) setupLocationService {
-    [self.sddBuilder hostSchedulerWithContext:self dsl:SDDOCLanguage
+    [self.sddBuilder addSchedulerWithContext:self dsl:SDDOCLanguage
      ([LBService e:setupLocationManager ~[Disabled]
        [Disabled]
        [Enabled

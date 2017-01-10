@@ -231,7 +231,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
          [CountDown]    ->  [Disabled]:     TimesUp(!isPhoneNumber)
     );
     
-    [_domain hostSchedulerWithContext:self dsl:dsl];
+    [_domain addSchedulerWithContext:self dsl:dsl];
 }
 
 -(void)setupPhoneNumberFieldState {
@@ -246,7 +246,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         [Disabled]  ->  [Normal]:      TimesUp
     );
     
-    [_domain hostSchedulerWithContext:self dsl:dsl];
+    [_domain addSchedulerWithContext:self dsl:dsl];
 }
 
 -(void)setupSMSCodeFieldState {
@@ -261,7 +261,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         [Normal]      ->  [Disabled]:   DidChangePhoneNumber
     );
     
-    [_domain hostSchedulerWithContext:self dsl:dsl];
+    [_domain addSchedulerWithContext:self dsl:dsl];
 }
 
 -(void)setupVerifyButtonState {
@@ -286,7 +286,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         NSString *serverDSL = [NSString stringWithContentsOfURL:[NSURL URLWithString:@"http://localhost:5000/app/config/verifyButtonStateConfig"] encoding:NSUTF8StringEncoding error:&err];
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *aDSL = (err || [serverDSL isEqualToString:@""]) ? dsl : serverDSL;
-            [_domain hostSchedulerWithContext:wself dsl:aDSL];
+            [_domain addSchedulerWithContext:wself dsl:aDSL];
         });
     });
 }
@@ -303,7 +303,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         [Shown]     ->  [Hidden]:  DoneVerifying
     );
     
-    [_domain hostSchedulerWithContext:self dsl:dsl];
+    [_domain addSchedulerWithContext:self dsl:dsl];
 }
 
 -(void)setupFailureTipState {
@@ -318,7 +318,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         [Shown]     ->  [Hidden]:  ShouldHideFailureTip
      );
     
-    [_domain hostSchedulerWithContext:self dsl:dsl];
+    [_domain addSchedulerWithContext:self dsl:dsl];
 }
 
 -(void)setupDomainWidgets {

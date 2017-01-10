@@ -39,9 +39,7 @@
 #pragma mark - SDDBuilder
 
 - (void)setupSDDBuilder {
-    _sddBuilder = [[SDDSchedulerBuilder alloc] initWithNamespace:@"StringMatching"
-                                                          logger:[[SDDSchedulerConsoleLogger alloc] initWithMasks:SDDSchedulerLogMaskAll]
-                                                           queue:[NSOperationQueue currentQueue]];
+    _sddBuilder = [[SDDSchedulerBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool]];
 }
 
 #pragma mark - MatchState
@@ -52,7 +50,7 @@
     dsl = [dsl stringByAppendingString:[self declareMultiState:stateTable]];
     dsl = [dsl stringByAppendingString:[self initializeMultiStateTransmit:stateTable]];
 
-    [_sddBuilder hostSchedulerWithContext:self dsl:dsl];
+    [_sddBuilder addSchedulerWithContext:self dsl:dsl];
 
 }
 

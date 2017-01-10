@@ -382,13 +382,18 @@ void SDDSchedulerBuilderHandleCompletion(void *contextObj, sdd_state *root_state
     return scheduler;
 }
 
-- (SDDScheduler *)hostSchedulerWithContext:(id)context dsl:(NSString *)dsl {
+- (SDDScheduler *)addSchedulerWithContext:(id)context dsl:(NSString *)dsl {
     SDDScheduler *scheduler = [self schedulerWithContext:context dsl:dsl];
     scheduler.sddIdentifier = SDDMakeUUID();
     
     [scheduler startWithEventsPool:_epool];
     [_schedulers addObject:scheduler];
     return scheduler;
+}
+
+- (void)removeScheduler:(SDDScheduler *)scheduler {
+    [scheduler stop];
+    [_schedulers removeObject:scheduler];
 }
 
 NSString * SDDMakeUUID() {

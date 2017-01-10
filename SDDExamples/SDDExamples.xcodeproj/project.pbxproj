@@ -137,6 +137,7 @@
 				TargetAttributes = {
 					56A0438C1E0A128200130EC1 = {
 						CreatedOnToolsVersion = 8.2;
+						DevelopmentTeam = 2DF7TAE5CB;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -294,7 +295,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 2DF7TAE5CB;
 				INFOPLIST_FILE = SDDExamples/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.charleslyh.SDDExamples;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -305,7 +308,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 2DF7TAE5CB;
 				INFOPLIST_FILE = SDDExamples/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.charleslyh.SDDExamples;
 				PRODUCT_NAME = "$(TARGET_NAME)";
