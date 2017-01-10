@@ -24,10 +24,11 @@
 
 
 @implementation SDDELiteralEvent
+@synthesize signalName = _signalName;
 
-- (instancetype)initWithName:(NSString *)name param:(id)param {
+- (instancetype)initWithSignalName:(NSString *)signalName param:(id)param {
     if (self = [super init]) {
-        _name  = name;
+        _signalName = signalName;
         _param = param;
     }
     return self;
@@ -35,9 +36,9 @@
 
 - (NSString *)description {
     if (self.param) {
-        return [NSString stringWithFormat:@"%@:%@", self.name, self.param];
+        return [NSString stringWithFormat:@"<SDDELiteral %@: %@>", self.signalName, self.param];
     } else {
-        return self.name;
+        return [NSString stringWithFormat:@"<SDDELiteral %@>", self.signalName];
     }
 }
 
@@ -179,17 +180,37 @@ SDDInternalEventBundle * SDDMakeInternalEventBundle(id<SDDEvent> event, SDDEvent
     }
 }
 
-- (void)scheduleEvent:(nonnull id<SDDEvent>)event {
-    [self scheduleEvent:event withCompletion:nil];
-}
-
 - (void)scheduleEvent:(nonnull id<SDDEvent>)event withCompletion:(nullable SDDEventCompletion)completion {
     NSAssert(!_exited, @"Events pool should open before scheduling event.");
-
+    
     @synchronized (_eventBundles) {
         [_eventBundles addObject:SDDMakeInternalEventBundle(event, completion)];
     }
     dispatch_semaphore_signal(_eventSignals);
+}
+
+- (void)scheduleEvent:(nonnull id<SDDEvent>)event waitUntilDone:(BOOL)waitUntilDone {
+    SDDEventCompletion completion;
+    void (^doWaiting)();
+    if (waitUntilDone) {
+        dispatch_semaphore_t doneEvent = dispatch_semaphore_create(0);
+        completion = ^{
+            dispatch_semaphore_signal(doneEvent);
+        };
+        doWaiting = ^{
+            dispatch_semaphore_wait(doneEvent, DISPATCH_TIME_FOREVER);
+        };
+    } else {
+        completion = nil;
+        doWaiting  = ^{};
+    }
+    
+    [self scheduleEvent:event withCompletion:completion];
+    doWaiting();
+}
+
+- (void)scheduleEvent:(nonnull id<SDDEvent>)event {
+    [self scheduleEvent:event waitUntilDone:NO];
 }
 
 - (void)addFilter:(id<SDDEventFilter>)filter {

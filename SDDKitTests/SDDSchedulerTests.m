@@ -135,9 +135,9 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:A to:B postAction:nil];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
-        XCTAssertEqualObjects(_flows, @"ab2b");
-    }];
+    [_epool scheduleEvent:SDDELiteral(E) waitUntilDone:YES];
+
+    XCTAssertEqualObjects(_flows, @"ab2b");
 }
 
 - (void)testTransitFromParentToNoneDefaultChildState {
@@ -150,9 +150,9 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:A to:C postAction:nil];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
-        XCTAssertEqualObjects(_flows, @"ab2c");
-    }];
+    [_epool scheduleEvent:SDDELiteral(E) waitUntilDone:YES];
+
+    XCTAssertEqualObjects(_flows, @"ab2c");
 }
 
 - (void)testLeafRefreshAcrossMultiStates {
@@ -165,9 +165,9 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:A to:C postAction:nil];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
-        XCTAssertEqualObjects(_flows, @"abc32bc");
-    }];
+    [_epool scheduleEvent:SDDELiteral(E) waitUntilDone:YES];
+
+    XCTAssertEqualObjects(_flows, @"abc32bc");
 }
 
 // [A [B d:[C] [C] [D]]]
@@ -184,9 +184,9 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:A to:D postAction:nil];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
-        XCTAssertEqualObjects(_flows, @"abc32bd");
-    }];
+    [_epool scheduleEvent:SDDELiteral(E) waitUntilDone:YES];
+
+    XCTAssertEqualObjects(_flows, @"abc32bd");
 }
 
 - (void)testActivateHierarchicalStatesWithImplicitDefaultState {
@@ -235,9 +235,9 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:B to:C postAction:SDDNilPostAction];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
-        XCTAssertEqualObjects(_flows, @"ab2c");
-    }];
+    [_epool scheduleEvent:SDDELiteral(E) waitUntilDone:YES];
+
+    XCTAssertEqualObjects(_flows, @"ab2c");
 }
 
 // [A d:[B] [B][C [D]]]
@@ -254,9 +254,9 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:B to:D postAction:SDDNilPostAction];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
-        XCTAssertEqualObjects(_flows, @"ab2cd");
-    }];
+    [_epool scheduleEvent:SDDELiteral(E) waitUntilDone:YES];
+
+    XCTAssertEqualObjects(_flows, @"ab2cd");
 }
 
 // [A d:[C] [B [C]][D]]
@@ -273,9 +273,9 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:C to:D postAction:SDDNilPostAction];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
-        XCTAssertEqualObjects(_flows, @"abc32d");
-    }];
+    [_epool scheduleEvent:SDDELiteral(E) waitUntilDone:YES];
+
+    XCTAssertEqualObjects(_flows, @"abc32d");
 }
 
 // [A d:[B] [B [C]] [D [E]]]
@@ -294,9 +294,9 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:C to:E postAction:SDDNilPostAction];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
-        XCTAssertEqualObjects(_flows, @"abc32de");
-    }];
+    [_epool scheduleEvent:SDDELiteral(E) waitUntilDone:YES];
+
+    XCTAssertEqualObjects(_flows, @"abc32de");
 }
 
 // [A d:[B] [B][C]]
@@ -311,9 +311,9 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler when:@"E" satisfied:AllwaysYES transitFrom:A to:C postAction:SDDNilPostAction];
     
     [_scheduler startWithEventsPool:_epool];
-    [_epool scheduleEvent:SDDELiteral(E) withCompletion:^{
-        XCTAssertEqualObjects(_flows, @"ab2c");
-    }];
+    [_epool scheduleEvent:SDDELiteral(E) waitUntilDone:YES];
+
+    XCTAssertEqualObjects(_flows, @"ab2c");
 }
 
 // [E d:[B] [D [A][C]] [B]]
@@ -333,17 +333,17 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_scheduler setRootState:E];
     
     [_scheduler when:@"Alpha" satisfied:AllwaysYES transitFrom:B to:A postAction:SDDNilPostAction];
-    [_scheduler when:@"Beta" satisfied:AllwaysYES transitFrom:D to:B postAction:SDDNilPostAction];
-    [_scheduler when:@"Gama" satisfied:AllwaysYES transitFrom:A to:C postAction:SDDNilPostAction];
+    [_scheduler when:@"Beta"  satisfied:AllwaysYES transitFrom:D to:B postAction:SDDNilPostAction];
+    [_scheduler when:@"Gama"  satisfied:AllwaysYES transitFrom:A to:C postAction:SDDNilPostAction];
     [_scheduler when:@"Delta" satisfied:AllwaysYES transitFrom:B to:C postAction:SDDNilPostAction];
     
     [_scheduler startWithEventsPool:_epool];
     [_epool scheduleEvent:SDDELiteral(Alpha)];
     [_epool scheduleEvent:SDDELiteral(Gama)];
     [_epool scheduleEvent:SDDELiteral(Beta)];
-    [_epool scheduleEvent:SDDELiteral(Delta) withCompletion:^{
-        XCTAssertEqualObjects(_flows, @"eb2da1c34b2dc");
-    }];
+    [_epool scheduleEvent:SDDELiteral(Delta) waitUntilDone:YES];
+
+    XCTAssertEqualObjects(_flows, @"eb2da1c34b2dc");
 }
 
 // [E ~[B]
@@ -376,7 +376,7 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_epool scheduleEvent:SDDELiteral(Alpha)];
     [_epool scheduleEvent:SDDELiteral(Beta)];
     [_epool scheduleEvent:SDDELiteral(Gama)];
-    [_epool scheduleEvent:SDDELiteral(Delta)];
+    [_epool scheduleEvent:SDDELiteral(Delta) waitUntilDone:YES];
 
     [_scheduler stop];
     // 遇到被完全忽略的Gama事件后，此前记录的状态被清空了，所以容易出现问题

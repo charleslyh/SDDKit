@@ -50,12 +50,7 @@
             customActions(builder.epool);
         }
         
-        dispatch_semaphore_t done = dispatch_semaphore_create(0);
-        [_epool scheduleEvent:SDDELiteral(WaitForAllDone) withCompletion:^{
-            // 为了让customActions的事件全部处理完成，这里特意
-            dispatch_semaphore_signal(done);
-        }];
-        dispatch_semaphore_wait(done, DISPATCH_TIME_FOREVER);
+        [_epool scheduleEvent:SDDELiteral(WaitForThisEvent) waitUntilDone:YES];
     }
     
     XCTAssertEqualObjects([_flows description], expectedFlows);

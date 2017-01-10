@@ -211,7 +211,7 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
     _rootState = state;
 }
 
-- (void)when:(NSString *)eventID
+- (void)when:(NSString *)signalName
    satisfied:(SDDCondition)condition
  transitFrom:(SDDState *)from
           to:(SDDState *)to
@@ -230,24 +230,15 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
         _jumpTables[from] = table;
     }
     
-    NSMutableArray* transitions = table[eventID];
+    NSMutableArray* transitions = table[signalName];
     if (transitions == nil) {
         // 对于指定状态的跳转表，如果首次处理某个事件，则需要新增一个跳转集
         transitions = [NSMutableArray array];
-        table[eventID] = transitions;
+        table[signalName] = transitions;
     }
     
     SDDTransition* trans = [[SDDTransition alloc] initWithCondition:condition targetState:to postAction:postAction];
     [transitions addObject:trans];
-}
-
-- (NSString *)idFromEvent:(id<SDDEvent>)event {
-    if ([event isMemberOfClass:[SDDELiteralEvent class]]) {
-        SDDELiteralEvent *literal = (SDDELiteralEvent *)event;
-        return literal.name;
-    } else {
-        return NSStringFromClass([event class]);
-    }
 }
 
 - (void)onEvent:(id<SDDEvent>)event {
@@ -261,8 +252,7 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
         if (!jtable)
             continue;
         
-        NSString *eventID = [self idFromEvent:event];
-        NSArray* transitions = jtable[eventID];
+        NSArray* transitions = jtable[event.signalName];
         for (SDDTransition* t in transitions) {
             if (t.condition(event)) {
                 trans = t;

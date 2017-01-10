@@ -23,19 +23,26 @@
 #import <Foundation/Foundation.h>
 
 @protocol SDDEvent <NSObject>
+@property (copy, nonatomic, readonly, nonnull) NSString *signalName;
 @end
 
 @interface SDDELiteralEvent : NSObject <SDDEvent>
-@property (copy,   nonatomic, readonly, nonnull)  NSString *name;
 @property (strong, nonatomic, readonly, nullable) id param;
 
 - (nullable instancetype)init NS_UNAVAILABLE;
-- (nonnull instancetype)initWithName:(nonnull NSString *)name param:(nullable id)param;
+- (nonnull instancetype)initWithSignalName:(nonnull NSString *)signalName param:(nullable id)param;
 @end
 
-// Convience factory macros for making literal events
-#define SDDELiteral(name)            [[SDDELiteralEvent alloc] initWithName:@#name param:nil]
-#define SDDELiteral2(name, paramObj) [[SDDELiteralEvent alloc] initWithName:@#name param:paramObj]
+/*
+ Convience factory macros for making literal events
+ Usages:
+    void usages(SDDEventsPool *epool) {
+        [epool scheduleEvent:SDDELiteral(AnEvent)];
+        [epool scheduleEvent:SDDELiteral(EventWithParam, @"StringParam")];
+    }
+ */
+#define SDDELiteral(name)            [[SDDELiteralEvent alloc] initWithSignalName:@#name param:nil]
+#define SDDELiteral2(name, paramObj) [[SDDELiteralEvent alloc] initWithSignalName:@#name param:paramObj]
 
 
 #pragma mark -
@@ -66,6 +73,7 @@ typedef void (^SDDEventCompletion)();
 - (void)removeSubscriber:(nonnull id<SDDEventSubscriber>)subscriber;
 
 - (void)scheduleEvent:(nonnull id<SDDEvent>)event;
+- (void)scheduleEvent:(nonnull id<SDDEvent>)event waitUntilDone:(BOOL)waitUntilDone;
 - (void)scheduleEvent:(nonnull id<SDDEvent>)event withCompletion:(nullable SDDEventCompletion)completion;
 
 - (void)addFilter:(nonnull id<SDDEventFilter>)filter;

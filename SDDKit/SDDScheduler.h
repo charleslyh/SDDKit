@@ -89,7 +89,7 @@ typedef NS_OPTIONS(NSInteger, SDDSchedulerLogMasks) {
 - (void)setState:(nonnull SDDState *)state defaultState:(nonnull SDDState*)defaultState;
 - (void)setRootState:(nonnull SDDState*)state;
 
-- (void)when:(nonnull NSString *)eventID
+- (void)when:(nonnull NSString *)signalName
    satisfied:(nullable SDDCondition)condition
  transitFrom:(nonnull SDDState*)from
           to:(nonnull SDDState*)to
