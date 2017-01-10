@@ -34,7 +34,11 @@
 }
 
 - (NSString *)description {
-    return self.name;
+    if (self.param) {
+        return [NSString stringWithFormat:@"%@:%@", self.name, self.param];
+    } else {
+        return self.name;
+    }
 }
 
 @end
@@ -62,6 +66,7 @@ SDDInternalEventBundle * SDDMakeInternalEventBundle(id<SDDEvent> event, SDDEvent
 @implementation SDDEventsPool {
     NSMutableSet        *_subscribers;
     NSMutableArray      *_eventBundles;
+    NSMutableArray      *_filters;
     dispatch_semaphore_t _eventSignals;
     
     BOOL _exited;
@@ -72,6 +77,7 @@ SDDInternalEventBundle * SDDMakeInternalEventBundle(id<SDDEvent> event, SDDEvent
     if (self = [super init]) {
         _exited       = YES;
         _subscribers  = [NSMutableSet set];
+        _filters      = [NSMutableArray array];
         _eventBundles = [NSMutableArray array];
         _eventSignals = dispatch_semaphore_create(0);
     }
@@ -121,7 +127,17 @@ SDDInternalEventBundle * SDDMakeInternalEventBundle(id<SDDEvent> event, SDDEvent
     }
     
     for (id<SDDEventSubscriber> subscriber in subscribersCopy) {
-        [subscriber onEvent:bundle.event];
+        BOOL shouldProceed = YES;
+        for (id<SDDEventFilter> filter in _filters) {
+            if (![filter subscriber:subscriber shouldReceiveEvent:bundle.event]) {
+                shouldProceed = NO;
+                break; // break filter iterating loop
+            }
+        }
+        
+        if (shouldProceed) {
+            [subscriber onEvent:bundle.event];
+        }
     }
     
     if (bundle.completion != nil) {
@@ -151,7 +167,7 @@ SDDInternalEventBundle * SDDMakeInternalEventBundle(id<SDDEvent> event, SDDEvent
     return defaultPool;
 }
 
-- (void)addSubscriber:(id<SDDEventSubscriber>)subscriber {
+- (void)addSubscriber:(nonnull id<SDDEventSubscriber>)subscriber {
     @synchronized (_subscribers) {
         [_subscribers addObject:subscriber];
     }
@@ -170,12 +186,18 @@ SDDInternalEventBundle * SDDMakeInternalEventBundle(id<SDDEvent> event, SDDEvent
 - (void)scheduleEvent:(nonnull id<SDDEvent>)event withCompletion:(nullable SDDEventCompletion)completion {
     NSAssert(!_exited, @"Events pool should open before scheduling event.");
 
-    NSLog(@"Will process event: %@", event);
     @synchronized (_eventBundles) {
         [_eventBundles addObject:SDDMakeInternalEventBundle(event, completion)];
     }
     dispatch_semaphore_signal(_eventSignals);
-    NSLog(@"Done event: %@", event);
+}
+
+- (void)addFilter:(id<SDDEventFilter>)filter {
+    [_filters addObject:filter];
+}
+
+- (void)removeFilter:(id<SDDEventFilter>)filter {
+    [_filters removeObject:filter];
 }
 
 @end

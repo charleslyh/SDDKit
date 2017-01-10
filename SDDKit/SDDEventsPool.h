@@ -33,12 +33,24 @@
 - (nonnull instancetype)initWithName:(nonnull NSString *)name param:(nullable id)param;
 @end
 
+// Convience factory macros for making literal events
 #define SDDELiteral(name)            [[SDDELiteralEvent alloc] initWithName:@#name param:nil]
 #define SDDELiteral2(name, paramObj) [[SDDELiteralEvent alloc] initWithName:@#name param:paramObj]
+
+
+#pragma mark -
 
 @protocol SDDEventSubscriber <NSObject>
 - (void)onEvent:(nonnull id<SDDEvent>)event;
 @end
+
+@protocol SDDEventFilter <NSObject>
+
+- (BOOL)subscriber:(nonnull id<SDDEventSubscriber>)subscriber shouldReceiveEvent:(nonnull id<SDDEvent>)event;
+
+@end
+
+#pragma mark -
 
 typedef void (^SDDEventCompletion)();
 
@@ -56,4 +68,6 @@ typedef void (^SDDEventCompletion)();
 - (void)scheduleEvent:(nonnull id<SDDEvent>)event;
 - (void)scheduleEvent:(nonnull id<SDDEvent>)event withCompletion:(nullable SDDEventCompletion)completion;
 
+- (void)addFilter:(nonnull id<SDDEventFilter>)filter;
+- (void)removeFilter:(nonnull id<SDDEventFilter>)filter;
 @end
