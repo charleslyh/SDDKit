@@ -20,15 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include "sdd_parser.h"
 #include "sdd_builder.h"
 #include "sdd_array.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 
-void SDDBuilderInit(SDDBuilder* builder, SDDMarkdownFn markdown, sdd_parser_callback* callback) {
+void sdd_builder_construct(sdd_builder* builder, sdd_markdown markdown, sdd_parser_callback* callback) {
 	builder->procedures  = sdd_array_new();
 	builder->state_names = sdd_array_new();
 	builder->entries     = sdd_array_new();
@@ -46,20 +46,20 @@ void SDDBuilderInit(SDDBuilder* builder, SDDMarkdownFn markdown, sdd_parser_call
 	builder->callback    = callback;
 }
 
-void SDDDumpStateByNames(void* context, void* element) {
+void sdd_dump_state_by_names(void* context, void* element) {
 	sdd_state* state = (sdd_state*)element;
     printf("[%s]", state->name);
 }
 
-void SDDDumpString(void* context, void* element) {
+void sdd_dump_string(void* context, void* element) {
 	printf("%s ", (const char*)element);
 }
 
-void SDDDumpArrayCount(void* context, void* array) {
+void sdd_dump_array_count(void* context, void* array) {
 	printf("%d ", sdd_array_count((sdd_array*)array));
 }
 
-void SDDDumpElements(const char* name, sdd_bool isGroup, sdd_array* elements, sdd_array_element_handler handler) {
+void sdd_dump_elements(const char* name, sdd_bool isGroup, sdd_array* elements, sdd_array_element_handler handler) {
 	printf("");
 	printf(isGroup ? "[*]" : "   ");
 	printf("[%d]%s\t", sdd_array_count(elements), name);
@@ -67,24 +67,24 @@ void SDDDumpElements(const char* name, sdd_bool isGroup, sdd_array* elements, sd
 	printf("\n");
 }
 
-void SDDDumpParser(SDDBuilder* builder, const char* tag) {
+void sdd_dump_builder(sdd_builder* builder, const char* tag) {
 	printf ("_______ %s _______\n", tag);
-	SDDDumpElements("states",     sdd_no,  builder->states,     SDDDumpStateByNames);
-	SDDDumpElements("buckets",    sdd_yes, builder->buckets,    SDDDumpArrayCount);
-	SDDDumpElements("clusters",   sdd_yes, builder->clusters,   SDDDumpArrayCount);
-	SDDDumpElements("state_names",sdd_no,  builder->state_names,SDDDumpString);
-	SDDDumpElements("entries",    sdd_no,  builder->entries,    SDDDumpString);
-	SDDDumpElements("exits",      sdd_no,  builder->exits,      SDDDumpString);
-	SDDDumpElements("defaults",   sdd_no,  builder->defaults,   SDDDumpString);
-	SDDDumpElements("stubs",	  sdd_no,  builder->stubs,      SDDDumpString);
-	SDDDumpElements("procedures", sdd_no,  builder->procedures, SDDDumpString);
-	SDDDumpElements("id_groups",  sdd_yes, builder->id_groups,  SDDDumpArrayCount);
-	SDDDumpElements("post_acts",  sdd_no,  builder->post_acts,  SDDDumpString);
-	SDDDumpElements("ids", 		  sdd_no,  builder->ids,        SDDDumpString);
+	sdd_dump_elements("states",     sdd_no,  builder->states,     sdd_dump_state_by_names);
+	sdd_dump_elements("buckets",    sdd_yes, builder->buckets,    sdd_dump_array_count);
+	sdd_dump_elements("clusters",   sdd_yes, builder->clusters,   sdd_dump_array_count);
+	sdd_dump_elements("state_names",sdd_no,  builder->state_names,sdd_dump_string);
+	sdd_dump_elements("entries",    sdd_no,  builder->entries,    sdd_dump_string);
+	sdd_dump_elements("exits",      sdd_no,  builder->exits,      sdd_dump_string);
+	sdd_dump_elements("defaults",   sdd_no,  builder->defaults,   sdd_dump_string);
+	sdd_dump_elements("stubs",      sdd_no,  builder->stubs,      sdd_dump_string);
+	sdd_dump_elements("procedures", sdd_no,  builder->procedures, sdd_dump_string);
+	sdd_dump_elements("id_groups",  sdd_yes, builder->id_groups,  sdd_dump_array_count);
+	sdd_dump_elements("post_acts",  sdd_no,  builder->post_acts,  sdd_dump_string);
+	sdd_dump_elements("ids", 		sdd_no,  builder->ids,        sdd_dump_string);
 	printf ("________________________\n");
 }
 
-void SDDBuilderDestroy(SDDBuilder* builder) {
+void sdd_builder_destruct(sdd_builder* builder) {
 	sdd_array_delete(builder->post_acts);
 	sdd_array_delete(builder->ids);
 	sdd_array_delete(builder->id_groups);
@@ -99,12 +99,12 @@ void SDDBuilderDestroy(SDDBuilder* builder) {
 	sdd_array_delete(builder->states);
 }
 
-void SDDBuilderPushIdentifier(SDDBuilder* builder, const char* identifier) {
+void sdd_builder_push_id(sdd_builder* builder, const char* identifier) {
 	sdd_array_push(builder->ids, (void*)strdup(identifier));
 	(*builder->markdown)("ids", identifier);
 }
 
-void SDDBuilderMakeIDGroup(SDDBuilder* builder, int gen_new) {
+void sdd_builder_make_id_group(sdd_builder* builder, int gen_new) {
 	sdd_array* group;
 	if (gen_new) {
 		group = sdd_array_new();
@@ -118,28 +118,28 @@ void SDDBuilderMakeIDGroup(SDDBuilder* builder, int gen_new) {
 	(*builder->markdown)("id_groups", id);
 }
 
-void SDDBuilderMakeStub(SDDBuilder* builder) {
+void sdd_builder_make_stub(sdd_builder* builder) {
 	const char* stub = sdd_array_pop(builder->ids);
 	sdd_array_push(builder->stubs, (void*)stub);
 
 	builder->markdown("stub", stub);
 }
 
-void SDDBuilderMakeStateName(SDDBuilder* builder) {
+void sdd_builder_make_state_name(sdd_builder* builder) {
 	const char* identifier = sdd_array_pop(builder->ids);
 	sdd_array_push(builder->state_names, (void*)identifier);
 
 	(*builder->markdown)("state_name", identifier);
 }
 
-void SDDBuilderDeleteArray(sdd_array* array) {
+void sdd_builder_array_delete(sdd_array* array) {
 	while(sdd_array_count(array)>0) {
 		free((void*)sdd_array_pop(array));
 	}
 	free(array);
 }
 
-char* SDDBuilderGenerateArrayString(sdd_array* array) {
+char* sdd_builder_array_string_new(sdd_array* array) {
 	char buffer[256];
 	buffer[0] = 0;
 	while(sdd_array_count(array) > 0) {
@@ -154,41 +154,41 @@ char* SDDBuilderGenerateArrayString(sdd_array* array) {
 	return strdup(buffer);
 }
 
-void SDDBuilderMakeProcedure(SDDBuilder* builder, int empty) {
+void sdd_builder_make_procedure(sdd_builder* builder, int empty) {
 	if (empty != 0) {
 		sdd_array_push(builder->procedures, strdup(""));
 		return;
 	}
 
 	sdd_array* id_group = sdd_array_pop(builder->id_groups);
-	const char* procedure = SDDBuilderGenerateArrayString(id_group);
+	const char* procedure = sdd_builder_array_string_new(id_group);
 	sdd_array_push(builder->procedures, (void*)procedure);
-	SDDBuilderDeleteArray(id_group);
+	sdd_builder_array_delete(id_group);
 
 	(*builder->markdown)("procedure", procedure);
 }
 
-void SDDBuilderMakeEntry(SDDBuilder* builder, int empty) {
+void sdd_builder_make_entry(sdd_builder* builder, int empty) {
 	const char* procs = empty == 0 ? sdd_array_pop(builder->procedures) : strdup("");
 	sdd_array_push(builder->entries, (void*)procs);
 	(*builder->markdown)("entry", procs);
 }
 
-void SDDBuilderMakeExit(SDDBuilder* builder, int empty) {
+void sdd_builder_make_exit(sdd_builder* builder, int empty) {
 	char* procs = empty == 0 ? sdd_array_pop(builder->procedures) : strdup("");
 	sdd_array_push(builder->exits, (void*)procs);
 
 	(*builder->markdown)("exit", empty ? "<null>" : procs);
 }
 
-void SDDBuilderMakeDefault(SDDBuilder* builder, int empty) {
+void sdd_builder_make_default(sdd_builder* builder, int empty) {
 	char* stub = empty == 0 ? sdd_array_pop(builder->stubs) : strdup("");
 	sdd_array_push(builder->defaults, (void*)stub);
 
 	(*builder->markdown)("default", empty ? "<null>" : stub);
 }
 
-void SDDBuilderMakeCluster(SDDBuilder* builder, int gen_new) {
+void sdd_builder_make_cluster(sdd_builder* builder, int gen_new) {
 	if (gen_new) {
 		sdd_array_push(builder->clusters, sdd_array_new());
 	}
@@ -197,7 +197,7 @@ void SDDBuilderMakeCluster(SDDBuilder* builder, int gen_new) {
 	sdd_array_push(clusters, state);
 }
 
-void SDDBuilderMakeBucket(SDDBuilder* builder, int gen_new) {
+void sdd_builder_make_bucket(sdd_builder* builder, int gen_new) {
 	sdd_array* bucket;
 	if (gen_new) {
 		bucket = sdd_array_new();
@@ -215,14 +215,14 @@ void SDDBuilderMakeBucket(SDDBuilder* builder, int gen_new) {
 	}
 }
 
-sdd_state* SDDBuilderExtractState(SDDBuilder* builder) {
+sdd_state* sdd_builder_extract_state(sdd_builder* builder) {
 	const char* name = sdd_array_pop(builder->state_names);
 	const char* en   = sdd_array_pop(builder->entries);
 	const char* ex   = sdd_array_pop(builder->exits);
 	const char* def  = sdd_array_pop(builder->defaults);
 	
 	sdd_state* s = malloc(sizeof(sdd_state));
-	sdd_state_init(s, name, en, ex, def);
+	sdd_state_construct(s, name, en, ex, def);
 
 	free((void*)name);
 	free((void*)en);
@@ -232,7 +232,7 @@ sdd_state* SDDBuilderExtractState(SDDBuilder* builder) {
 	return s;
 }
 
-void sdd_stateMakeDescription(sdd_state* state, char* desc) {
+void sdd_md_make_state_desc(sdd_state* state, char* desc) {
 	sprintf(desc, "[%s", state->name);
 
 	if (strlen(state->entries) != 0) {
@@ -254,13 +254,13 @@ void sdd_stateMakeDescription(sdd_state* state, char* desc) {
 	strcat(desc, "]");
 }
 
-void SDDBuilderMakeState(SDDBuilder* builder, int mode) {
+void sdd_builder_make_state(sdd_builder* builder, int mode) {
 	sdd_parser_callback* callback = builder->callback;
 
-    sdd_state* state = SDDBuilderExtractState(builder);
+    sdd_state* state = sdd_builder_extract_state(builder);
 
     char text[1024];
-    sdd_stateMakeDescription(state, text);
+    sdd_md_make_state_desc(state, text);
     (*builder->markdown)("state", text);
 
     callback->stateHandler(callback->context, state);
@@ -275,7 +275,7 @@ void SDDBuilderMakeState(SDDBuilder* builder, int mode) {
 	        strcat(text, "[");
 	        strcat(text, cluster_state->name);
 	        strcat(text, "]");
-	        sdd_state_release(cluster_state);
+	        sdd_state_destruct(cluster_state);
 	        free((void*)cluster_state);
 	    }
 	    strcat(text, "]");
@@ -294,7 +294,7 @@ void SDDBuilderMakeState(SDDBuilder* builder, int mode) {
 	        	strcat(text, "]|");
 	        else
 	        	strcat(text, "]");
-	        sdd_state_release(bucket_state);
+	        sdd_state_destruct(bucket_state);
 	        free((void*)bucket_state);
     	}
     	strcat(text, "]");
@@ -307,11 +307,11 @@ void SDDBuilderMakeState(SDDBuilder* builder, int mode) {
 }
 
 
-void SDDBuilderBeginCondition(SDDBuilder* builder) {
+void sdd_builder_begin_condition(sdd_builder* builder) {
 	builder->postfix_exprs[0] = 0;
 }
 
-void SDDBuilderMakeExpr(SDDBuilder* builder, sdd_expr_type type) {
+void sdd_builder_make_expr(sdd_builder* builder, sdd_expr_type type) {
 	switch(type) {
 		case SDD_EXPR_VAL:
 		    if (builder->postfix_exprs[0] != 0) {    // strlen会导致大量计算，而我们只需要判断是否0长度即可
@@ -335,25 +335,25 @@ void SDDBuilderMakeExpr(SDDBuilder* builder, sdd_expr_type type) {
 	}
 }
 
-void SDDBuilderEndCondition(SDDBuilder* builder) {
+void sdd_builder_end_condition(sdd_builder* builder) {
 	(*builder->markdown)("condition", builder->postfix_exprs);
 }
 
-void SDDBuilderMakePostActions(SDDBuilder* builder, int empty) {
+void sdd_builder_make_postactions(sdd_builder* builder, int empty) {
 	if (empty) {
 		sdd_array_push(builder->post_acts, strdup(""));
 		return;
 	}
 
 	sdd_array* id_group = sdd_array_pop(builder->id_groups);
-	const char* actions = SDDBuilderGenerateArrayString(id_group);
+	const char* actions = sdd_builder_array_string_new(id_group);
 	sdd_array_push(builder->post_acts, (void*)actions);
-	SDDBuilderDeleteArray(id_group);
+	sdd_builder_array_delete(id_group);
 
 	(*builder->markdown)("post_acts", actions);
 }
 
-void SDDBuilderMakeTransition(SDDBuilder* builder) {
+void sdd_builder_make_transition(sdd_builder* builder) {
 	const char* to        = sdd_array_pop(builder->stubs);
 	const char* from      = sdd_array_pop(builder->stubs);
 	const char* event     = sdd_array_pop(builder->ids);
@@ -382,11 +382,11 @@ void SDDBuilderMakeTransition(SDDBuilder* builder) {
 	free((void*)post_acts);
 }
 
-void SDDBuilderMakeDSL(SDDBuilder* builder, int mode) {
+void sdd_builder_make_dsl(sdd_builder* builder, int mode) {
 	sdd_state* root_state = (sdd_state*)sdd_array_pop(builder->states);
 	builder->callback->completionHandler(builder->callback->context, root_state);
 
-	sdd_state_release(root_state);
+	sdd_state_destruct(root_state);
 	free((void*)root_state);
 }
 

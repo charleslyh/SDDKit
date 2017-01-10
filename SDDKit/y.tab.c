@@ -116,7 +116,7 @@
  void yyerror(char*);
  int yylex();
 
- SDDBuilder __secret_builder;
+ sdd_builder __secret_builder;
 
 
 /* Enabling traces.  */
@@ -1398,29 +1398,29 @@ yyreduce:
     {
         case 2:
 #line 26 "sdd.y"
-    { SDDBuilderMakeDSL(&__secret_builder, 0); }
+    { sdd_builder_make_dsl(&__secret_builder, 0); }
     break;
 
   case 3:
 #line 27 "sdd.y"
-    { SDDBuilderMakeDSL(&__secret_builder, 1); }
+    { sdd_builder_make_dsl(&__secret_builder, 1); }
     break;
 
   case 6:
 #line 36 "sdd.y"
     {
-            SDDBuilderMakeTransition(&__secret_builder);
+            sdd_builder_make_transition(&__secret_builder);
         }
     break;
 
   case 7:
 #line 42 "sdd.y"
-    { SDDBuilderMakePostActions(&__secret_builder, 1); }
+    { sdd_builder_make_postactions(&__secret_builder, 1); }
     break;
 
   case 8:
 #line 43 "sdd.y"
-    { SDDBuilderMakePostActions(&__secret_builder, 0); }
+    { sdd_builder_make_postactions(&__secret_builder, 0); }
     break;
 
   case 9:
@@ -1431,8 +1431,8 @@ yyreduce:
   case 10:
 #line 51 "sdd.y"
     { 
-                                                    SDDBuilderBeginCondition(&__secret_builder);
-                                                    SDDBuilderEndCondition(&__secret_builder);
+                                                    sdd_builder_begin_condition(&__secret_builder);
+                                                    sdd_builder_end_condition(&__secret_builder);
                                                 }
     break;
 
@@ -1443,17 +1443,17 @@ yyreduce:
 
   case 12:
 #line 59 "sdd.y"
-    { SDDBuilderBeginCondition(&__secret_builder); }
+    { sdd_builder_begin_condition(&__secret_builder); }
     break;
 
   case 13:
 #line 63 "sdd.y"
-    { SDDBuilderEndCondition(&__secret_builder); }
+    { sdd_builder_end_condition(&__secret_builder); }
     break;
 
   case 14:
 #line 67 "sdd.y"
-    { SDDBuilderMakeExpr(&__secret_builder, SDD_EXPR_VAL); }
+    { sdd_builder_make_expr(&__secret_builder, SDD_EXPR_VAL); }
     break;
 
   case 15:
@@ -1463,62 +1463,62 @@ yyreduce:
 
   case 16:
 #line 69 "sdd.y"
-    { SDDBuilderMakeExpr(&__secret_builder, SDD_EXPR_OR ); }
+    { sdd_builder_make_expr(&__secret_builder, SDD_EXPR_OR ); }
     break;
 
   case 17:
 #line 70 "sdd.y"
-    { SDDBuilderMakeExpr(&__secret_builder, SDD_EXPR_AND); }
+    { sdd_builder_make_expr(&__secret_builder, SDD_EXPR_AND); }
     break;
 
   case 18:
 #line 71 "sdd.y"
-    { SDDBuilderMakeExpr(&__secret_builder, SDD_EXPR_XOR); }
+    { sdd_builder_make_expr(&__secret_builder, SDD_EXPR_XOR); }
     break;
 
   case 19:
 #line 72 "sdd.y"
-    { SDDBuilderMakeExpr(&__secret_builder, SDD_EXPR_NOT); }
+    { sdd_builder_make_expr(&__secret_builder, SDD_EXPR_NOT); }
     break;
 
   case 20:
 #line 76 "sdd.y"
-    { SDDBuilderMakeBucket(&__secret_builder, 1); }
+    { sdd_builder_make_bucket(&__secret_builder, 1); }
     break;
 
   case 21:
 #line 77 "sdd.y"
-    { SDDBuilderMakeBucket(&__secret_builder, 0); }
+    { sdd_builder_make_bucket(&__secret_builder, 0); }
     break;
 
   case 22:
 #line 81 "sdd.y"
-    { SDDBuilderMakeCluster(&__secret_builder, 1); }
+    { sdd_builder_make_cluster(&__secret_builder, 1); }
     break;
 
   case 23:
 #line 82 "sdd.y"
-    { SDDBuilderMakeCluster(&__secret_builder, 0); }
+    { sdd_builder_make_cluster(&__secret_builder, 0); }
     break;
 
   case 24:
 #line 86 "sdd.y"
-    { SDDBuilderMakeState(&__secret_builder, 0); }
+    { sdd_builder_make_state(&__secret_builder, 0); }
     break;
 
   case 25:
 #line 87 "sdd.y"
-    { SDDBuilderMakeState(&__secret_builder, 1); }
+    { sdd_builder_make_state(&__secret_builder, 1); }
     break;
 
   case 26:
 #line 88 "sdd.y"
-    { SDDBuilderMakeState(&__secret_builder, 2); }
+    { sdd_builder_make_state(&__secret_builder, 2); }
     break;
 
   case 27:
 #line 92 "sdd.y"
-    { SDDBuilderMakeStateName(&__secret_builder); }
+    { sdd_builder_make_state_name(&__secret_builder); }
     break;
 
   case 28:
@@ -1528,57 +1528,57 @@ yyreduce:
 
   case 29:
 #line 100 "sdd.y"
-    { SDDBuilderMakeDefault(&__secret_builder, 1); }
+    { sdd_builder_make_default(&__secret_builder, 1); }
     break;
 
   case 30:
 #line 101 "sdd.y"
-    { SDDBuilderMakeDefault(&__secret_builder, 0); }
+    { sdd_builder_make_default(&__secret_builder, 0); }
     break;
 
   case 31:
 #line 105 "sdd.y"
-    { SDDBuilderMakeEntry(&__secret_builder, 1);    }
+    { sdd_builder_make_entry(&__secret_builder, 1);    }
     break;
 
   case 32:
 #line 106 "sdd.y"
-    { SDDBuilderMakeEntry(&__secret_builder, 0);    }
+    { sdd_builder_make_entry(&__secret_builder, 0);    }
     break;
 
   case 33:
 #line 110 "sdd.y"
-    { SDDBuilderMakeExit(&__secret_builder, 1);     }
+    { sdd_builder_make_exit(&__secret_builder, 1);     }
     break;
 
   case 34:
 #line 111 "sdd.y"
-    { SDDBuilderMakeExit(&__secret_builder, 0);     }
+    { sdd_builder_make_exit(&__secret_builder, 0);     }
     break;
 
   case 35:
 #line 115 "sdd.y"
-    { SDDBuilderMakeStub(&__secret_builder); }
+    { sdd_builder_make_stub(&__secret_builder); }
     break;
 
   case 36:
 #line 119 "sdd.y"
-    {   SDDBuilderMakeProcedure(&__secret_builder, 0); }
+    {   sdd_builder_make_procedure(&__secret_builder, 0); }
     break;
 
   case 37:
 #line 123 "sdd.y"
-    {   SDDBuilderMakeIDGroup(&__secret_builder, 1);   }
+    {   sdd_builder_make_id_group(&__secret_builder, 1);   }
     break;
 
   case 38:
 #line 124 "sdd.y"
-    {   SDDBuilderMakeIDGroup(&__secret_builder, 0);   }
+    {   sdd_builder_make_id_group(&__secret_builder, 0);   }
     break;
 
   case 39:
 #line 128 "sdd.y"
-    {   SDDBuilderPushIdentifier(&__secret_builder, (yyvsp[(1) - (1)].stval));   }
+    {   sdd_builder_push_id(&__secret_builder, (yyvsp[(1) - (1)].stval));   }
     break;
 
 

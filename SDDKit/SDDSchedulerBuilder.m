@@ -323,10 +323,10 @@ void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
         return [[evalStack lastObject] boolValue];
     };
 
-    SDDState* fromState = [pcontext stateWithCName:t->from];
-    SDDState* toState   = [pcontext stateWithCName:t->to];
-    NSString* eventID   = [NSString stringWithCString:t->event encoding:NSUTF8StringEncoding];
-    [pcontext.scheduler when:eventID satisfied:condition transitFrom:fromState to:toState postAction:postAction];
+    SDDState* fromState  = [pcontext stateWithCName:t->from];
+    SDDState* toState    = [pcontext stateWithCName:t->to];
+    NSString* signalName = [NSString stringWithCString:t->signal encoding:NSUTF8StringEncoding];
+    [pcontext.scheduler when:signalName satisfied:condition transitFrom:fromState to:toState postAction:postAction];
 }
 
 void SDDSchedulerBuilderHandleCompletion(void *contextObj, sdd_state *root_state) {
