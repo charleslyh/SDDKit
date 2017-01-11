@@ -3,7 +3,7 @@
 //  SDDExamples
 //
 //  Created by siyuxing on 16/5/20.
-//  Copyright © 2016年 yy. All rights reserved.
+//  Copyright © 2016年 CharlesLee All rights reserved.
 //
 
 #import "SDDELBSServiceViewController.h"
@@ -16,15 +16,15 @@
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *locationUpdateIndicatorView;
 @property (nonatomic, weak) IBOutlet UILabel *locationContentLabel;
 @property (nonatomic, weak) IBOutlet UISwitch *locationServiceSwitch;
-@property (nonatomic) SDDSchedulerBuilder * sddBuilder;
+@property (nonatomic) SDDBuilder * sddBuilder;
 @property (nonatomic) CLLocationManager *locationManager;
 @end
 
 @implementation SDDELBServiceViewController
 
 - (void) setupSDDBuilder {
-    _sddBuilder = [[SDDSchedulerBuilder alloc] initWithNamespace:@"LocationRelateService"
-                                                          logger:[[SDDSchedulerConsoleLogger alloc] initWithMasks:SDDSchedulerLogMaskAll]
+    _sddBuilder = [[SDDBuilder alloc] initWithNamespace:@"LocationRelateService"
+                                                          logger:[[SDDConsoleLogger alloc] initWithMasks:SDDLogMaskAll]
                                                            queue:[NSOperationQueue currentQueue]];
 }
 
@@ -51,7 +51,7 @@
 }
 
 - (void) setupIndicatorView {
-    [self.sddBuilder addSchedulerWithContext:self dsl:SDDOCLanguage
+    [self.sddBuilder addStateMachineWithContext:self dsl:SDDOCLanguage
      ([Indicator ~[Hidden]
        [Hidden    e:stopUpdatingAnimation]
        [Animating e:startUpdatingAnimation]
@@ -81,7 +81,7 @@
 }
 
 - (void) setupMessageState {
-    [self.sddBuilder addSchedulerWithContext:self dsl:SDDOCLanguage
+    [self.sddBuilder addStateMachineWithContext:self dsl:SDDOCLanguage
      ([Message]
       
       [Message] -> [Message]: UIViewDidLoad           / showStartingMessage
@@ -114,7 +114,7 @@
      [Switch] -> [Enabled]:  LBSDidChangeAuthorization(isLBSAvailable)
      );
     
-    [_sddBuilder addSchedulerWithContext:self dsl:dsl];
+    [_sddBuilder addStateMachineWithContext:self dsl:dsl];
     
     
 
@@ -170,7 +170,7 @@
 }
 
 - (void) setupLocationService {
-    [self.sddBuilder addSchedulerWithContext:self dsl:SDDOCLanguage
+    [self.sddBuilder addStateMachineWithContext:self dsl:SDDOCLanguage
      ([LBService e:setupLocationManager ~[Disabled]
        [Disabled]
        [Enabled

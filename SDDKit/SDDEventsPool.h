@@ -1,6 +1,6 @@
 // SDDEventsPool.h
 //
-// Copyright (c) 2016 CharlesLiyh
+// Copyright (c) 2016 CharlesLee
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,7 @@
 #pragma mark -
 
 @protocol SDDEventSubscriber <NSObject>
-- (void)onEvent:(nonnull id<SDDEvent>)event;
+- (void)didScheduleEvent:(nonnull id<SDDEvent>)event;
 @end
 
 @protocol SDDEventFilter <NSObject>

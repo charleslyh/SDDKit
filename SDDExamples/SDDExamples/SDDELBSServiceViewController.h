@@ -3,7 +3,7 @@
 //  SDDExamples
 //
 //  Created by siyuxing on 16/5/20.
-//  Copyright © 2016年 yy. All rights reserved.
+//  Copyright © 2016年 CharlesLee All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

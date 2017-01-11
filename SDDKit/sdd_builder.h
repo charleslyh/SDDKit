@@ -1,6 +1,6 @@
 // sdd_builder.h
 //
-// Copyright (c) 2016 CharlesLiyh
+// Copyright (c) 2016 CharlesLee
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -71,6 +71,7 @@ typedef enum sdd_expr_type {
 	SDD_EXPR_OR,
 	SDD_EXPR_XOR,
 } sdd_expr_type;
+
 void sdd_builder_begin_condition(sdd_builder* builder);
 void sdd_builder_make_expr(sdd_builder* builder, sdd_expr_type type);
 void sdd_builder_end_condition(sdd_builder* builder);

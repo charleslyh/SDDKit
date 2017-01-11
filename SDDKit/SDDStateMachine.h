@@ -1,6 +1,6 @@
-// SDDScheduler.m
+// SDDStateMachine.m
 //
-// Copyright (c) 2016 CharlesLiyh
+// Copyright (c) 2016 CharlesLee
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -43,51 +43,51 @@ typedef void (^SDDDeactivation)(_Nullable id<SDDEvent> e);
 
 #pragma mark -
 
-@class SDDScheduler;
+@class SDDStateMachine;
 
-@protocol SDDSchedulerLogger <NSObject>
-- (void)didStartScheduler:(nonnull SDDScheduler *)scheduler activates:(nonnull NSArray<SDDState *>*)activatedStates;
-- (void)didStopScheduler:(nonnull SDDScheduler *)scheduler deactivates:(nonnull NSArray<SDDState *>*)deactivatedStates;
+@protocol SDDLogger <NSObject>
+- (void)didStartStateMachine:(nonnull SDDStateMachine *)stateMachine activates:(nonnull NSArray<SDDState *>*)activatedStates;
+- (void)didStopStateMachine:(nonnull SDDStateMachine *)stateMachine deactivates:(nonnull NSArray<SDDState *>*)deactivatedStates;
 
-- (void)scheduler:(nonnull SDDScheduler *)scheduler
-        activates:(nonnull NSArray<SDDState *>*)activatedStates
-      deactivates:(nonnull NSArray<SDDState *>*)deactivatedStates
-          byEvent:(nonnull id<SDDEvent>)event;
+- (void)stateMachine:(nonnull SDDStateMachine *)stateMachine
+           activates:(nonnull NSArray<SDDState *> *)activatedStates
+         deactivates:(nonnull NSArray<SDDState *> *)deactivatedStates
+             byEvent:(nonnull id<SDDEvent>)event;
 
 @optional
-- (void)scheduler:(nonnull SDDScheduler *)scheduler didCallMethodNamed:(nonnull NSString *)name;
+- (void)stateMachine:(nonnull SDDStateMachine *)stateMachine didCallMethodNamed:(nonnull NSString *)name;
 @end
 
 
-typedef NS_OPTIONS(NSInteger, SDDSchedulerLogMasks) {
-    SDDSchedulerLogMaskStart      = 1 << 0,
-    SDDSchedulerLogMaskStop       = 1 << 1,
-    SDDSchedulerLogMaskTransition = 1 << 2,
-    SDDSchedulerLogMaskCalls      = 1 << 3,
-    SDDSchedulerLogMaskAll        = 0xFFFF,
+typedef NS_OPTIONS(NSInteger, SDDLogMasks) {
+    SDDLogMaskStart      = 1 << 0,
+    SDDLogMaskStop       = 1 << 1,
+    SDDLogMaskTransition = 1 << 2,
+    SDDLogMaskCalls      = 1 << 3,
+    SDDLogMaskAll        = 0xFFFF,
 };
 
 // It is used for console logging
 
-@interface SDDSchedulerConsoleLogger : NSObject<SDDSchedulerLogger>
+@interface SDDConsoleLogger : NSObject<SDDLogger>
 - (nullable)init UNAVAILABLE_ATTRIBUTE;
-- (nonnull instancetype)initWithMasks:(SDDSchedulerLogMasks)masks;
+- (nonnull instancetype)initWithMasks:(SDDLogMasks)masks;
 
 + (nonnull instancetype)defaultLogger;
 @end
 
 
 
-@interface SDDScheduler : NSObject
-@property (strong, nonatomic, readonly) __nullable id<SDDSchedulerLogger> logger;
+@interface SDDStateMachine : NSObject <SDDEventSubscriber>
+@property (strong, nonatomic, readonly) __nullable id<SDDLogger> logger;
 
 - (nullable instancetype)init UNAVAILABLE_ATTRIBUTE;
-- (nonnull instancetype)initWithLogger:(nullable id<SDDSchedulerLogger>)logger;
+- (nonnull instancetype)initWithLogger:(nullable id<SDDLogger>)logger;
 
 - (void)addState:(nonnull SDDState*)state;
 - (void)state:(nonnull SDDState*)state addMonoStates:(nonnull NSArray<SDDState*>*)states;
 - (void)setState:(nonnull SDDState *)state defaultState:(nonnull SDDState*)defaultState;
-- (void)setRootState:(nonnull SDDState*)state;
+- (void)setTopState:(nonnull SDDState*)state;
 
 - (void)when:(nonnull NSString *)signalName
    satisfied:(nullable SDDCondition)condition
@@ -95,6 +95,6 @@ typedef NS_OPTIONS(NSInteger, SDDSchedulerLogMasks) {
           to:(nonnull SDDState*)to
   postAction:(nullable SDDAction)postAction;
 
-- (void)startWithEventsPool:(nonnull SDDEventsPool*)epool;
+- (void)start;
 - (void)stop;
 @end

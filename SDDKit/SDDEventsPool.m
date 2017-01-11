@@ -1,6 +1,6 @@
 // SDDEventsPool.m
 //
-// Copyright (c) 2016 CharlesLiyh
+// Copyright (c) 2016 CharlesLee
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,16 +29,17 @@
 - (instancetype)initWithSignalName:(NSString *)signalName param:(id)param {
     if (self = [super init]) {
         _signalName = signalName;
-        _param = param;
+        _param      = param;
     }
     return self;
 }
 
+// description will make logs looking better.
 - (NSString *)description {
     if (self.param) {
-        return [NSString stringWithFormat:@"<SDDELiteral %@: %@>", self.signalName, self.param];
+        return [NSString stringWithFormat:@"<%@: %@>", self.signalName, self.param];
     } else {
-        return [NSString stringWithFormat:@"<SDDELiteral %@>", self.signalName];
+        return [NSString stringWithFormat:@"<%@>", self.signalName];
     }
 }
 
@@ -137,7 +138,7 @@ SDDInternalEventBundle * SDDMakeInternalEventBundle(id<SDDEvent> event, SDDEvent
         }
         
         if (shouldProceed) {
-            [subscriber onEvent:bundle.event];
+            [subscriber didScheduleEvent:bundle.event];
         }
     }
     

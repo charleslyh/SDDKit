@@ -3,7 +3,7 @@
 //  SDDExamples
 //
 //  Created by Tom Zhang on 16/5/18.
-//  Copyright © 2016年 yy. All rights reserved.
+//  Copyright © 2016年 CharlesLee All rights reserved.
 //
 
 #import "SDDELoginViewController.h"
@@ -52,7 +52,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
 @end
 
 @implementation LoginViewController {
-    SDDSchedulerBuilder *_domain;
+    SDDBuilder *_domain;
 }
 
 - (void)viewDidLayoutSubviews {
@@ -231,7 +231,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
          [CountDown]    ->  [Disabled]:     TimesUp(!isPhoneNumber)
     );
     
-    [_domain addSchedulerWithContext:self dsl:dsl];
+    [_domain addStateMachineWithContext:self dsl:dsl];
 }
 
 -(void)setupPhoneNumberFieldState {
@@ -246,7 +246,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         [Disabled]  ->  [Normal]:      TimesUp
     );
     
-    [_domain addSchedulerWithContext:self dsl:dsl];
+    [_domain addStateMachineWithContext:self dsl:dsl];
 }
 
 -(void)setupSMSCodeFieldState {
@@ -261,7 +261,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         [Normal]      ->  [Disabled]:   DidChangePhoneNumber
     );
     
-    [_domain addSchedulerWithContext:self dsl:dsl];
+    [_domain addStateMachineWithContext:self dsl:dsl];
 }
 
 -(void)setupVerifyButtonState {
@@ -286,7 +286,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         NSString *serverDSL = [NSString stringWithContentsOfURL:[NSURL URLWithString:@"http://localhost:5000/app/config/verifyButtonStateConfig"] encoding:NSUTF8StringEncoding error:&err];
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *aDSL = (err || [serverDSL isEqualToString:@""]) ? dsl : serverDSL;
-            [_domain addSchedulerWithContext:wself dsl:aDSL];
+            [_domain addStateMachineWithContext:wself dsl:aDSL];
         });
     });
 }
@@ -303,7 +303,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         [Shown]     ->  [Hidden]:  DoneVerifying
     );
     
-    [_domain addSchedulerWithContext:self dsl:dsl];
+    [_domain addStateMachineWithContext:self dsl:dsl];
 }
 
 -(void)setupFailureTipState {
@@ -318,12 +318,12 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
         [Shown]     ->  [Hidden]:  ShouldHideFailureTip
      );
     
-    [_domain addSchedulerWithContext:self dsl:dsl];
+    [_domain addStateMachineWithContext:self dsl:dsl];
 }
 
 -(void)setupDomainWidgets {
-    _domain = [[SDDSchedulerBuilder alloc] initWithNamespace:@"loginVC"
-                                                      logger:[[SDDSchedulerConsoleLogger alloc] initWithMasks:SDDSchedulerLogMaskAll]
+    _domain = [[SDDBuilder alloc] initWithNamespace:@"loginVC"
+                                                      logger:[[SDDConsoleLogger alloc] initWithMasks:SDDLogMaskAll]
                                                        queue:[NSOperationQueue currentQueue]];
     
     [self setupSMSButtonState];

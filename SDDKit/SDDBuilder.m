@@ -1,6 +1,6 @@
-// SDDSchedulerBuilder.m
+// SDDBuilder.m
 //
-// Copyright (c) 2016 CharlesLiyh
+// Copyright (c) 2016 CharlesLee
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,38 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <objc/message.h>
-#import <objc/runtime.h>
-#import "SDDSchedulerBuilder.h"
-#import "SDDScheduler.h"
+#import "SDDBuilder.h"
+#import "SDDStateMachine.h"
 #import "sdd_parser.h"
 #import "sdd_array.h"
+#import <objc/message.h>
+#import <objc/runtime.h>
 
 static const void* kSDDStateBuilderNameKey       = &kSDDStateBuilderNameKey;
-static const void* kSDDStateBuilderDSLKey        = &kSDDStateBuilderDSLKey;
-static const void* kSDDStateBuilderIdentifierKey = &kSDDStateBuilderIdentifierKey;
-static const void* kSDDStateBuilderDomainKey     = &kSDDStateBuilderDomainKey;
 
-@interface SDDScheduler(SDDProperties)
+@interface SDDStateMachine(SDDProperties)
 @property (copy, nonatomic) NSString *sddName;
-@property (copy, nonatomic) NSString *sddDSL;
-@property (copy, nonatomic) NSString *sddIdentifier;
-@property (copy, nonatomic) NSString *sddDomain;
 @end
 
-@implementation SDDScheduler(SDDProperties)
-
-@end
-
-@implementation SDDScheduler (SDDLogSupport)
-
-- (void)setSddDSL:(NSString *)sddDSL {
-    objc_setAssociatedObject(self, kSDDStateBuilderDSLKey, sddDSL, OBJC_ASSOCIATION_COPY);
-}
-
-- (NSString *)sddDSL {
-    return objc_getAssociatedObject(self, kSDDStateBuilderDSLKey);
-}
+@implementation SDDStateMachine (SDDLogSupport)
 
 - (void)setSddName:(NSString *)sddName {
     objc_setAssociatedObject(self, kSDDStateBuilderNameKey, sddName, OBJC_ASSOCIATION_COPY);
@@ -59,22 +41,6 @@ static const void* kSDDStateBuilderDomainKey     = &kSDDStateBuilderDomainKey;
 
 - (NSString *)sddName {
     return objc_getAssociatedObject(self, kSDDStateBuilderNameKey);
-}
-
-- (void)setSddIdentifier:(NSString *)sddIdentifier {
-    objc_setAssociatedObject(self, kSDDStateBuilderIdentifierKey, sddIdentifier, OBJC_ASSOCIATION_COPY);
-}
-
-- (NSString *)sddIdentifier {
-    return objc_getAssociatedObject(self, kSDDStateBuilderIdentifierKey);
-}
-
-- (void)setSddDomain:(NSString *)sddDomain {
-    objc_setAssociatedObject(self, kSDDStateBuilderDomainKey, sddDomain, OBJC_ASSOCIATION_COPY);
-}
-
-- (NSString *)sddDomain {
-    return objc_getAssociatedObject(self, kSDDStateBuilderDomainKey);
 }
 
 - (NSString*)description {
@@ -139,7 +105,7 @@ static const void* kSDDStateNameKey       = &kSDDStateNameKey;
 
 @interface SDDParserContext : NSObject 
 @property (nonatomic, weak) id runtimeContext;
-@property (nonatomic, weak) SDDScheduler* scheduler;
+@property (nonatomic, weak) SDDStateMachine* stateMachine;
 @property (nonatomic, weak) NSMutableDictionary<NSString*, SDDState*>* states;
 @end
 
@@ -166,9 +132,9 @@ typedef void (*SDDAugmentedActionImp)(id, SEL, id);
 static SDDSimpleActionImp SDDSimpleAction       = (SDDSimpleActionImp)objc_msgSend;
 static SDDAugmentedActionImp SDDAugmentedAction = (SDDAugmentedActionImp)objc_msgSend;
 
-void SDDSchedulerAddState(void* contextObj, sdd_state* raw_state) {
+void SDDBuilderAddState(void* contextObj, sdd_state* raw_state) {
     __weak SDDParserContext* pcontext = (__bridge SDDParserContext*)contextObj;
-    __weak SDDScheduler* scheduler = pcontext.scheduler;
+    __weak SDDStateMachine* stateMachine = pcontext.stateMachine;
     __weak id context = pcontext.runtimeContext;
     
     NSString* entries = [NSString stringWithCString:raw_state->entries encoding:NSUTF8StringEncoding];
@@ -185,7 +151,7 @@ void SDDSchedulerAddState(void* contextObj, sdd_state* raw_state) {
             } else if ([context respondsToSelector:augmentedSel]) {
                 SDDAugmentedAction(context, augmentedSel, argument);
             } else if (context != nil) {
-                [[NSException exceptionWithName:@"SDDSchedulerBuilderException"
+                [[NSException exceptionWithName:@"SDDBuilderException"
                                          reason:[NSString stringWithFormat:@"无法在上下文:%@ 对象中找到 %@ 方法", context, act]
                                        userInfo:@{
                                                   @"context": context ? context : @"null",
@@ -193,8 +159,8 @@ void SDDSchedulerAddState(void* contextObj, sdd_state* raw_state) {
                                                   }] raise];
             }
 
-            if ([scheduler.logger respondsToSelector:@selector(scheduler:didCallMethodNamed:)]) {
-                [scheduler.logger scheduler:scheduler didCallMethodNamed:act];
+            if ([stateMachine.logger respondsToSelector:@selector(stateMachine:didCallMethodNamed:)]) {
+                [stateMachine.logger stateMachine:stateMachine didCallMethodNamed:act];
             }
         }
     };
@@ -210,7 +176,7 @@ void SDDSchedulerAddState(void* contextObj, sdd_state* raw_state) {
             } else if ([context respondsToSelector:augmentedSel]) {
                 SDDAugmentedAction(context, augmentedSel, argument);
             } else if (context != nil) {
-                [[NSException exceptionWithName:@"SDDSchedulerBuilderException"
+                [[NSException exceptionWithName:@"SDDBuilderException"
                                          reason:[NSString stringWithFormat:@"无法在上下文:%@ 对象中找到 %@ 方法", context, act]
                                        userInfo:@{
                                                   @"context": context ? context : @"null",
@@ -218,8 +184,8 @@ void SDDSchedulerAddState(void* contextObj, sdd_state* raw_state) {
                                                   }] raise];
             }
 
-            if ([scheduler.logger respondsToSelector:@selector(scheduler:didCallMethodNamed:)]) {
-                [scheduler.logger scheduler:scheduler didCallMethodNamed:act];
+            if ([stateMachine.logger respondsToSelector:@selector(stateMachine:didCallMethodNamed:)]) {
+                [stateMachine.logger stateMachine:stateMachine didCallMethodNamed:act];
             }
         }
     };
@@ -228,11 +194,11 @@ void SDDSchedulerAddState(void* contextObj, sdd_state* raw_state) {
     SDDState* state = [[SDDState alloc] initWithActivation:activation deactivation:deactivation];
     state.sddName = name;
     pcontext.states[name] = state;
-    [pcontext.scheduler addState:state];
-    [pcontext.scheduler setState:state defaultState:[pcontext stateWithCName:raw_state->default_stub]];
+    [pcontext.stateMachine addState:state];
+    [pcontext.stateMachine setState:state defaultState:[pcontext stateWithCName:raw_state->default_stub]];
 }
 
-void SDDSchedulerSetDescendants(void* contextObj, sdd_state* raw_master, sdd_array* raw_descendants) {
+void SDDBuilderSetDescendants(void* contextObj, sdd_state* raw_master, sdd_array* raw_descendants) {
     __weak SDDParserContext* pcontext = (__bridge SDDParserContext*)contextObj;
     
     NSMutableArray* descendants = [NSMutableArray array];
@@ -242,12 +208,12 @@ void SDDSchedulerSetDescendants(void* contextObj, sdd_state* raw_master, sdd_arr
     }
     
     SDDState* master = [pcontext stateWithRawState:raw_master];
-    [pcontext.scheduler state:master addMonoStates:descendants];
+    [pcontext.stateMachine state:master addMonoStates:descendants];
 }
 
-void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
+void SDDBuilderMakeTransition(void* contextObj, sdd_transition* t) {
     __weak SDDParserContext* pcontext = (__bridge SDDParserContext*)contextObj;
-    __weak SDDScheduler* scheduler = pcontext.scheduler;
+    __weak SDDStateMachine* stateMachine = pcontext.stateMachine;
     __weak id context = pcontext.runtimeContext;
     
     NSString* names = [NSString stringWithCString:t->actions encoding:NSUTF8StringEncoding];
@@ -262,7 +228,7 @@ void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
             } else if ([context respondsToSelector:augmentedSel]) {
                 SDDAugmentedAction(context, augmentedSel, argument);
             } else if (context != nil) {
-                [[NSException exceptionWithName:@"SDDSchedulerBuilderException"
+                [[NSException exceptionWithName:@"SDDBuilderException"
                                          reason:[NSString stringWithFormat:@"无法在上下文:%@ 对象中找到 %@ 方法", context, act]
                                        userInfo:@{
                                                   @"context": context ? context : @"null",
@@ -270,8 +236,8 @@ void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
                                                   }] raise];
             }
 
-            if ([scheduler.logger respondsToSelector:@selector(scheduler:didCallMethodNamed:)]) {
-                [scheduler.logger scheduler:scheduler didCallMethodNamed:act];
+            if ([stateMachine.logger respondsToSelector:@selector(stateMachine:didCallMethodNamed:)]) {
+                [stateMachine.logger stateMachine:stateMachine didCallMethodNamed:act];
             }
         }
     };
@@ -308,7 +274,7 @@ void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
                 } else if ([context respondsToSelector:augmentedSel]) {
                     exprValue = SDDConditionMsgSend2(context, augmentedSel, argument);
                 } else if (context != nil) {
-                    [[NSException exceptionWithName:@"SDDSchedulerBuilderException"
+                    [[NSException exceptionWithName:@"SDDBuilderException"
                                              reason:[NSString stringWithFormat:@"无法在上下文:%@ 对象中找到 %@ 方法", context, p]
                                            userInfo:@{
                                                       @"context":   context ? context : @"null",
@@ -326,82 +292,73 @@ void SDDSchedulerMakeTransition(void* contextObj, sdd_transition* t) {
     SDDState* fromState  = [pcontext stateWithCName:t->from];
     SDDState* toState    = [pcontext stateWithCName:t->to];
     NSString* signalName = [NSString stringWithCString:t->signal encoding:NSUTF8StringEncoding];
-    [pcontext.scheduler when:signalName satisfied:condition transitFrom:fromState to:toState postAction:postAction];
+    [pcontext.stateMachine when:signalName satisfied:condition transitFrom:fromState to:toState postAction:postAction];
 }
 
-void SDDSchedulerBuilderHandleCompletion(void *contextObj, sdd_state *root_state) {
+void SDDBuilderHandleCompletion(void *contextObj, sdd_state *root_state) {
     __weak SDDParserContext* pcontext = (__bridge SDDParserContext*)contextObj;
     
-    SDDState *rootState = [pcontext stateWithCName:root_state->name];
-    [pcontext.scheduler setRootState:rootState];
-    pcontext.scheduler.sddName = [NSString stringWithUTF8String:root_state->name];
+    SDDState *topState = [pcontext stateWithCName:root_state->name];
+    [pcontext.stateMachine setTopState:topState];
+    pcontext.stateMachine.sddName = [NSString stringWithUTF8String:root_state->name];
 }
 
-@implementation SDDSchedulerBuilder {
-    id<SDDSchedulerLogger> _logger;
-    NSOperationQueue       *_queue;
+@implementation SDDBuilder {
+    id<SDDLogger>  _logger;
     SDDEventsPool          *_epool;
-    
-    NSMutableArray         *_schedulers;
+    NSMutableArray         *_HSMs;  // HSM for Hierachical State Machine
 }
 
-- (instancetype)initWithLogger:(id<SDDSchedulerLogger>)logger epool:(SDDEventsPool *)epool {
+- (instancetype)initWithLogger:(id<SDDLogger>)logger epool:(SDDEventsPool *)epool {
     if (self = [super init]) {
-        _logger     = logger;
-        _epool      = epool;
-        _schedulers = [NSMutableArray array];
+        _logger = logger;
+        _epool  = epool;
+        _HSMs   = [NSMutableArray array];
     }
     return self;
 }
 
 - (void)dealloc {
-    for (SDDScheduler *s in _schedulers) {
+    for (SDDStateMachine *s in _HSMs) {
         [s stop];
     }
 }
 
-- (SDDScheduler*)schedulerWithContext:(id)context dsl:(NSString*)dsl {
-    SDDScheduler* scheduler = [[SDDScheduler alloc] initWithLogger:_logger];
-    scheduler.sddDSL = dsl;
+- (SDDStateMachine*)stateMachineWithContext:(id)context dsl:(NSString*)dsl {
+    SDDStateMachine* stateMachine = [[SDDStateMachine alloc] initWithLogger:_logger];
     
     NSMutableDictionary* states = [NSMutableDictionary dictionary];
     
     SDDParserContext* pcontext = [[SDDParserContext alloc] init];
-    pcontext.states = states;
+    pcontext.states         = states;
     pcontext.runtimeContext = context;
-    pcontext.scheduler = scheduler;
+    pcontext.stateMachine   = stateMachine;
     
     sdd_parser_callback callback;
     callback.context = (__bridge void*)pcontext;
-    callback.stateHandler      = &SDDSchedulerAddState;
-    callback.clusterHandler    = &SDDSchedulerSetDescendants;
-    callback.transitionHandler = &SDDSchedulerMakeTransition;
-    callback.completionHandler = &SDDSchedulerBuilderHandleCompletion;
+    callback.stateHandler      = &SDDBuilderAddState;
+    callback.clusterHandler    = &SDDBuilderSetDescendants;
+    callback.transitionHandler = &SDDBuilderMakeTransition;
+    callback.completionHandler = &SDDBuilderHandleCompletion;
     
     sdd_parse([dsl cStringUsingEncoding:NSUTF8StringEncoding], &callback);
-    return scheduler;
+    return stateMachine;
 }
 
-- (SDDScheduler *)addSchedulerWithContext:(id)context dsl:(NSString *)dsl {
-    SDDScheduler *scheduler = [self schedulerWithContext:context dsl:dsl];
-    scheduler.sddIdentifier = SDDMakeUUID();
+- (SDDStateMachine *)addStateMachineWithContext:(id)context dsl:(NSString *)dsl {
+    SDDStateMachine *hsm = [self stateMachineWithContext:context dsl:dsl];
     
-    [scheduler startWithEventsPool:_epool];
-    [_schedulers addObject:scheduler];
-    return scheduler;
-}
-
-- (void)removeScheduler:(SDDScheduler *)scheduler {
-    [scheduler stop];
-    [_schedulers removeObject:scheduler];
-}
-
-NSString * SDDMakeUUID() {
-    CFUUIDRef uuidObj = CFUUIDCreate(nil);//create a new UUID
-    NSString  *uuidString = (__bridge_transfer NSString *)CFUUIDCreateString(nil, uuidObj);
-    CFRelease(uuidObj);
+    [_HSMs addObject:hsm];
+    [_epool addSubscriber:hsm];
+    [hsm start];
     
-    return uuidString ;
+    return hsm;
+}
+
+- (void)removeStateMachine:(SDDStateMachine *)hsm {
+    [hsm stop];
+    [_epool removeSubscriber:hsm];
+    [_HSMs removeObject:hsm];
 }
 
 @end

@@ -1,6 +1,6 @@
-// SDDSchedulerBuilder.h
+// SDDBuilder.h
 //
-// Copyright (c) 2016 CharlesLiyh
+// Copyright (c) 2016 CharlesLee
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,19 +21,16 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "SDDScheduler.h"
+#import "SDDStateMachine.h"
 
-#define SDDOCLanguage(dsl) [NSString stringWithFormat:@"%s", #dsl]
+#define SDDOCLanguage(dsl) @#dsl
 
 
 @class SDDEventsPool;
-@protocol SDDSchedulerLogger;
+@protocol SDDLogger;
 
-@interface SDDScheduler (SDDLogSupport)
-@property (nonatomic, copy) NSString *sddIdentifier;
-@property (nonatomic, copy) NSString *sddDomain;
+@interface SDDStateMachine (SDDLogSupport)
 @property (nonatomic, copy) NSString *sddName;
-@property (nonatomic, copy) NSString *sddDSL;
 @end
 
 @interface SDDState (SDDLogSupport)
@@ -41,12 +38,10 @@
 @end
 
 
-@interface SDDSchedulerBuilder : NSObject
-@property (nonatomic, readonly) SDDEventsPool *epool;
-
+@interface SDDBuilder : NSObject
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
-- (instancetype)initWithLogger:(id<SDDSchedulerLogger>)logger epool:(SDDEventsPool *)epool;
+- (instancetype)initWithLogger:(id<SDDLogger>)logger epool:(SDDEventsPool *)epool;
 
-- (SDDScheduler *)addSchedulerWithContext:(id)context dsl:(NSString *)dsl;
-- (void)removeScheduler:(SDDScheduler *)scheduler;
+- (SDDStateMachine *)addStateMachineWithContext:(id)context dsl:(NSString *)dsl;
+- (void)removeStateMachine:(SDDStateMachine *)stateMachine;
 @end

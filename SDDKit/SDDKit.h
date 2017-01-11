@@ -1,6 +1,6 @@
 //  SDDKit.h
 //
-// Copyright (c) 2016 CharlesLiyh
+// Copyright (c) 2016 CharlesLee
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,19 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-//! Project version number for SDDKit.
 FOUNDATION_EXPORT double SDDKitVersionNumber;
-
-//! Project version string for SDDKit.
 FOUNDATION_EXPORT const unsigned char SDDKitVersionString[];
 
 #ifndef _SDDKIT_
 #define _SDDKIT_
 
-#import <SDDKit/SDDSchedulerBuilder.h>
-#import <SDDKit/SDDScheduler.h>
+#import <SDDKit/SDDBuilder.h>
+#import <SDDKit/SDDStateMachine.h>
 #import <SDDKit/SDDEventsPool.h>
 
 #endif

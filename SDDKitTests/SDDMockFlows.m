@@ -3,35 +3,39 @@
 //  SDDExamples
 //
 //  Created by 黎玉华 on 16/5/12.
-//  Copyright © 2016年 yy. All rights reserved.
+//  Copyright © 2016年 CharlesLee All rights reserved.
 //
 
 #import "SDDMockFlows.h"
 
 @implementation SDDMockFlows {
-    NSMutableArray* _flows;
+    NSMutableArray* _items;
 }
 
 - (instancetype)init {
     if (self = [super init]) {
-        _flows = [NSMutableArray array];
+        _items = [NSMutableArray array];
     }
     return self;
 }
 
-- (void)addFlow:(NSString*)flow {
-    [_flows addObject:flow];
+- (NSString *)stringValue {
+    return [_items componentsJoinedByString:@""];
 }
 
-- (NSString *)description {
-    return [_flows componentsJoinedByString:@""];
+- (void)markItem:(NSString*)item {
+    [_items addObject:item];
 }
 
 - (BOOL)isEqual:(id)object {
     if (![object isKindOfClass:[NSString class]])
         return NO;
     
-    return [[self description] isEqualToString:(NSString*)object];
+    return [[self stringValue] isEqualToString:(NSString*)object];
+}
+
+- (NSString *)description {
+    return [self stringValue];
 }
 
 @end

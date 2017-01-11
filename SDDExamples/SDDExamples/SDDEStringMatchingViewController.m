@@ -13,7 +13,7 @@
 
 @interface SDDEStringMatchingViewController ()
 {
-    SDDSchedulerBuilder *_sddBuilder;
+    SDDBuilder *_sddBuilder;
     
     __weak IBOutlet UITextField *originTxtField;
     __weak IBOutlet UITextField *patternTxtField;
@@ -39,7 +39,7 @@
 #pragma mark - SDDBuilder
 
 - (void)setupSDDBuilder {
-    _sddBuilder = [[SDDSchedulerBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool]];
+    _sddBuilder = [[SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool]];
 }
 
 #pragma mark - MatchState
@@ -50,7 +50,7 @@
     dsl = [dsl stringByAppendingString:[self declareMultiState:stateTable]];
     dsl = [dsl stringByAppendingString:[self initializeMultiStateTransmit:stateTable]];
 
-    [_sddBuilder addSchedulerWithContext:self dsl:dsl];
+    [_sddBuilder addStateMachineWithContext:self dsl:dsl];
 
 }
 
