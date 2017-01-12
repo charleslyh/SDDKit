@@ -10,13 +10,22 @@ pod 'SDDKit'
 ```
 
 ## High Level Aspect
+
 Classes listed below provides the major functionalities of SDDKit.
+
 * SDDState
 * SDDStateMachine
 * SDDEventsPool
 * SDDBuilder
 
-![HighLevelClasses](https://yuml.me/diagram/class/[SDDBuilder]->[SDDEventsPool],[SDDBuilder]-*>[SDDStateMachine],[SDDStateMachine]->[SDDEventsPool],[SDDStateMachine]-*>[SDDState])
+![MajorClasses](https://yuml.me/diagram/class/[SDDBuilder]->[SDDEventsPool],[SDDBuilder]-*>[SDDStateMachine],[SDDStateMachine]->[SDDEventsPool],[SDDStateMachine]-*>[SDDState])
+
+But usually two of them needs to be cared about.
+
+* SDDEventsPool
+* SDDBuilder
+
+![CallerAspect](https://yuml.me/diagram/class/[SDDBuilder]->[SDDEventsPool],[Caller]->[SDDBuilder],[Caller]->[SDDEventsPool])
 
 ### SDDState
 SDDState contains only activation and deactivation blocks, which performs the entering and exiting actions.
