@@ -52,9 +52,7 @@
 @end
 
 @protocol SDDEventFilter <NSObject>
-
 - (BOOL)subscriber:(nonnull id<SDDEventSubscriber>)subscriber shouldReceiveEvent:(nonnull id<SDDEvent>)event;
-
 @end
 
 #pragma mark -
@@ -66,16 +64,12 @@ typedef void (^SDDEventCompletion)();
 - (nonnull instancetype)init;
 + (nonnull instancetype)sharedPool;
 
-- (void)open;
-- (void)close;
-
 - (void)addSubscriber:(nonnull id<SDDEventSubscriber>)subscriber;
 - (void)removeSubscriber:(nonnull id<SDDEventSubscriber>)subscriber;
 
-- (void)scheduleEvent:(nonnull id<SDDEvent>)event;
-- (void)scheduleEvent:(nonnull id<SDDEvent>)event waitUntilDone:(BOOL)waitUntilDone;
-- (void)scheduleEvent:(nonnull id<SDDEvent>)event withCompletion:(nullable SDDEventCompletion)completion;
-
 - (void)addFilter:(nonnull id<SDDEventFilter>)filter;
 - (void)removeFilter:(nonnull id<SDDEventFilter>)filter;
+
+- (void)scheduleEvent:(nonnull id<SDDEvent>)event;
+
 @end

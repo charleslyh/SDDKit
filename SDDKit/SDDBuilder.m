@@ -27,6 +27,15 @@
 #import <objc/message.h>
 #import <objc/runtime.h>
 
+@interface SDDStateMachine (SDDLogSupport)
+@property (nonatomic, copy) NSString *sddName;
+@end
+
+@interface SDDState (SDDLogSupport)
+@property (nonatomic, copy) NSString *sddName;
+@end
+
+
 static const void* kSDDStateBuilderNameKey       = &kSDDStateBuilderNameKey;
 
 @interface SDDStateMachine(SDDProperties)

@@ -15,21 +15,17 @@
 @end
 
 @implementation SDDBuilderDSLTests {
-    SDDEventsPool       *_epool;
-    dispatch_semaphore_t _doneE4;
+    SDDEventsPool *_epool;
 }
 
 - (void)setUp {
     [super setUp];
 
     _epool = [[SDDEventsPool alloc] init];
-    [_epool open];
 }
 
 - (void)tearDown {
     [super tearDown];
-    
-    [_epool close];
 }
 
 - (void)performTestWithDSL:(NSString*)dsl expectedFlows:(NSString*)expectedFlows customActions:(void (^)())customActions {
@@ -47,8 +43,6 @@
         if (customActions != nil) {
             customActions();
         }
-        
-        [_epool scheduleEvent:SDDELiteral(WaitForThisEvent) waitUntilDone:YES];
     }
     
     XCTAssertEqualObjects(_flows, expectedFlows);
@@ -684,11 +678,7 @@
 
 - (void)scheduleE2 { [_epool scheduleEvent:SDDELiteral(E2)]; }
 - (void)scheduleE3 { [_epool scheduleEvent:SDDELiteral(E3)]; }
-- (void)scheduleE4 {
-    [_epool scheduleEvent:SDDELiteral(E4) withCompletion:^{
-        dispatch_semaphore_signal(_doneE4);
-    }];
-}
+- (void)scheduleE4 { [_epool scheduleEvent:SDDELiteral(E4)]; }
 
 - (void)testTripleTransitionCausedByOneEvent {
     NSString* const dsl = SDDOCLanguage
@@ -705,10 +695,8 @@
      [C] -> [D]: E3 / scheduleE4
      );
     
-    _doneE4 = dispatch_semaphore_create(0);
     [self performTestWithDSL:dsl expectedFlows:@"abcd" customActions:^{
         [_epool scheduleEvent:SDDELiteral(E1)];
-        dispatch_semaphore_wait(_doneE4, dispatch_time(DISPATCH_TIME_NOW, (uint64_t)(1 * NSEC_PER_SEC)));
     }];
 }
 

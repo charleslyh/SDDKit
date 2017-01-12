@@ -21,22 +21,11 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "SDDStateMachine.h"
 
 #define SDDOCLanguage(dsl) @#dsl
 
-
-@class SDDEventsPool;
+@class SDDEventsPool, SDDStateMachine;
 @protocol SDDLogger;
-
-@interface SDDStateMachine (SDDLogSupport)
-@property (nonatomic, copy) NSString *sddName;
-@end
-
-@interface SDDState (SDDLogSupport)
-@property (nonatomic, copy) NSString *sddName;
-@end
-
 
 @interface SDDBuilder : NSObject
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
