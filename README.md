@@ -15,6 +15,7 @@ Classes listed below provides the major functionalities of SDDKit.
 * SDDStateMachine
 * SDDEventsPool
 * SDDBuilder
+
 ![HighLevelClasses](https://yuml.me/diagram/class/[SDDBuilder]->[SDDEventsPool],[SDDBuilder]-*>[SDDStateMachine],[SDDStateMachine]->[SDDEventsPool],[SDDStateMachine]-*>[SDDState])
 
 ### SDDState
@@ -93,14 +94,14 @@ int main() {
 		[Awake]  -> [Asleep] : Sunset
         [Asleep] -> [Awake]  : Sunrise
 	)];
-    // Outputs 'Good morning' for entering default state [Awake]
+    // Outputs 'Good morning.' for entering default state [Awake]
 	
     [[SDDEventsPool sharedPool] scheduleEvent:SDDLiteral(Sunset)];
     // Outputs 'Bye, see ya.' for exiting state [Awake]
 	// Outputs 'Good night' for entering state [Asleep]
     
     [[SDDEventsPool sharedPool] scheduleEvent:SDDLiteral(Sunrise)];
-    // Outputs 'Good morning' for entering state [Awake]
+    // Outputs 'Good morning.' for entering state [Awake]
 
 	return 0;
 )
