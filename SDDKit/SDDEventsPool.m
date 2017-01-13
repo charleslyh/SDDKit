@@ -37,7 +37,7 @@
 // description will make logs looking better.
 - (NSString *)description {
     if (self.param) {
-        return [NSString stringWithFormat:@"<%@: %@>", self.signalName, self.param];
+        return [NSString stringWithFormat:@"<%@(%@)>", self.signalName, self.param];
     } else {
         return [NSString stringWithFormat:@"<%@>", self.signalName];
     }
