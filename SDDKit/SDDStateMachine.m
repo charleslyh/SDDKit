@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import "SDDStateMachine.h"
+#import "SDDLogger.h"
 
 
 @interface SDDState(NSCopying)<NSCopying>
@@ -90,75 +91,10 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
 
 @interface SDDNilLogger :NSObject <SDDLogger> @end
 @implementation SDDNilLogger
-- (void)didStartStateMachine:(SDDStateMachine *)stateMachine activates:(NSArray<SDDState *> *)activatedStates {}
-- (void)didStopStateMachine:(SDDStateMachine *)stateMachine deactivates:(NSArray<SDDState *> *)deactivatedStates {}
-- (void)stateMachine:(SDDStateMachine *)stateMachine
-           activates:(NSArray<SDDState *> *)activatedStates
-         deactivates:(NSArray<SDDState *> *)deactivatedStates
-             byEvent:(id<SDDEvent>)event {}
+- (void)stateMachine:(SDDStateMachine *)hsm didStartWithPath:(SDDPath *)path {}
+- (void)stateMachine:(SDDStateMachine *)hsm didStopFromPath:(SDDPath *)path {}
+- (void)stateMachine:(SDDStateMachine *)hsm didTransitFromPath:(SDDPath *)from toPath:(SDDPath *)to byEvent:(id<SDDEvent>)e {}
 @end
-
-
-@implementation SDDConsoleLogger {
-    SDDLogMasks _masks;
-}
-
-+ (instancetype)defaultLogger {
-    static SDDConsoleLogger *loggerInstance;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        loggerInstance = [[SDDConsoleLogger alloc] initWithMasks:SDDLogMaskAll];
-    });
-    return loggerInstance;
-}
-
-- (nonnull instancetype)initWithMasks:(SDDLogMasks)masks {
-    if (self = [super init]) {
-        _masks = masks;
-    }
-    return self;
-}
-
-- (NSString *)statesString:(NSArray<SDDState *> *)states {
-    NSMutableArray *names = [NSMutableArray array];
-    for (SDDState *s in states) {
-        [names addObject:[s description]];
-    }
-    
-    return [names componentsJoinedByString:@","];
-}
-
-- (void)didStartStateMachine:(SDDStateMachine *)stateMachine activates:(NSArray<SDDState *> *)activatedStates {
-    if (_masks & SDDLogMaskStart) {
-        NSLog(@"[SDD][%@(%p)][L] {%@}", stateMachine, stateMachine, [self statesString:activatedStates]);
-    }
-}
-
-- (void)didStopStateMachine:(SDDStateMachine *)stateMachine deactivates:(NSArray<SDDState *> *)deactivatedStates {
-    if (_masks & SDDLogMaskStop) {
-        NSLog(@"[SDD][%@(%p)][S] {%@}", stateMachine, stateMachine, [self statesString:deactivatedStates]);
-    }
-}
-
-- (void)stateMachine:(SDDStateMachine *)stateMachine
-           activates:(NSArray<SDDState *> *)activatedStates
-         deactivates:(NSArray<SDDState *> *)deactivatedStates
-             byEvent:(id<SDDEvent>)event
-{
-    if (_masks & SDDLogMaskTransition) {
-        NSLog(@"[SDD][%@(%p)][T] %@ | {%@} -> {%@}",
-              stateMachine, stateMachine, event, [self statesString:deactivatedStates], [self statesString:activatedStates]);
-    }
-}
-
-- (void)stateMachine:(nonnull SDDStateMachine *)stateMachine didCallMethodNamed:(nonnull NSString *)name {
-    if (_masks & SDDLogMaskCalls) {
-        NSLog(@"[SDD][%@(%p)][C] %@", stateMachine, stateMachine, name);
-    }
-}
-
-@end
-
 
 @implementation SDDStateMachine {
     NSMutableSet* _states;
@@ -186,7 +122,7 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
     [_states addObject:state];
 }
 
-- (void)state:(SDDState *)parent addMonoStates:(NSArray<SDDState *> *)children {
+- (void)state:(SDDState *)parent addMonoStates:(SDDPath *)children {
     for (SDDState* state in children)
         _parents[state] = parent;
     
@@ -261,10 +197,10 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
     
     SDDState* newState = trans.targetState;
     if (newState) {
-        [self activateState:newState triggerState:trigger withEvent:event completion:^(NSArray *deactivates, NSArray *activates) {
+        [self activateState:newState triggerState:trigger withEvent:event completion:^(NSArray *fromPath, NSArray *toPath) {
             trans.postAct(event);
             
-            [_logger stateMachine:self activates:activates deactivates:deactivates byEvent:event];
+            [_logger stateMachine:self didTransitFromPath:fromPath toPath:toPath byEvent:event];
         }];
     }
 }
@@ -370,8 +306,8 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
     NSAssert(_topState != nil, @"[%@] topState不允许为nil", NSStringFromSelector(_cmd));
     NSAssert([_states containsObject:_topState], @"[%@] topState必须为已添加的状态之一", NSStringFromSelector(_cmd));
     
-    [self activateState:_topState triggerState:nil withEvent:SDDELiteral(SDDE_InitialTranition) completion:^(NSArray *_, NSArray *activates) {
-        [_logger didStartStateMachine:self activates:activates];
+    [self activateState:_topState triggerState:nil withEvent:SDDELiteral(SDDE_InitialTranition) completion:^(NSArray *_, NSArray *toPath) {
+        [_logger stateMachine:self didStartWithPath:toPath];
     }];
 }
 
@@ -379,8 +315,8 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
 - (void)stop {
     NSAssert(_currentState!=nil, @"执行[SDDStateMachine stop]之前，请确保其已经运行");
     
-    [self activateState:nil triggerState:_currentState withEvent:SDDELiteral(SDDE_FinalTranition) completion:^(NSArray *deactivates, NSArray *_) {
-        [_logger didStopStateMachine:self deactivates:deactivates];
+    [self activateState:nil triggerState:_currentState withEvent:SDDELiteral(SDDE_FinalTranition) completion:^(NSArray *fromPath, NSArray *_) {
+        [_logger stateMachine:self didStopFromPath:fromPath];
     }];
     
     _currentState = nil;

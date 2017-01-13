@@ -24,6 +24,8 @@
 		561A73DB1E07B4B30024A508 /* SDDStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 561A73CB1E07B4B30024A508 /* SDDStateMachine.m */; };
 		561A73DC1E07B4B30024A508 /* SDDBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 561A73CC1E07B4B30024A508 /* SDDBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		561A73DD1E07B4B30024A508 /* SDDBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 561A73CD1E07B4B30024A508 /* SDDBuilder.m */; };
+		5628DE8C1E28C1FE00507AD2 /* SDDLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 5628DE8A1E28C1FE00507AD2 /* SDDLogger.h */; };
+		5628DE8D1E28C1FE00507AD2 /* SDDLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 5628DE8B1E28C1FE00507AD2 /* SDDLogger.m */; };
 		56E965C81E07B6F90071EDA6 /* SDDBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E965C41E07B6F90071EDA6 /* SDDBuilderTests.m */; };
 		56E965C91E07B6F90071EDA6 /* SDDMockFlows.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E965C61E07B6F90071EDA6 /* SDDMockFlows.m */; };
 		56E965CA1E07B6F90071EDA6 /* SDDStateMachineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E965C71E07B6F90071EDA6 /* SDDStateMachineTests.m */; };
@@ -60,6 +62,8 @@
 		561A73CB1E07B4B30024A508 /* SDDStateMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDStateMachine.m; sourceTree = "<group>"; };
 		561A73CC1E07B4B30024A508 /* SDDBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDBuilder.h; sourceTree = "<group>"; };
 		561A73CD1E07B4B30024A508 /* SDDBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDBuilder.m; sourceTree = "<group>"; };
+		5628DE8A1E28C1FE00507AD2 /* SDDLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDLogger.h; sourceTree = "<group>"; };
+		5628DE8B1E28C1FE00507AD2 /* SDDLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDLogger.m; sourceTree = "<group>"; };
 		56E965C41E07B6F90071EDA6 /* SDDBuilderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDBuilderTests.m; sourceTree = "<group>"; };
 		56E965C51E07B6F90071EDA6 /* SDDMockFlows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDMockFlows.h; sourceTree = "<group>"; };
 		56E965C61E07B6F90071EDA6 /* SDDMockFlows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDMockFlows.m; sourceTree = "<group>"; };
@@ -116,6 +120,8 @@
 				561A73C61E07B4B30024A508 /* sdd_parser.h */,
 				561A73C81E07B4B30024A508 /* SDDEventsPool.h */,
 				561A73C91E07B4B30024A508 /* SDDEventsPool.m */,
+				5628DE8A1E28C1FE00507AD2 /* SDDLogger.h */,
+				5628DE8B1E28C1FE00507AD2 /* SDDLogger.m */,
 				561A73CA1E07B4B30024A508 /* SDDStateMachine.h */,
 				561A73CB1E07B4B30024A508 /* SDDStateMachine.m */,
 				561A73CC1E07B4B30024A508 /* SDDBuilder.h */,
@@ -171,6 +177,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				561A73D81E07B4B30024A508 /* SDDEventsPool.h in Headers */,
+				5628DE8C1E28C1FE00507AD2 /* SDDLogger.h in Headers */,
 				561A73CF1E07B4B30024A508 /* sdd_array.h in Headers */,
 				561A73DC1E07B4B30024A508 /* SDDBuilder.h in Headers */,
 				561A73D31E07B4B30024A508 /* y.tab.h in Headers */,
@@ -284,6 +291,7 @@
 				561A73DD1E07B4B30024A508 /* SDDBuilder.m in Sources */,
 				561A73CE1E07B4B30024A508 /* sdd_array.c in Sources */,
 				561A73D01E07B4B30024A508 /* sdd_builder.c in Sources */,
+				5628DE8D1E28C1FE00507AD2 /* SDDLogger.m in Sources */,
 				561A73D41E07B4B30024A508 /* lex.yy.c in Sources */,
 				561A73D51E07B4B30024A508 /* sdd_parser.c in Sources */,
 				561A73DB1E07B4B30024A508 /* SDDStateMachine.m in Sources */,

@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import "SDDBuilder.h"
+#import "SDDLogger.h"
 #import "SDDStateMachine.h"
 #import "sdd_parser.h"
 #import "sdd_array.h"
@@ -168,8 +169,8 @@ void SDDBuilderAddState(void* contextObj, sdd_state* raw_state) {
                                                   }] raise];
             }
 
-            if ([stateMachine.logger respondsToSelector:@selector(stateMachine:didCallMethodNamed:)]) {
-                [stateMachine.logger stateMachine:stateMachine didCallMethodNamed:act];
+            if ([stateMachine.logger respondsToSelector:@selector(stateMachine:didCallMethod:)]) {
+                [stateMachine.logger stateMachine:stateMachine didCallMethod:act];
             }
         }
     };
@@ -193,8 +194,8 @@ void SDDBuilderAddState(void* contextObj, sdd_state* raw_state) {
                                                   }] raise];
             }
 
-            if ([stateMachine.logger respondsToSelector:@selector(stateMachine:didCallMethodNamed:)]) {
-                [stateMachine.logger stateMachine:stateMachine didCallMethodNamed:act];
+            if ([stateMachine.logger respondsToSelector:@selector(stateMachine:didCallMethod:)]) {
+                [stateMachine.logger stateMachine:stateMachine didCallMethod:act];
             }
         }
     };
@@ -245,8 +246,8 @@ void SDDBuilderMakeTransition(void* contextObj, sdd_transition* t) {
                                                   }] raise];
             }
 
-            if ([stateMachine.logger respondsToSelector:@selector(stateMachine:didCallMethodNamed:)]) {
-                [stateMachine.logger stateMachine:stateMachine didCallMethodNamed:act];
+            if ([stateMachine.logger respondsToSelector:@selector(stateMachine:didCallMethod:)]) {
+                [stateMachine.logger stateMachine:stateMachine didCallMethod:act];
             }
         }
     };

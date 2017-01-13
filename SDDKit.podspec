@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "SDDKit"
-  s.version      = "1.2.0"
+  s.version      = "1.2.1"
   s.license      = "MIT"
   s.summary      = "Easiest way for implementing hierarchical state machine(HSM) based programs in Objective-C."
   s.homepage     = "https://github.com/charleslyh/SDDKit"
@@ -10,5 +10,5 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.source_files = 'SDDKit', 'SDDKit/**/*.{m,c,h}'
-  s.public_header_files = 'SDDKit/SDDKit.h', 'SDDKit/SDD{EventsPool,StateMachine,Builder}.h'
+  s.public_header_files = 'SDDKit/SDDKit.h', 'SDDKit/SDD{EventsPool,StateMachine,Builder,Logger}.h'
 end

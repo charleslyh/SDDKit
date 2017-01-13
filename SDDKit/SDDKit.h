@@ -31,5 +31,6 @@ FOUNDATION_EXPORT const unsigned char SDDKitVersionString[];
 #import <SDDKit/SDDBuilder.h>
 #import <SDDKit/SDDStateMachine.h>
 #import <SDDKit/SDDEventsPool.h>
+#import <SDDKit/SDDLogger.h>
 
 #endif
