@@ -25,7 +25,7 @@ But as being a 'Client', two of them need to be cared about for you.
 * SDDEventsPool
 * SDDBuilder
 
-![CallerAspect](https://yuml.me/diagram/class/[SDDBuilder]->[SDDEventsPool],[Client]->[SDDBuilder],[Caller]->[SDDEventsPool])
+![CallerAspect](https://yuml.me/diagram/class/[SDDBuilder]->[SDDEventsPool],[Client]->[SDDBuilder],[Client]->[SDDEventsPool])
 
 ### SDDState
 SDDState contains activation and deactivation blocks, which performs the entering and exiting actions.
