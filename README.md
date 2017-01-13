@@ -9,9 +9,9 @@ pod 'SDDKit'
 
 ```
 
-## High Level Aspect
+## High Level Aspects
 
-Classes listed below provides the major functionalities of SDDKit.
+Classes listed below gives the major functionalities of SDDKit.
 
 * SDDState
 * SDDStateMachine
@@ -20,32 +20,30 @@ Classes listed below provides the major functionalities of SDDKit.
 
 ![MajorClasses](https://yuml.me/diagram/class/[SDDBuilder]->[SDDEventsPool],[SDDBuilder]-*>[SDDStateMachine],[SDDStateMachine]->[SDDEventsPool],[SDDStateMachine]-*>[SDDState])
 
-But usually two of them needs to be cared about.
+But as being a 'Client', two of them need to be cared about for you.
 
 * SDDEventsPool
 * SDDBuilder
 
-![CallerAspect](https://yuml.me/diagram/class/[SDDBuilder]->[SDDEventsPool],[Caller]->[SDDBuilder],[Caller]->[SDDEventsPool])
+![CallerAspect](https://yuml.me/diagram/class/[SDDBuilder]->[SDDEventsPool],[Client]->[SDDBuilder],[Caller]->[SDDEventsPool])
 
 ### SDDState
-SDDState contains only activation and deactivation blocks, which performs the entering and exiting actions.
+SDDState contains activation and deactivation blocks, which performs the entering and exiting actions.
 
 ### SDDStateMachine
-Every instance of SDDStateMachine object represents a standalone statemachine object. Each of them describes state hierarchies, state behaviors, transition definitions.
+Every instance of SDDStateMachine represents a standalone statemachine object. Each of them describes state hierarchies and transitions.
 
 ### SDDEventsPool
-The event dispatching class. It is important to know that you have to add a statemachine as a subscriber of eventspool before the statemachine can drive by incoming events. Some apps have more than one eventspool in order to avoid duplication of signal names.
+The event dispatching class. It is important to know that a statemachine have to be added as a subscriber of eventspool before it can drive by incoming events. Some apps have more than one eventspool to avoid duplication of signal names.
 
 ### SDDBuilder
-A string parsing based SDDStateMachine builder. It provides the easiest way to generate and organize multiple statemachines.
+A string parsing based SDDStateMachine builder. It provides the easiest way for generating and organizing multiple statemachines.
 
 
 ## Examples
 ### Simple
 ```obj-c
-SDDBuilder *builder 
-= [SDDBuilder alloc] initWithLogger:nil
-						      epool:[SDDEventsPool sharedPool];
+SDDBuilder *builder = [SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool];
 
 [builder addStateMachineWithContext:nil dsl:SDDOCLanguage(
 	// Every statemachine can and must have one topstate
@@ -87,9 +85,7 @@ A statemachine with **nil** context helps nothing. Something has to be done that
 int main() {
 	Charles *charles = [[Charles alloc] init];
 
-	SDDBuilder *builder 
-	= [SDDBuilder alloc] initWithLogger:nil
-							      epool:[SDDEventsPool sharedPool];
+	SDDBuilder *builder = [SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool];
 
 	[builder addStateMachineWithContext:charles dsl:SDDOCLanguage(
 		[Me ~[Awake]		  // ~ indicates a default state
