@@ -10,7 +10,7 @@ fi
 
 lex sdd.lex
 yacc -d sdd.y
-gcc example.c sdd_builder.c sdd_parser.c sdd_array.c lex.yy.c y.tab.c -o ./bin/sdd
+gcc example.c sdd_ast.c sdd_parser.c sdd_array.c lex.yy.c y.tab.c -o ./bin/sdd
 
 if [ -f ./bin/sdd ]; then
 	./bin/sdd

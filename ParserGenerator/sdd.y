@@ -2,12 +2,12 @@
  #include <stdio.h>
  #include <string.h>
  #include <stdlib.h>
- #include "sdd_builder.h"
+ #include "sdd_ast.h"
 
  void yyerror(char*);
  int yylex();
 
- SDDBuilder __secret_builder;
+ sdd_ast __ast;
 %}
 
 %token SDD_IDENTIFIER SDD_ENTRY SDD_EXIT SDD_DEFAULT SDD_ARROW
@@ -23,8 +23,8 @@
 
 
 sdd_dsl
-    : state                     { SDDBuilderMakeDSL(&__secret_builder, 0); }
-    | state transitions         { SDDBuilderMakeDSL(&__secret_builder, 1); }
+    : state                     { sdd_ast_make_dsl(&__ast, 0); }
+    | state transitions         { sdd_ast_make_dsl(&__ast, 1); }
     ;
 
 transitions
@@ -34,13 +34,13 @@ transitions
 
 transition
     : state_stub SDD_ARROW state_stub ':' id conditions post_actions {
-            SDDBuilderMakeTransition(&__secret_builder);
+            sdd_ast_make_transition(&__ast);
         }
     ;
 
 post_actions
-    : /* empty */             { SDDBuilderMakePostActions(&__secret_builder, 1); }
-    | beg_trans_act id_group  { SDDBuilderMakePostActions(&__secret_builder, 0); }
+    : /* empty */             { sdd_ast_make_postactions(&__ast, 1); }
+    | beg_trans_act id_group  { sdd_ast_make_postactions(&__ast, 0); }
     ;
 
 beg_trans_act
@@ -49,47 +49,47 @@ beg_trans_act
 
 conditions
     : /* empty */                              { 
-                                                    SDDBuilderBeginCondition(&__secret_builder);
-                                                    SDDBuilderEndCondition(&__secret_builder);
+                                                    sdd_ast_begin_condition(&__ast);
+                                                    sdd_ast_end_condition(&__ast);
                                                 }
     | beg_condition bool_expr end_condition    {}
     ;
 
 beg_condition
-    : '('                         { SDDBuilderBeginCondition(&__secret_builder); }
+    : '('                         { sdd_ast_begin_condition(&__ast); }
     ;
 
 end_condition
-    : ')'                         { SDDBuilderEndCondition(&__secret_builder); }
+    : ')'                         { sdd_ast_end_condition(&__ast); }
     ;
 
 bool_expr
-    : id                          { SDDBuilderMakeExpr(&__secret_builder, SDD_EXPR_VAL); }
+    : id                          { sdd_ast_make_expr(&__ast, SDD_EXPR_VAL); }
     | '(' bool_expr ')'           { }
-    | bool_expr '|' bool_expr     { SDDBuilderMakeExpr(&__secret_builder, SDD_EXPR_OR ); }
-    | bool_expr '&' bool_expr     { SDDBuilderMakeExpr(&__secret_builder, SDD_EXPR_AND); }
-    | bool_expr '^' bool_expr     { SDDBuilderMakeExpr(&__secret_builder, SDD_EXPR_XOR); }
-    | '!' bool_expr               { SDDBuilderMakeExpr(&__secret_builder, SDD_EXPR_NOT); }
+    | bool_expr '|' bool_expr     { sdd_ast_make_expr(&__ast, SDD_EXPR_OR ); }
+    | bool_expr '&' bool_expr     { sdd_ast_make_expr(&__ast, SDD_EXPR_AND); }
+    | bool_expr '^' bool_expr     { sdd_ast_make_expr(&__ast, SDD_EXPR_XOR); }
+    | '!' bool_expr               { sdd_ast_make_expr(&__ast, SDD_EXPR_NOT); }
     ;
 
 bucket
-    : state '|' state       { SDDBuilderMakeBucket(&__secret_builder, 1); }
-    | bucket '|' state      { SDDBuilderMakeBucket(&__secret_builder, 0); }
+    : state '|' state       { sdd_ast_make_bucket(&__ast, 1); }
+    | bucket '|' state      { sdd_ast_make_bucket(&__ast, 0); }
     ;
 
 cluster
-    : state                 { SDDBuilderMakeCluster(&__secret_builder, 1); }
-    | cluster state         { SDDBuilderMakeCluster(&__secret_builder, 0); }
+    : state                 { sdd_ast_make_cluster(&__ast, 1); }
+    | cluster state         { sdd_ast_make_cluster(&__ast, 0); }
     ;
 
 state
-    : '[' state_name state_actions ']'           { SDDBuilderMakeState(&__secret_builder, 0); }
-    | '[' state_name state_actions cluster ']'   { SDDBuilderMakeState(&__secret_builder, 1); }
-    | '[' state_name state_actions bucket ']'    { SDDBuilderMakeState(&__secret_builder, 2); }
+    : '[' state_name state_actions ']'           { sdd_ast_make_state(&__ast, 0); }
+    | '[' state_name state_actions cluster ']'   { sdd_ast_make_state(&__ast, 1); }
+    | '[' state_name state_actions bucket ']'    { sdd_ast_make_state(&__ast, 2); }
     ;
 
 state_name
-    : id                            { SDDBuilderMakeStateName(&__secret_builder); }
+    : id                            { sdd_ast_make_state_name(&__ast); }
     ;
 
 state_actions
@@ -97,34 +97,34 @@ state_actions
     ;
 
 default
-    : /* empty */                   { SDDBuilderMakeDefault(&__secret_builder, 1); }
-    | '~' state_stub                { SDDBuilderMakeDefault(&__secret_builder, 0); }
+    : /* empty */                   { sdd_ast_make_default(&__ast, 1); }
+    | '~' state_stub                { sdd_ast_make_default(&__ast, 0); }
     ;
 
 entry
-    : /* empty */                   { SDDBuilderMakeEntry(&__secret_builder, 1);    }
-    | SDD_ENTRY procedures          { SDDBuilderMakeEntry(&__secret_builder, 0);    }
+    : /* empty */                   { sdd_ast_make_entry(&__ast, 1);    }
+    | SDD_ENTRY procedures          { sdd_ast_make_entry(&__ast, 0);    }
     ;
 
 exit
-    : /* empty */                   { SDDBuilderMakeExit(&__secret_builder, 1);     }
-    | SDD_EXIT  procedures          { SDDBuilderMakeExit(&__secret_builder, 0);     }
+    : /* empty */                   { sdd_ast_make_exit(&__ast, 1);     }
+    | SDD_EXIT  procedures          { sdd_ast_make_exit(&__ast, 0);     }
     ;
 
 state_stub
-    : '[' id ']'                    { SDDBuilderMakeStub(&__secret_builder); }
+    : '[' id ']'                    { sdd_ast_make_stub(&__ast); }
     ;
 
 procedures
-    : id_group                      {   SDDBuilderMakeProcedure(&__secret_builder, 0); }
+    : id_group                      { sdd_ast_make_procedure(&__ast, 0); }
     ;
 
 id_group 
-    : id                            {   SDDBuilderMakeIDGroup(&__secret_builder, 1);   }
-    | id_group id                   {   SDDBuilderMakeIDGroup(&__secret_builder, 0);   }
+    : id                            { sdd_ast_make_id_group(&__ast, 1);   }
+    | id_group id                   { sdd_ast_make_id_group(&__ast, 0);   }
     ;
 
 id
-    : SDD_IDENTIFIER                {   SDDBuilderPushIdentifier(&__secret_builder, $1);   }
+    : SDD_IDENTIFIER                { sdd_ast_push_id(&__ast, $1);   }
     ;
 %%

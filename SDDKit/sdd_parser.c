@@ -24,7 +24,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "sdd_parser.h"
-#include "sdd_builder.h"
+#include "sdd_ast.h"
 
 
 void sdd_state_construct(sdd_state* s, const char* name, const char* entries, const char* exits, const char* default_stub) {
@@ -62,13 +62,12 @@ void sdd_transition_delete(sdd_transition* t) {
 
 void sdd_transition_delete(sdd_transition* transition);
 
-
 typedef struct yy_buffer_state * YY_BUFFER_STATE;
 extern int yyparse();
 extern YY_BUFFER_STATE yy_scan_string(char * str);
 extern void yy_delete_buffer(YY_BUFFER_STATE buffer);
 extern void yy_switch_to_buffer(struct yy_buffer_state *);
-extern sdd_builder __secret_builder;
+extern sdd_ast __ast;
 
 void markdown(const char* tag_name, const char* content) {
 	static const char* tags[] = {
@@ -100,13 +99,13 @@ void markdown(const char* tag_name, const char* content) {
 
 
 void sdd_parse(const char *dsl, sdd_parser_callback* callback) {
-	sdd_builder_construct(&__secret_builder, &markdown, callback);
+	sdd_ast_construct(&__ast, &markdown, callback);
 
 	YY_BUFFER_STATE dsl_buffer = yy_scan_string((char*)dsl);
 	yy_switch_to_buffer( dsl_buffer); // switch flex to the buffer we just created 
 	yyparse(); 
 	yy_delete_buffer(dsl_buffer);
 
-	// sdd_dump_builder(&__secret_builder, "Status");
-	sdd_builder_destruct(&__secret_builder);
+	// sdd_dump_ast(&__ast, "Status");
+	sdd_ast_destruct(&__ast);
 }
