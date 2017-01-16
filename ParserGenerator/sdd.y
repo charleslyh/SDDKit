@@ -3,6 +3,7 @@
  #include <string.h>
  #include <stdlib.h>
  #include "sdd_ast.h"
+ #include "sdd_parser.h"
 
  void yyerror(char*);
  int yylex();
@@ -10,7 +11,7 @@
  sdd_ast __ast;
 %}
 
-%token SDD_IDENTIFIER SDD_ENTRY SDD_EXIT SDD_DEFAULT SDD_ARROW
+%token SDD_IDENTIFIER SDD_ENTRY SDD_EXIT SDD_DEFAULT SDD_ARROW SDD_DOLLAR
 
 %union {
     char stval[256];
@@ -33,9 +34,14 @@ transitions
     ;
 
 transition
-    : state_stub SDD_ARROW state_stub ':' id conditions post_actions {
+    : state_stub SDD_ARROW state_stub ':' signal conditions post_actions {
             sdd_ast_make_transition(&__ast);
         }
+    ;
+
+signal
+    : id                      { sdd_ast_make_signal(&__ast, SDD_SIG_USER);     }
+    | SDD_DOLLAR id           { sdd_ast_make_signal(&__ast, SDD_SIG_INTERNAL); }
     ;
 
 post_actions

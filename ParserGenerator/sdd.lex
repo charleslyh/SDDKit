@@ -4,41 +4,36 @@
  #include <string.h>
 %}
 
-lbracket \[
-rbracket \]
-lparen   \(
-rparen	 \)
-uline    _
+space    [ \t]
 digit    [0-9]
 alpha    [a-zA-Z]
+uline    _
 colon    :
-space    [ \t]
-tilde    "~"
+lbracket "["
+rbracket "]"
+lparen   "("
+rparen	 ")"
 slash    "/"
-comma    ","
-ocmark   "@"
 entry    "e:"
 exit     "x:"
-default  "d:"
 arrow    "->"
 vbar     "|"
 logics   [&^!]
+dollar   "$"
 
 %%
 {entry}						{ return SDD_ENTRY;    }
 {exit} 					   	{ return SDD_EXIT;     }
-{default}					{ return SDD_DEFAULT;  }
-{lbracket}					{ return *yytext;  } 
-{rbracket}					{ return *yytext;  } 
-{colon}						{ return *yytext;  }
-{tilde}						{ return *yytext;  }
-{lparen}					{ return *yytext;  }
-{rparen}					{ return *yytext;  }
 {arrow}					    { return SDD_ARROW;    }
-{slash}						{ return *yytext;  }
-{comma}						{ return *yytext;  }
-{vbar}						{ return *yytext;  }
-{logics}                    { return *yytext;  }
+{dollar}					{ return SDD_DOLLAR;   }
+{lbracket}					{ return *yytext; } 
+{rbracket}					{ return *yytext; } 
+{colon}						{ return *yytext; }
+{lparen}					{ return *yytext; }
+{rparen}					{ return *yytext; }
+{slash}						{ return *yytext; }
+{vbar}						{ return *yytext; }
+{logics}                    { return *yytext; }
 ({alpha}|{uline})({alpha}|{uline}|{digit})*  {
 	strcpy(yylval.stval, yytext);
 	yylval.stval[yyleng] = '\0';

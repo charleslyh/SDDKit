@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "sdd_parser.h"
 #include "sdd_ast.h"
+#include "sdd_parser.h"
 #include "sdd_array.h"
 #include <stdio.h>
 #include <string.h>
@@ -41,6 +41,7 @@ void sdd_ast_construct(sdd_ast* ast, sdd_markdown markdown, sdd_parser_callback*
 	ast->id_groups   = sdd_array_new();
 	ast->stubs 	     = sdd_array_new();
 	ast->post_acts   = sdd_array_new();
+	ast->signals     = sdd_array_new();
 
 	ast->markdown    = markdown;
 	ast->callback    = callback;
@@ -59,6 +60,13 @@ void sdd_dump_array_count(void* context, void* array) {
 	printf("%d ", sdd_array_count((sdd_array*)array));
 }
 
+void sdd_dump_signal(void* context, void *element) {
+	sdd_signal *sig = (sdd_signal *)element;
+	char str[256];
+	sdd_describe_signal(sig, str);
+	printf("%s\n", str);
+}
+
 void sdd_dump_elements(const char* name, sdd_bool isGroup, sdd_array* elements, sdd_array_element_handler handler) {
 	printf("");
 	printf(isGroup ? "[*]" : "   ");
@@ -75,7 +83,8 @@ void sdd_dump_ast(sdd_ast* ast, const char* tag) {
 	sdd_dump_elements("state_names",sdd_no,  ast->state_names,sdd_dump_string);
 	sdd_dump_elements("entries",    sdd_no,  ast->entries,    sdd_dump_string);
 	sdd_dump_elements("exits",      sdd_no,  ast->exits,      sdd_dump_string);
-	sdd_dump_elements("defaults",   sdd_no,  ast->defaults,   sdd_dump_string);
+	sdd_dump_elements("signals",    sdd_no,  ast->signals,	  sdd_dump_signal);
+	// sdd_dump_elements("defaults",   sdd_no,  ast->defaults,   sdd_dump_string);
 	sdd_dump_elements("stubs",      sdd_no,  ast->stubs,      sdd_dump_string);
 	sdd_dump_elements("procedures", sdd_no,  ast->procedures, sdd_dump_string);
 	sdd_dump_elements("id_groups",  sdd_yes, ast->id_groups,  sdd_dump_array_count);
@@ -85,6 +94,7 @@ void sdd_dump_ast(sdd_ast* ast, const char* tag) {
 }
 
 void sdd_ast_destruct(sdd_ast* ast) {
+	sdd_array_delete(ast->signals);
 	sdd_array_delete(ast->post_acts);
 	sdd_array_delete(ast->ids);
 	sdd_array_delete(ast->id_groups);
@@ -354,16 +364,19 @@ void sdd_ast_make_postactions(sdd_ast* ast, int empty) {
 }
 
 void sdd_ast_make_transition(sdd_ast* ast) {
+	sdd_signal *sig       = sdd_array_pop(ast->signals);
 	const char* to        = sdd_array_pop(ast->stubs);
 	const char* from      = sdd_array_pop(ast->stubs);
-	const char* event     = sdd_array_pop(ast->ids);
 	const char* post_acts = sdd_array_pop(ast->post_acts);
+
+	char sig_desc[512];
+	sdd_describe_signal(sig, sig_desc);
 
 	char desc[512];
 	if (ast->postfix_exprs[0] == 0) {
-		sprintf(desc, "[%s] -> [%s]: %s", from, to, event);
+		sprintf(desc, "[%s] -> [%s]: %s", from, to, sig_desc);
 	} else {
-		sprintf(desc, "[%s] -> [%s]: %s (%s)", from, to, event, ast->postfix_exprs);
+		sprintf(desc, "[%s] -> [%s]: %s (%s)", from, to, sig_desc, ast->postfix_exprs);
 	}
 
 	if (post_acts[0] != 0) {
@@ -372,14 +385,22 @@ void sdd_ast_make_transition(sdd_ast* ast) {
 	}
 	(*ast->markdown)("trans", desc);
 
-	sdd_transition* transition = sdd_transition_new(from, to, event, ast->postfix_exprs, post_acts);
+	sdd_transition* transition = sdd_transition_new(from, to, sig, ast->postfix_exprs, post_acts);
 	(*ast->callback->transitionHandler)(ast->callback->context, transition);
 	sdd_transition_delete(transition);
 
 	free((void*)to);
 	free((void*)from);
-	free((void*)event);
 	free((void*)post_acts);
+	sdd_signal_delete(sig);
+}
+
+void sdd_ast_make_signal(sdd_ast *ast, sdd_signal_type type) {
+	const char *name = sdd_array_pop(ast->ids);
+	sdd_signal *sig = sdd_signal_new(type, name);
+	free((void *)name);
+
+	sdd_array_push(ast->signals, sig);
 }
 
 void sdd_ast_make_dsl(sdd_ast* ast, int mode) {
