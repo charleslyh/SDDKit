@@ -43,7 +43,8 @@
      SDD_ENTRY = 259,
      SDD_EXIT = 260,
      SDD_DEFAULT = 261,
-     SDD_ARROW = 262
+     SDD_ARROW = 262,
+     SDD_DOLLAR = 263
    };
 #endif
 /* Tokens.  */
@@ -52,18 +53,19 @@
 #define SDD_EXIT 260
 #define SDD_DEFAULT 261
 #define SDD_ARROW 262
+#define SDD_DOLLAR 263
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 15 "sdd.y"
+#line 16 "sdd.y"
 {
     char stval[256];
 }
 /* Line 1529 of yacc.c.  */
-#line 67 "y.tab.h"
+#line 69 "y.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

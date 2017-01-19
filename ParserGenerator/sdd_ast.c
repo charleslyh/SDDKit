@@ -135,6 +135,12 @@ void sdd_ast_make_stub(sdd_ast* ast) {
 	ast->markdown("stub", stub);
 }
 
+void sdd_ast_make_pseudo_stub(sdd_ast *ast, const char *pseudo) {
+	sdd_array_push(ast->stubs, (void*)strdup(pseudo));
+
+	ast->markdown("stub", pseudo);
+}
+
 void sdd_ast_make_state_name(sdd_ast* ast) {
 	const char* identifier = sdd_array_pop(ast->ids);
 	sdd_array_push(ast->state_names, (void*)identifier);

@@ -27,6 +27,26 @@
 #include "sdd_ast.h"
 
 
+sdd_signal *sdd_signal_new(sdd_signal_type type, const char *name) {
+	sdd_signal *sig = malloc(sizeof(sdd_signal_type));
+	sig->type = type;
+	sig->name = strdup(name);
+
+	return sig;
+}
+
+sdd_signal *sdd_signal_copy(sdd_signal *sig) {
+	return sdd_signal_new(sig->type, sig->name);
+}
+
+void sdd_signal_delete(sdd_signal *sig) {
+	free((void *)sig->name);
+}
+
+void sdd_describe_signal(sdd_signal *sig, char str[]) {
+	sprintf(str, "<%c: %s>", sig->type == SDD_SIG_USER ? 'U' : 'I', sig->name);
+}
+
 void sdd_state_construct(sdd_state* s, const char* name, const char* entries, const char* exits, const char* default_stub) {
     s->name         = strdup(name);
     s->entries      = strdup(entries);
@@ -41,11 +61,11 @@ void sdd_state_destruct(sdd_state* s) {
     free((void*)s->default_stub);
 }
 
-sdd_transition* sdd_transition_new(const char* from, const char* to, const char* signal, const char* conditions, const char* actions) {
+sdd_transition* sdd_transition_new(const char* from, const char* to, sdd_signal* sig, const char* conditions, const char* actions) {
 	sdd_transition* t = malloc(sizeof(sdd_transition));
+	t->signal     = sdd_signal_copy(sig);
 	t->from       = strdup(from);
 	t->to         = strdup(to);
-	t->signal     = strdup(signal);
 	t->conditions = strdup(conditions);
 	t->actions    = strdup(actions);
 	return t;
@@ -54,9 +74,9 @@ sdd_transition* sdd_transition_new(const char* from, const char* to, const char*
 void sdd_transition_delete(sdd_transition* t) {
 	free((void*)t->actions);
 	free((void*)t->conditions);
-	free((void*)t->signal);
 	free((void*)t->to);
 	free((void*)t->from);
+	sdd_signal_delete(t->signal);
 	free(t);
 }
 

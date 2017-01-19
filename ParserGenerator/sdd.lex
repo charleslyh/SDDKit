@@ -20,6 +20,7 @@ arrow    "->"
 vbar     "|"
 logics   [&^!]
 dollar   "$"
+period   "."
 
 %%
 {entry}						{ return SDD_ENTRY;    }
@@ -34,6 +35,7 @@ dollar   "$"
 {slash}						{ return *yytext; }
 {vbar}						{ return *yytext; }
 {logics}                    { return *yytext; }
+{period}					{ return *yytext; }
 ({alpha}|{uline})({alpha}|{uline}|{digit})*  {
 	strcpy(yylval.stval, yytext);
 	yylval.stval[yyleng] = '\0';

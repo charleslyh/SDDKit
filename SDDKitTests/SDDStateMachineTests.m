@@ -46,9 +46,6 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     return s;
 }
 
-static BOOL (^AllwaysYES)(id) = ^BOOL (id _) { return YES; };
-static void (^SDDNilPostAction)(id) = ^(id _){};
-
 - (void)setUp {
     [super setUp];
     
@@ -84,18 +81,22 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     [_hsm addState:A];
     [_hsm addState:B];
     [_hsm setTopState:A];
-    [_hsm setTopState:A];
 
     [_hsm start];
     XCTAssertEqualObjects(_flows, @"a");
 }
 
+/*
+ [A [B]]
+ [A] -> [B]: $Initial
+ */
 - (void)testActivateHierarchicalStatesWithExplicitDefault {
     [_hsm addState:A];
     [_hsm addState:B];
-    [_hsm state:A addMonoStates:@[B]];
-    [_hsm setState:A defaultState:B];
+    [_hsm setParentState:A forChildState:B];
     [_hsm setTopState:A];
+    
+    [_hsm when:@"$Initial" satisfied:nil transitFrom:A to:B postAction:nil];
     
     [_hsm start];
     XCTAssertEqualObjects(_flows, @"ab");
@@ -104,24 +105,25 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
 - (void)testLeafRefreshAtRoot {
     [_hsm addState:A];
     [_hsm setTopState:A];
-    [_hsm when:@"E" satisfied:AllwaysYES transitFrom:A to:A postAction:nil];
+    [_hsm when:@"E" satisfied:nil transitFrom:A to:A postAction:nil];
 
     [_hsm start];
     [_epool scheduleEvent:SDDELiteral(E)];
     XCTAssertEqualObjects(_flows, @"a1a");
 }
 
-// [A
-//   [B]
-// ]
-//
-// [B] -> [B]: E
+/*
+ [A
+   [B]
+ ]
+ [B] -> [B]: E
+ */
 - (void)testLeafRefresh {
     [_hsm addState:A];
     [_hsm addState:B];
-    [_hsm state:A addMonoStates:@[B]];
+    [_hsm setParentState:A forChildState:B];
     [_hsm setTopState:A];
-    [_hsm when:@"E" satisfied:AllwaysYES transitFrom:B to:B postAction:nil];
+    [_hsm when:@"E" satisfied:nil transitFrom:B to:B postAction:nil];
     
     [_hsm start];
     [_epool scheduleEvent:SDDELiteral(E)];
@@ -131,9 +133,9 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
 - (void)testTransitFromParentToChild {
     [_hsm addState:A];
     [_hsm addState:B];
-    [_hsm state:A addMonoStates:@[B]];
+    [_hsm setParentState:A forChildState:B];
     [_hsm setTopState:A];
-    [_hsm when:@"E" satisfied:AllwaysYES transitFrom:A to:B postAction:nil];
+    [_hsm when:@"E" satisfied:nil transitFrom:A to:B postAction:nil];
     
     [_hsm start];
     [_epool scheduleEvent:SDDELiteral(E)];
@@ -141,14 +143,23 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     XCTAssertEqualObjects(_flows, @"ab2b");
 }
 
+/*
+ [A
+    [B]
+    [C]
+ ]
+ [A] -> [B]: $Initial
+ */
 - (void)testTransitFromParentToNoneDefaultChildState {
     [_hsm addState:A];
     [_hsm addState:B];
     [_hsm addState:C];
-    [_hsm state:A addMonoStates:@[B, C]];
-    [_hsm setState:A defaultState:B];
+    [_hsm setParentState:A forChildState:B];
+    [_hsm setParentState:A forChildState:C];
     [_hsm setTopState:A];
-    [_hsm when:@"E" satisfied:AllwaysYES transitFrom:A to:C postAction:nil];
+    
+    [_hsm when:@"$Initial" satisfied:nil transitFrom:A to:B postAction:nil];
+    [_hsm when:@"E" satisfied:nil transitFrom:A to:C postAction:nil];
     
     [_hsm start];
     [_epool scheduleEvent:SDDELiteral(E)];
@@ -156,14 +167,22 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     XCTAssertEqualObjects(_flows, @"ab2c");
 }
 
+/*
+ [A
+    [B
+        [C]
+    ]
+ ]
+ */
 - (void)testLeafRefreshAcrossMultiStates {
     [_hsm addState:A];
     [_hsm addState:B];
     [_hsm addState:C];
-    [_hsm state:A addMonoStates:@[B]];
-    [_hsm state:B addMonoStates:@[C]];
+    [_hsm setParentState:A forChildState:B];
+    [_hsm setParentState:B forChildState:C];
     [_hsm setTopState:A];
-    [_hsm when:@"E" satisfied:AllwaysYES transitFrom:A to:C postAction:nil];
+    
+    [_hsm when:@"E" satisfied:nil transitFrom:A to:C postAction:nil];
     
     [_hsm start];
     [_epool scheduleEvent:SDDELiteral(E)];
@@ -171,18 +190,29 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     XCTAssertEqualObjects(_flows, @"abc32bc");
 }
 
-// [A [B d:[C] [C] [D]]]
-// [A] -> [D]: E
+/*
+ [A
+    [B
+        [C]
+        [D]
+    ]
+ ]
+
+ [B] -> [C]: $Initial
+ [A] -> [D]: E
+ */
 - (void)testTransitFromRootWithCommonParentStates {
     [_hsm addState:A];
     [_hsm addState:B];
     [_hsm addState:C];
     [_hsm addState:D];
-    [_hsm state:A addMonoStates:@[B]];
-    [_hsm state:B addMonoStates:@[C,D]];
-    [_hsm setState:B defaultState:C];
+    [_hsm setParentState:A forChildState:B];
+    [_hsm setParentState:B forChildState:C];
+    [_hsm setParentState:B forChildState:D];
     [_hsm setTopState:A];
-    [_hsm when:@"E" satisfied:AllwaysYES transitFrom:A to:D postAction:nil];
+
+    [_hsm when:@"$Initial" satisfied:nil transitFrom:B to:C postAction:nil];
+    [_hsm when:@"E" satisfied:nil transitFrom:A to:D postAction:nil];
     
     [_hsm start];
     [_epool scheduleEvent:SDDELiteral(E)];
@@ -190,50 +220,72 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     XCTAssertEqualObjects(_flows, @"abc32bd");
 }
 
-- (void)testActivateHierarchicalStatesWithImplicitDefaultState {
+/*
+ [A
+    [B]
+ ]
+ */
+- (void)testActivateHierarchicalStatesWithImplicitInitialTransition {
     [_hsm addState:A];
     [_hsm addState:B];
     [_hsm setTopState:A];
-    [_hsm state:A addMonoStates:@[B]];
+    [_hsm setParentState:A forChildState:B];
     
     [_hsm start];
     XCTAssertEqualObjects(_flows, @"ab");
 }
 
-// [A [B [C]]]
-- (void)testActivateHierarchicalStatesWithExplicitDefaultsAcrossMoreThanOneLevel {
+/*
+ [A
+    [B
+        [C]
+    ]
+ ]
+ [A] -> [C]: $Initial
+ */
+- (void)testActivateHierarchicalStatesWithExplicitInitialTransitionAcrossMultiLevels {
     [_hsm addState:A];
     [_hsm addState:B];
     [_hsm addState:C];
-    [_hsm state:A addMonoStates:@[B]];
-    [_hsm state:B addMonoStates:@[C]];
-    [_hsm setState:A defaultState:C];
+    [_hsm setParentState:A forChildState:B];
+    [_hsm setParentState:B forChildState:C];
     [_hsm setTopState:A];
+    
+    [_hsm when:@"$Initial" satisfied:nil transitFrom:A to:C postAction:nil];
     
     [_hsm start];
     XCTAssertEqualObjects(_flows, @"abc");
 }
 
-- (void)testTwoDescendantsWithoutDefault {
+- (void)testTwoDescendantsWithoutProvidingExplicitInitialTransition {
     [_hsm addState:A];
     [_hsm addState:B];
     [_hsm addState:C];
-    [_hsm state:A addMonoStates:@[B,C]];
+    [_hsm setParentState:A forChildState:B];
+    [_hsm setParentState:A forChildState:C];
     [_hsm setTopState:A];
     
     XCTAssertThrows([_hsm start], @"状态如果拥有多于1个子状态，则必须明确指定default状态，否则应该抛出异常");
 }
 
-// [A d:[B] [B][C]]
-// [B] -> [C]: E
+/*
+ [A
+    [B]
+    [C]
+ ]
+ [A] -> [B]: $Initial
+ [B] -> [C]: E
+ */
 - (void)testActivateHierachicalState1 {
     [_hsm addState:A];
     [_hsm addState:B];
     [_hsm addState:C];
-    [_hsm state:A addMonoStates:@[B,C]];
-    [_hsm setState:A defaultState:B];
+    [_hsm setParentState:A forChildState:B];
+    [_hsm setParentState:A forChildState:C];
     [_hsm setTopState:A];
-    [_hsm when:@"E" satisfied:AllwaysYES transitFrom:B to:C postAction:SDDNilPostAction];
+    
+    [_hsm when:@"$Initial" satisfied:nil transitFrom:A to:B postAction:nil];
+    [_hsm when:@"E" satisfied:nil transitFrom:B to:C postAction:nil];
     
     [_hsm start];
     [_epool scheduleEvent:SDDELiteral(E)];
@@ -241,18 +293,28 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     XCTAssertEqualObjects(_flows, @"ab2c");
 }
 
-// [A d:[B] [B][C [D]]]
-// [B] -> [D]: E
+/*
+ [A
+    [B]
+    [C
+        [D]
+    ]
+ ]
+ [A] -> [B]: $Initial
+ [B] -> [D]: E
+ */
 - (void)testActivateHierachicalState2 {
     [_hsm addState:A];
     [_hsm addState:B];
     [_hsm addState:C];
     [_hsm addState:D];
-    [_hsm state:A addMonoStates:@[B, C]];
-    [_hsm state:C addMonoStates:@[D]];
-    [_hsm setState:A defaultState:B];
+    [_hsm setParentState:A forChildState:B];
+    [_hsm setParentState:A forChildState:C];
+    [_hsm setParentState:C forChildState:D];
     [_hsm setTopState:A];
-    [_hsm when:@"E" satisfied:AllwaysYES transitFrom:B to:D postAction:SDDNilPostAction];
+
+    [_hsm when:@"$Initial" satisfied:nil transitFrom:A to:B postAction:nil];
+    [_hsm when:@"E" satisfied:nil transitFrom:B to:D postAction:nil];
     
     [_hsm start];
     [_epool scheduleEvent:SDDELiteral(E)];
@@ -260,18 +322,28 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     XCTAssertEqualObjects(_flows, @"ab2cd");
 }
 
-// [A d:[C] [B [C]][D]]
-// [C] -> [D]: E
+/*
+ [A
+    [B
+        [C]
+    ]
+    [D]
+ ]
+ [A] -> [C]: $Initial
+ [C] -> [D]: E
+ */
 - (void)testActivateHierachicalState3 {
     [_hsm addState:A];
     [_hsm addState:B];
     [_hsm addState:C];
     [_hsm addState:D];
-    [_hsm state:A addMonoStates:@[B, D]];
-    [_hsm state:B addMonoStates:@[C]];
-    [_hsm setState:A defaultState:C];
+    [_hsm setParentState:A forChildState:B];
+    [_hsm setParentState:A forChildState:D];
+    [_hsm setParentState:B forChildState:C];
     [_hsm setTopState:A];
-    [_hsm when:@"E" satisfied:AllwaysYES transitFrom:C to:D postAction:SDDNilPostAction];
+
+    [_hsm when:@"$Initial" satisfied:nil transitFrom:A to:C postAction:nil];
+    [_hsm when:@"E" satisfied:nil transitFrom:C to:D postAction:nil];
     
     [_hsm start];
     [_epool scheduleEvent:SDDELiteral(E)];
@@ -279,20 +351,28 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     XCTAssertEqualObjects(_flows, @"abc32d");
 }
 
-// [A d:[B] [B [C]] [D [E]]]
-// [C] -> [E]: E
+/*
+ [A
+    [B [C]]
+    [D [E]]
+ ]
+ [A] -> [B]: $Initial
+ [C] -> [E]: E
+ */
 - (void)testActivateHierachicalState4 {
     [_hsm addState:A];
     [_hsm addState:B];
     [_hsm addState:C];
     [_hsm addState:D];
     [_hsm addState:E];
-    [_hsm state:A addMonoStates:@[B, D]];
-    [_hsm state:B addMonoStates:@[C]];
-    [_hsm state:D addMonoStates:@[E]];
-    [_hsm setState:A defaultState:C];
+    [_hsm setParentState:A forChildState:B];
+    [_hsm setParentState:A forChildState:D];
+    [_hsm setParentState:B forChildState:C];
+    [_hsm setParentState:D forChildState:E];
     [_hsm setTopState:A];
-    [_hsm when:@"E" satisfied:AllwaysYES transitFrom:C to:E postAction:SDDNilPostAction];
+    
+    [_hsm when:@"$Initial" satisfied:nil transitFrom:A to:B postAction:nil];
+    [_hsm when:@"E" satisfied:nil transitFrom:C to:E postAction:nil];
     
     [_hsm start];
     [_epool scheduleEvent:SDDELiteral(E)];
@@ -300,16 +380,25 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     XCTAssertEqualObjects(_flows, @"abc32de");
 }
 
-// [A d:[B] [B][C]]
-// [A] -> [C]: E
-- (void)testTransformFromSuperState {
+
+/*
+ [A
+    [B]
+    [C]
+ ]
+ [A] -> [B]: $Initial
+ [A] -> [C]: E
+ */
+- (void)testTransitFromSuperState {
     [_hsm addState:A];
     [_hsm addState:B];
     [_hsm addState:C];
-    [_hsm state:A addMonoStates:@[B,C]];
-    [_hsm setState:A defaultState:B];
+    [_hsm setParentState:A forChildState:B];
+    [_hsm setParentState:A forChildState:C];
     [_hsm setTopState:A];
-    [_hsm when:@"E" satisfied:AllwaysYES transitFrom:A to:C postAction:SDDNilPostAction];
+    
+    [_hsm when:@"$Initial" satisfied:nil transitFrom:A to:B postAction:nil];
+    [_hsm when:@"E" satisfied:nil transitFrom:A to:C postAction:nil];
     
     [_hsm start];
     [_epool scheduleEvent:SDDELiteral(E)];
@@ -317,26 +406,36 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     XCTAssertEqualObjects(_flows, @"ab2c");
 }
 
-// [E d:[B] [D [A][C]] [B]]
-// [B]->[A]: Alpha
-// [D]->[B]: Beta
-// [A]->[C]: Gama
-// [B]->[C]: Delta
+/*
+ [E
+    [D
+        [A]
+        [C]
+    ]
+    [B]
+ ]
+ [B] -> [A]: Alpha
+ [D] -> [B]: Beta
+ [A] -> [C]: Gama
+ [B] -> [C]: Delta
+ */
 - (void)testFig2_1 {
     [_hsm addState:A];
     [_hsm addState:B];
     [_hsm addState:C];
     [_hsm addState:D];
     [_hsm addState:E];
-    [_hsm state:E addMonoStates:@[B,D]];
-    [_hsm state:D addMonoStates:@[A,C]];
-    [_hsm setState:E defaultState:B];
+    [_hsm setParentState:E forChildState:B];
+    [_hsm setParentState:E forChildState:D];
+    [_hsm setParentState:D forChildState:A];
+    [_hsm setParentState:D forChildState:C];
     [_hsm setTopState:E];
     
-    [_hsm when:@"Alpha" satisfied:AllwaysYES transitFrom:B to:A postAction:SDDNilPostAction];
-    [_hsm when:@"Beta"  satisfied:AllwaysYES transitFrom:D to:B postAction:SDDNilPostAction];
-    [_hsm when:@"Gama"  satisfied:AllwaysYES transitFrom:A to:C postAction:SDDNilPostAction];
-    [_hsm when:@"Delta" satisfied:AllwaysYES transitFrom:B to:C postAction:SDDNilPostAction];
+    [_hsm when:@"$Initial" satisfied:nil transitFrom:E to:B postAction:nil];
+    [_hsm when:@"Alpha" satisfied:nil transitFrom:B to:A postAction:nil];
+    [_hsm when:@"Beta"  satisfied:nil transitFrom:D to:B postAction:nil];
+    [_hsm when:@"Gama"  satisfied:nil transitFrom:A to:C postAction:nil];
+    [_hsm when:@"Delta" satisfied:nil transitFrom:B to:C postAction:nil];
     
     [_hsm start];
     [_epool scheduleEvent:SDDELiteral(Alpha)];
@@ -347,30 +446,36 @@ static void (^SDDNilPostAction)(id) = ^(id _){};
     XCTAssertEqualObjects(_flows, @"eb2da1c34b2dc");
 }
 
-// [E ~[B]
-//  [D
-//   [A][C]
-//  ]
-//  [B]
-// ]
-// [B]->[A]: Alpha
-// [D]->[B]: Beta
-// [A]->[C]: Gama
-// [B]->[C]: Delta
+/*
+ [E
+    [D
+        [A]
+        [C]
+    ]
+    [B]
+ ]
+ [B] -> [A]: Alpha
+ [D] -> [B]: Beta
+ [A] -> [C]: Gama
+ [B] -> [C]: Delta
+*/
 - (void)testFig2_2 {
     [_hsm addState:A];
     [_hsm addState:B];
     [_hsm addState:C];
     [_hsm addState:D];
     [_hsm addState:E];
-    [_hsm state:E addMonoStates:@[B,D]];
-    [_hsm state:D addMonoStates:@[A,C]];
-    [_hsm setState:E defaultState:B];
+    [_hsm setParentState:E forChildState:B];
+    [_hsm setParentState:E forChildState:D];
+    [_hsm setParentState:D forChildState:A];
+    [_hsm setParentState:D forChildState:C];
     [_hsm setTopState:E];
-    [_hsm when:@"Alpha" satisfied:AllwaysYES transitFrom:B to:A postAction:SDDNilPostAction];
-    [_hsm when:@"Beta"  satisfied:AllwaysYES transitFrom:D to:B postAction:SDDNilPostAction];
-    [_hsm when:@"Gama"  satisfied:AllwaysYES transitFrom:A to:C postAction:SDDNilPostAction];
-    [_hsm when:@"Delta" satisfied:AllwaysYES transitFrom:B to:C postAction:SDDNilPostAction];
+
+    [_hsm when:@"$Initial" satisfied:nil transitFrom:E to:B postAction:nil];
+    [_hsm when:@"Alpha" satisfied:nil transitFrom:B to:A postAction:nil];
+    [_hsm when:@"Beta"  satisfied:nil transitFrom:D to:B postAction:nil];
+    [_hsm when:@"Gama"  satisfied:nil transitFrom:A to:C postAction:nil];
+    [_hsm when:@"Delta" satisfied:nil transitFrom:B to:C postAction:nil];
     
     [_hsm start];
     

@@ -54,9 +54,12 @@ typedef enum sdd_signal_type sdd_signal_type;
 void sdd_ast_construct(sdd_ast* ast, sdd_markdown markdown, sdd_parser_callback* callback);
 void sdd_ast_destruct(sdd_ast* ast);
 void sdd_ast_push_id(sdd_ast* ast, const char* identifier);
+
 void sdd_ast_make_stub(sdd_ast* ast);
+void sdd_ast_make_pseudo_stub(sdd_ast *ast, const char *pseudo);
+
 void sdd_ast_make_id_group(sdd_ast* ast, int gen_new);
-void sdd_ast_make_state_name(sdd_ast* ast);
+void sdd_ast_make_state_name(sdd_ast *ast);
 void sdd_ast_make_procedure(sdd_ast* ast, int empty);
 void sdd_ast_make_entry(sdd_ast* ast, int empty);
 void sdd_ast_make_exit(sdd_ast* ast,  int empty);

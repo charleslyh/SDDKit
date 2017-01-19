@@ -81,7 +81,7 @@ void EXPMarkdownTransition(void* context, sdd_transition* t) {
 }
 
 void EXPMarkRootState(void* context, sdd_state* rootState) {
-	EXPMarkTag("root state", rootState->name, FONT_CLR_RED);
+	EXPMarkTag("top", rootState->name, FONT_CLR_RED);
 }
 
 int main() {
@@ -116,9 +116,9 @@ int main() {
 		[B9 [C5]|[C6 [D1][D2]]]
 	]
 
-	[_]  -> [B1]: $Initial
-	[A]  -> [_] : $Final
-	[A]  -> [B1]: $Default
+	[.]  -> [B1]: $Initial
+	[A]  -> [.] : $Final
+	[A]  -> [B1]: $Initial
 
 	// “纯朴”状态转换： 如果[B1]状态是激活的，当发生Event1时，激活[B2]状态。 [B1]称为源状态，[B2]称为目的状态。需要注意的是，当目的状态和源状态为非同源时，源状态会被注销，否则直接激活目的状态 
 	[B1] -> [B2]: Event1

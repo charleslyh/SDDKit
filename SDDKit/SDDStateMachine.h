@@ -46,14 +46,16 @@ typedef NSArray<SDDState *> SDDPath;
 @class SDDStateMachine;
 
 @interface SDDStateMachine : NSObject <SDDEventSubscriber>
-@property (strong, nonatomic, readonly) __nullable id<SDDLogger> logger;
+@property (strong, nonatomic, readonly) SDDState *    __nonnull  outterState;
+@property (strong, nonatomic, readonly) SDDState *    __nonnull  topState;
+
+@property (strong, nonatomic, readonly) id<SDDLogger> __nullable logger;
 
 - (nullable instancetype)init UNAVAILABLE_ATTRIBUTE;
 - (nonnull instancetype)initWithLogger:(nullable id<SDDLogger>)logger;
 
 - (void)addState:(nonnull SDDState*)state;
-- (void)state:(nonnull SDDState*)state addMonoStates:(nonnull NSArray<SDDState*>*)states;
-- (void)setState:(nonnull SDDState *)state defaultState:(nonnull SDDState*)defaultState;
+- (void)setParentState:(nonnull SDDState *)parent forChildState:(nonnull SDDState *)child;
 - (void)setTopState:(nonnull SDDState*)state;
 
 - (void)when:(nonnull NSString *)signalName

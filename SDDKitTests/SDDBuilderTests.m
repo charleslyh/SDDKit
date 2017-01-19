@@ -121,38 +121,29 @@
     [self performTestWithDSL:dsl expectedFlows:@"ab21" customActions:nil];
 }
 
-- (void)testCluster2 {
-    NSString* const dsl = SDDOCLanguage
+- (void)testMultiSubstatesWithProvidedTopInitialTransition {
+    NSString *const dsl = SDDOCLanguage
     (
-     [A e:ma x:m1 ~[B]
+     [A e:ma x:m1
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
-     );
+     
+     [A] -> [B]: $Initial
+    );
     
     [self performTestWithDSL:dsl expectedFlows:@"ab21" customActions:nil];
-}
-
-- (void)testCluster3 {
-    NSString* const dsl = SDDOCLanguage
-    (
-     [A e:ma x:m1 ~[C]
-      [B e:mb x:m2]
-      [C e:mc x:m3]
-      ]
-     );
-    
-    [self performTestWithDSL:dsl expectedFlows:@"ac31" customActions:nil];
 }
 
 - (void)testSimpleTransit {
     NSString* const dsl = SDDOCLanguage
     (
-     [A e:ma x:m1 ~[B]
+     [A e:ma x:m1
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
+     [A]->[B]: $Initial
      [B]->[C]: E1
      );
     
@@ -164,10 +155,12 @@
 - (void)testTransitBack {
     NSString* const dsl = SDDOCLanguage
     (
-     [A e:ma x:m1 ~[B]
+     [A e:ma x:m1
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
+     
+     [A]->[B]: $Initial
      
      [B]->[C]: Forward
      [C]->[B]: Backward
@@ -183,13 +176,15 @@
 - (NSString*)Figure2_1 {
     return SDDOCLanguage
     (
-     [E e:me x:m5 ~[B]
+     [E e:me x:m5
         [B e:mb x:m2]
         [D e:md x:m4
             [A e:ma x:m1]
             [C e:mc x:m3]
         ]
      ]
+     
+     [E]->[B]: $Initial
      
      [B]->[A]: E1
      [D]->[B]: E2
@@ -219,12 +214,13 @@
 - (void)testTransitWithCondition_YES {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
-     [B] -> [C]: E1 (yes)
+     [A]->[B]: $Initial
+     [B]->[C]: E1 (yes)
     );
 
     [self performTestWithDSL:dsl expectedFlows:@"b2c3" customActions:^{
@@ -236,11 +232,12 @@
 - (void)testTransitWithCondition_NO {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
+     [A] -> [B]: $Initial
      [B] -> [C]: E1 (no)
      );
     
@@ -252,11 +249,12 @@
 - (void)testLogicalNOT_NO {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
+     [A] -> [B]: $Initial
      [B] -> [C]: E1 (!no)
      );
     
@@ -268,11 +266,12 @@
 - (void)testLogicalNOT_YES {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
+     [A] -> [B]: $Initial
      [B] -> [C]: E1 (!yes)
      );
     
@@ -284,11 +283,12 @@
 - (void)testLogicalAnd_NO_NO {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
+     [A] -> [B]: $Initial
      [B] -> [C]: E1 (no & no)
      );
     
@@ -300,11 +300,12 @@
 - (void)testLogicalAnd_NO_YES {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
+     [A] -> [B]: $Initial
      [B] -> [C]: E1 (no & yes)
      );
     
@@ -316,11 +317,12 @@
 - (void)testLogicalAnd_YES_NO {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
+     [A] -> [B]: $Initial
      [B] -> [C]: E1 (yes & no)
      );
     
@@ -332,11 +334,12 @@
 - (void)testLogicalAnd_YES_YES {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
+     [A] -> [B]: $Initial
      [B] -> [C]: E1 (yes & yes)
      );
     
@@ -348,11 +351,12 @@
 - (void)testLogicalOr_NO_NO {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
+     [A] -> [B]: $Initial
      [B] -> [C]: E1 (no | no)
      );
     
@@ -364,11 +368,12 @@
 - (void)testLogicalOr_NO_YES {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
+     [A] -> [B]: $Initial
      [B] -> [C]: E1 (no | yes)
      );
     
@@ -380,11 +385,12 @@
 - (void)testLogicalOr_YES_NO {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
+     [A] -> [B]: $Initial
      [B] -> [C]: E1 (yes | no)
      );
     
@@ -396,11 +402,12 @@
 - (void)testLogicalOr_YES_YES {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
+     [A] -> [B]: $Initial
      [B] -> [C]: E1 (yes | yes)
      );
     
@@ -412,11 +419,12 @@
 - (void)testLogicalXOR_NO_NO {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
+     [A] -> [B]: $Initial
      [B] -> [C]: E1 (no ^ no)
      );
     
@@ -428,11 +436,12 @@
 - (void)testLogicalXOR_NO_YES {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
+     [A] -> [B]: $Initial
      [B] -> [C]: E1 (no ^ yes)
      );
     
@@ -444,11 +453,12 @@
 - (void)testLogicalXOR_YES_NO {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
+     [A] -> [B]: $Initial
      [B] -> [C]: E1 (yes ^ no)
      );
     
@@ -460,11 +470,12 @@
 - (void)testLogicalXOR_YES_YES {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
+     [A] -> [B]: $Initial
      [B] -> [C]: E1 (yes ^ yes)
      );
     
@@ -476,10 +487,12 @@
 - (void)testCompoundConditionWithoutParenthesis {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
+     
+     [A] -> [B]: $Initial
      
      // no & no | yes   => yes
      [B] -> [C]: E1 (no & no | yes)
@@ -493,10 +506,12 @@
 - (void)testCompoundConditionWithParenthesis {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
+     
+     [A] -> [B]: $Initial
      
      // no & no | yes   => yes
      // no & (no | yes) => no
@@ -512,12 +527,13 @@
 - (void)testTransitWithSinglePostAction {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
 
-     [B]->[C]: E1 / p1
+     [A] -> [B]: $Initial
+     [B] -> [C]: E1 / p1
      );
 
     [self performTestWithDSL:dsl expectedFlows:@"b2cα3" customActions:^{
@@ -528,12 +544,13 @@
 - (void)testTransitWithMultiplePostActions {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
-     [B]->[C]: E1 / p1 p2
+     [A] -> [B]: $Initial
+     [B] -> [C]: E1 / p1 p2
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2cαβ3" customActions:^{
@@ -544,13 +561,14 @@
 - (void)testTransitWithMultiplePostActionsAndEvents {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
-     [B]->[C]: E1 / p1 p2
-     [C]->[B]: E2 / p3
+     [A] -> [B]: $Initial
+     [B] -> [C]: E1 / p1 p2
+     [C] -> [B]: E2 / p3
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2cαβ3bγ2" customActions:^{
@@ -562,12 +580,13 @@
 - (void)testTransitionWithNegativeConditionAndPostActions {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
-     [B]->[C]: E1 (no) / p1
+     [A] -> [B]: $Initial
+     [B] -> [C]: E1 (no) / p1
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:^{
@@ -578,12 +597,13 @@
 - (void)testTransitionWithPositiveConditionAndPostActions {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
-     [B]->[C]: E1 (yes) / p3
+     [A] -> [B]: $Initial
+     [B] -> [C]: E1 (yes) / p3
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2cγ3" customActions:^{
@@ -594,12 +614,13 @@
 - (void)testEventWithArgument {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb times2 x:p2]
       [C e:mc times3 x:p3]
       ]
      
-     [B]->[C]: E1 / times4
+     [A] -> [B]: $Initial
+     [B] -> [C]: E1 / times4
      );
     
     NSNumber* seven = @7;
@@ -611,12 +632,13 @@
 - (void)testConditionWithArgumentResultingPositive {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
-     [B]->[C]: E1 (isOdd)
+     [A] -> [B]: $Initial
+     [B] -> [C]: E1 (isOdd)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2c3" customActions:^{
@@ -627,12 +649,13 @@
 - (void)testConditionWithArgumentResultingNegative {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
-     [B]->[C]: E1 (isOdd)
+     [A] -> [B]: $Initial
+     [B] -> [C]: E1 (isOdd)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:^{
@@ -643,12 +666,13 @@
 - (void)testAugmentedConditionAndSimpleCondition {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B e:mb x:m2]
       [C e:mc x:m3]
       ]
      
-     [B]->[C]: E1 (isOdd | yes)
+     [A] -> [B]: $Initial
+     [B] -> [C]: E1 (isOdd | yes)
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"b2c3" customActions:^{
@@ -663,12 +687,13 @@
 - (void)testMarkDeactivatingArgument {
     NSString* const dsl = SDDOCLanguage
     (
-     [A ~[B]
+     [A
       [B x:markArgument]
       [C]
       ]
      
-     [B]->[C]: E1
+     [A] -> [B]: $Initial
+     [B] -> [C]: E1
      );
     
     [self performTestWithDSL:dsl expectedFlows:@"LastArgument" customActions:^{
@@ -683,13 +708,14 @@
 - (void)testTripleTransitionCausedByOneEvent {
     NSString* const dsl = SDDOCLanguage
     (
-     [Top ~[A]
+     [Top
       [A e: ma]
       [B e: mb]
       [C e: mc]
       [D e: md]
       ]
      
+     [Top] -> [A]: $Initial
      [A] -> [B]: E1 / scheduleE2
      [B] -> [C]: E2 / scheduleE3
      [C] -> [D]: E3 / scheduleE4

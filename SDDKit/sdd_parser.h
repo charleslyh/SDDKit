@@ -23,6 +23,22 @@
 #ifndef SDD_PARSER_H
 #define SDD_PARSER_H
 
+
+typedef enum sdd_signal_type {
+	SDD_SIG_INTERNAL	= 1,
+	SDD_SIG_USER 		= 2,
+} sdd_signal_type;
+
+typedef struct sdd_signal_t {
+	sdd_signal_type type;
+	char            *name;
+} sdd_signal;
+
+sdd_signal *sdd_signal_new(sdd_signal_type type, const char *name);
+sdd_signal *sdd_signal_copy(sdd_signal *sig);
+void sdd_signal_delete(sdd_signal *sig);
+void sdd_describe_signal(sdd_signal *sig, char str[]);
+
 typedef struct sdd_state_t {
 	const char* name;
 	const char* entries;
@@ -35,14 +51,14 @@ void sdd_state_destruct(sdd_state* state);
 
 
 typedef struct sdd_transition_t {
+	sdd_signal *signal;
 	const char* from;
 	const char* to;
-	const char* signal;
 	const char* conditions;
 	const char* actions;
 } sdd_transition;
 
-sdd_transition* sdd_transition_new(const char* from, const char* to, const char* signal, const char* conditions, const char* actions);
+sdd_transition* sdd_transition_new(const char* from, const char* to, sdd_signal* signal, const char* conditions, const char* actions);
 void sdd_transition_delete(sdd_transition* transition);
 
 

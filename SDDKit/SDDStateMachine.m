@@ -122,23 +122,31 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
     [_states addObject:state];
 }
 
-- (void)state:(SDDState *)parent addMonoStates:(SDDPath *)children {
-    for (SDDState* state in children)
-        _parents[state] = parent;
+- (void)setParentState:(nonnull SDDState *)parent forChildState:(nonnull SDDState *)child {
+    _parents[child] = parent;
     
     if (_descendants[parent] == nil)
         _descendants[parent] = [NSMutableArray array];
     
     NSMutableArray* ownDescendants = _descendants[parent];
-    [ownDescendants addObjectsFromArray:children];
-}
-
-- (void)setState:(nonnull SDDState *)state defaultState:(nonnull SDDState*)defaultState {
-    _defaults[state] = defaultState;
+    [ownDescendants addObject:child];
 }
 
 - (void)setTopState:(nonnull SDDState*)state {
     _topState = state;
+}
+
+- (BOOL)state:(SDDState *)state isDescentantOfAnotherState:(SDDState *)anotherState {
+    SDDState *s = state;
+    while(s != nil) {
+        if (_parents[s] == anotherState) {
+            return YES;
+        }
+        
+        s = _parents[s];
+    }
+    
+    return NO;
 }
 
 - (void)when:(NSString *)signalName
@@ -147,6 +155,13 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
           to:(SDDState *)to
   postAction:(SDDAction)postAction
 {
+    if ([signalName isEqualToString:@"$Initial"]) {
+        NSAssert([self state:to isDescentantOfAnotherState:from], @"[%@] 必须是 [%@] 的后代状态", to, from);
+        
+        _defaults[from] = to;
+        return;
+    }
+    
     NSAssert([_states containsObject:from], @"[%@] SDDStateMachine尚未添加from状态:%@", NSStringFromSelector(_cmd), from);
     NSAssert([_states containsObject:to],   @"[%@] SDDStateMachine尚未添加to状态:%@",   NSStringFromSelector(_cmd), to);
     

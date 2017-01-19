@@ -205,20 +205,18 @@ void SDDBuilderAddState(void* contextObj, sdd_state* raw_state) {
     state.sddName = name;
     pcontext.states[name] = state;
     [pcontext.stateMachine addState:state];
-    [pcontext.stateMachine setState:state defaultState:[pcontext stateWithCName:raw_state->default_stub]];
 }
 
 void SDDBuilderSetDescendants(void* contextObj, sdd_state* raw_master, sdd_array* raw_descendants) {
     __weak SDDParserContext* pcontext = (__bridge SDDParserContext*)contextObj;
     
-    NSMutableArray* descendants = [NSMutableArray array];
+    SDDState* master = [pcontext stateWithRawState:raw_master];
+
     for (int i=0; i<sdd_array_count(raw_descendants); ++i) {
         sdd_state* raw_state = sdd_array_at(raw_descendants, i, YES);
-        [descendants addObject:[pcontext stateWithRawState:raw_state]];
+        SDDState *ocState = [pcontext stateWithRawState:raw_state];
+        [pcontext.stateMachine setParentState:master forChildState:ocState];
     }
-    
-    SDDState* master = [pcontext stateWithRawState:raw_master];
-    [pcontext.stateMachine state:master addMonoStates:descendants];
 }
 
 void SDDBuilderMakeTransition(void* contextObj, sdd_transition* t) {
@@ -301,7 +299,9 @@ void SDDBuilderMakeTransition(void* contextObj, sdd_transition* t) {
 
     SDDState* fromState  = [pcontext stateWithCName:t->from];
     SDDState* toState    = [pcontext stateWithCName:t->to];
-    NSString* signalName = [NSString stringWithCString:t->signal encoding:NSUTF8StringEncoding];
+    
+    NSString *prefix = (t->signal->type == SDD_SIG_INTERNAL) ? @"$" : @"";
+    NSString* signalName = [prefix stringByAppendingString:[NSString stringWithCString:t->signal->name encoding:NSUTF8StringEncoding]];
     [pcontext.stateMachine when:signalName satisfied:condition transitFrom:fromState to:toState postAction:postAction];
 }
 

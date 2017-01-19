@@ -119,6 +119,7 @@ exit
 
 state_stub
     : '[' id ']'                    { sdd_ast_make_stub(&__ast); }
+    | '[' '.' ']'                   { sdd_ast_make_pseudo_stub(&__ast, "."); }
     ;
 
 procedures

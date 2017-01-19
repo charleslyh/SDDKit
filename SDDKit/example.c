@@ -63,11 +63,14 @@ void EXPMarkdownCluster(void* context, sdd_state* master, sdd_array* slaves) {
 }
 
 void EXPMarkdownTransition(void* context, sdd_transition* t) {
+	char sig_desc[256];
+	sdd_describe_signal(t->signal, sig_desc);
+
 	char desc[4096+256*3];
 	if (t->conditions[0] == 0) {
-		sprintf(desc, "[%s] -> [%s]: %s", t->from, t->to, t->signal);
+		sprintf(desc, "[%s] -> [%s]: \t%s", t->from, t->to, sig_desc);
 	} else {
-		sprintf(desc, "[%s] -> [%s]: %s (%s)", t->from, t->to, t->signal, t->conditions);
+		sprintf(desc, "[%s] -> [%s]: \t%s (%s)", t->from, t->to, sig_desc, t->conditions);
 	}
 
 	if (t->actions[0] != 0) {
@@ -78,14 +81,14 @@ void EXPMarkdownTransition(void* context, sdd_transition* t) {
 }
 
 void EXPMarkRootState(void* context, sdd_state* rootState) {
-	EXPMarkTag("root state", rootState->name, FONT_CLR_RED);
+	EXPMarkTag("top", rootState->name, FONT_CLR_RED);
 }
 
 int main() {
 	char* dsl = sdd_dsl
 	(
 	// 每个状态机必须有且只有一个‘根’状态，如果根状态不是该DSL所描述的唯一状态，那就必须在d字段（default)后指定【唯一】的默认激活的子状态名称。默认状态既可以是子辈状态，也可以是孙辈以后的状态
-	[A ~[E1]
+	[A
 		// 跟在状态行为表后面的可以是另一个状态，或者多个‘簇’状态，这些状态间可以用空格分开，或紧挨在一起，形成有层次的互斥状态集，这里的互斥，指的是，同级状态中，同时仅允许其中一个被激活。例如B1,B2同时仅允许激活一个 
 		[B1][B2]
 
@@ -99,7 +102,7 @@ int main() {
 		[B5 x:x1]
 
 		// 状态可以定义它激活时默认激活的子孙状态。可以使直系子状态，也可以是孙辈以后的状态。默认状态字段本身是可选的，但如果状态包含后代状态，则必须通过自身或其祖先状态来确认当它激活时需要激活的子状态是什么（难点） 
-		[B6 ~[C1]
+		[B6
 			[C1]
 		]
 
@@ -112,6 +115,10 @@ int main() {
 		// 当然，每一个’正交状态‘本身也是一个状态，它也可以包含子‘簇’状态集，或者’正交‘状态集 
 		[B9 [C5]|[C6 [D1][D2]]]
 	]
+
+	[.]  -> [B1]: $Initial
+	[A]  -> [.] : $Final
+	[A]  -> [B1]: $Initial
 
 	// “纯朴”状态转换： 如果[B1]状态是激活的，当发生Event1时，激活[B2]状态。 [B1]称为源状态，[B2]称为目的状态。需要注意的是，当目的状态和源状态为非同源时，源状态会被注销，否则直接激活目的状态 
 	[B1] -> [B2]: Event1
