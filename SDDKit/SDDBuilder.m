@@ -356,19 +356,26 @@ void SDDBuilderHandleCompletion(void *contextObj, sdd_state *root_state) {
 }
 
 - (SDDStateMachine *)addStateMachineWithContext:(id)context dsl:(NSString *)dsl {
-    SDDStateMachine *hsm = [self stateMachineWithContext:context dsl:dsl];
+    // Supports multithreading. underlying __secret_builder is global shared, thus machine building must be synchronized.
+    SDDStateMachine *hsm;
+    @synchronized (_HSMs) {
+         hsm = [self stateMachineWithContext:context dsl:dsl];
     
-    [_HSMs addObject:hsm];
-    [_epool addSubscriber:hsm];
+        [_HSMs addObject:hsm];
+        [_epool addSubscriber:hsm];
+    }
+    
     [hsm start];
-    
     return hsm;
 }
 
 - (void)removeStateMachine:(SDDStateMachine *)hsm {
     [hsm stop];
-    [_epool removeSubscriber:hsm];
-    [_HSMs removeObject:hsm];
+    
+    @synchronized (_HSMs) {
+        [_epool removeSubscriber:hsm];
+        [_HSMs removeObject:hsm];
+    }
 }
 
 @end
