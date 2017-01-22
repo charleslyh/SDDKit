@@ -1,2 +1,2 @@
 language: objective-c
-xcodebuild test -project SDDKit.xcodeproj -scheme SDDKit -destination 'platform=iOS Simulator,name=iPhone 6'
+script: xcodebuild test -project SDDKit.xcodeproj -scheme SDDKit -destination 'platform=iOS Simulator,name=iPhone 6'
