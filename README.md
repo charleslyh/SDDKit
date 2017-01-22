@@ -47,14 +47,19 @@ SDDBuilder *builder = [SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool
 
 [builder addStateMachineWithContext:nil dsl:SDDOCLanguage(
 	// Every statemachine can and must have one topstate
-	[TopState ~[A]
-    	// Two substates
-    	[A]
-        [B]
-    ]
-    
-    // If [A] is the current state and signal 'E1' occurs, it will transit to state [B]
-    [A]->[B]: E1
+	[TopState
+		// Two substates
+		[A]
+		[B]
+	]
+
+	// Since TopState has two descendants, a $Default transition have to be provided to avoid ambiguity.
+	// Another choice is using $Initial transition from outter state [.] such as:
+	// [.] -> [A]: $Initial
+	[TopState] -> [A]: $Default
+	
+	// If [A] is the current state and signal 'E1' occurs, it will transit to state [B]
+	[A]->[B]: E1
 )];
 
 [[SDDEventsPool sharedPool] scheduleEvent:SDDLiteral(E1)];
@@ -62,7 +67,7 @@ SDDBuilder *builder = [SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool
 ```
 
 ### Activation and Deactivation
-A statemachine with **nil** context helps nothing. Something has to be done that we could distinguish between one state and another. That's the reason we are using statemachine, aren't we?
+A statemachine with **nil** context helps nothing. Something has to be done that we could distinguish between one state and another. That's the reason why we are using statemachine, aren't we?
 ```obj-c
 @interface Charles
 @end
@@ -77,7 +82,7 @@ A statemachine with **nil** context helps nothing. Something has to be done that
 }
 
 - (void)goToBed {
-    NSLog(@"Good night.")
+	NSLog(@"Good night.")
 }
 
 @end
@@ -88,27 +93,27 @@ int main() {
 	SDDBuilder *builder = [SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool];
 
 	[builder addStateMachineWithContext:charles dsl:SDDOCLanguage(
-		[Me ~[Awake]		  // ~ indicates a default state
-    		[Awake  
-            	e: wakeup     // 'e' is short for entering
-                x: sayGoodbye // 'x' is short for exiting
-            ]
-	        [Asleep e: goToBed]
-    	]
-		
-		[Awake]  -> [Asleep] : Sunset
-        [Asleep] -> [Awake]  : Sunrise
-	)];
-    // Outputs 'Good morning.' for entering default state [Awake]
+		[Me
+			[Awake  
+				e: wakeup	  // 'e' is short for entering
+				x: sayGoodbye // 'x' is short for exiting
+			]
+			[Asleep e: goToBed]
+		]
 	
-    [[SDDEventsPool sharedPool] scheduleEvent:SDDLiteral(Sunset)];
-    // Outputs 'Bye, see ya.' for exiting state [Awake]
+		[.]	     -> [Awake]  : $Initial
+		[Awake]  -> [Asleep] : Sunset
+		[Asleep] -> [Awake]  : Sunrise
+	)];
+	// Outputs 'Good morning.' for entering initial state [Awake]
+	
+	[[SDDEventsPool sharedPool] scheduleEvent:SDDLiteral(Sunset)];
+	// Outputs 'Bye, see ya.' for exiting state [Awake]
 	// Outputs 'Good night' for entering state [Asleep]
-    
-    [[SDDEventsPool sharedPool] scheduleEvent:SDDLiteral(Sunrise)];
-    // Outputs 'Good morning.' for entering state [Awake]
+	
+	[[SDDEventsPool sharedPool] scheduleEvent:SDDLiteral(Sunrise)];
+	// Outputs 'Good morning.' for entering state [Awake]
 
 	return 0;
 )
-
 ```
