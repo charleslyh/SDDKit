@@ -1,4 +1,5 @@
 language: objective-c
+xcode_project: SDDKit.xcodeproj
 osx_image: xcode7.1
 sudo: false
 env:
