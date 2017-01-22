@@ -86,6 +86,8 @@ void sdd_ast_make_postactions(sdd_ast* ast, int empty);
 
 void sdd_ast_make_transition(sdd_ast* ast);
 
+void sdd_ast_make_top_state(sdd_ast *ast);
+
 // mode: 0 - no transitions, 1- with transitions
 void sdd_ast_make_dsl(sdd_ast* ast, int mode);
 

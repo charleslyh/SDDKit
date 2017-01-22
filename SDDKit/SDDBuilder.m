@@ -122,8 +122,15 @@ static const void* kSDDStateNameKey       = &kSDDStateNameKey;
 @implementation SDDParserContext
 
 - (SDDState*)stateWithCName:(const char*)cname {
-    NSString* name = [NSString stringWithCString:cname encoding:NSUTF8StringEncoding];
-    return self.states[name];
+    if (strcmp(cname, ".") == 0) {
+        return self.stateMachine.outterState;
+    } else {
+        NSString* name = [NSString stringWithCString:cname encoding:NSUTF8StringEncoding];
+        SDDState *state = self.states[name];
+        NSAssert(state != nil, @"找不到名字为: %@ 的状态", name);
+        
+        return state;
+    }
 }
 
 - (SDDState*)stateWithRawState:(sdd_state*)raw_state {
@@ -305,18 +312,21 @@ void SDDBuilderMakeTransition(void* contextObj, sdd_transition* t) {
     [pcontext.stateMachine when:signalName satisfied:condition transitFrom:fromState to:toState postAction:postAction];
 }
 
-void SDDBuilderHandleCompletion(void *contextObj, sdd_state *root_state) {
+void SDDBuilderTopStateCompletion(void *contextObj, sdd_state *raw_state) {
     __weak SDDParserContext* pcontext = (__bridge SDDParserContext*)contextObj;
-    
-    SDDState *topState = [pcontext stateWithCName:root_state->name];
+    SDDState *topState = [pcontext stateWithCName:raw_state->name];
     [pcontext.stateMachine setTopState:topState];
-    pcontext.stateMachine.sddName = [NSString stringWithUTF8String:root_state->name];
+    pcontext.stateMachine.sddName = [NSString stringWithUTF8String:raw_state->name];
+}
+
+void SDDBuilderParsingFinishCompletion(void *contextObj) {
+    
 }
 
 @implementation SDDBuilder {
-    id<SDDLogger>  _logger;
-    SDDEventsPool          *_epool;
-    NSMutableArray         *_HSMs;  // HSM for Hierachical State Machine
+    id<SDDLogger>   _logger;
+    SDDEventsPool  *_epool;
+    NSMutableArray *_HSMs;  // Hierachical State Machine
 }
 
 - (instancetype)initWithLogger:(id<SDDLogger>)logger epool:(SDDEventsPool *)epool {
@@ -349,7 +359,8 @@ void SDDBuilderHandleCompletion(void *contextObj, sdd_state *root_state) {
     callback.stateHandler      = &SDDBuilderAddState;
     callback.clusterHandler    = &SDDBuilderSetDescendants;
     callback.transitionHandler = &SDDBuilderMakeTransition;
-    callback.completionHandler = &SDDBuilderHandleCompletion;
+    callback.topstateHandler   = &SDDBuilderTopStateCompletion;
+    callback.completionHandler = &SDDBuilderParsingFinishCompletion;
     
     sdd_parse([dsl cStringUsingEncoding:NSUTF8StringEncoding], &callback);
     return stateMachine;

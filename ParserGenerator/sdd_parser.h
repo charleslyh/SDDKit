@@ -66,13 +66,15 @@ typedef struct sdd_array_t sdd_array;
 typedef void (*sdd_parser_state_handler)(void* context, sdd_state* state);
 typedef void (*sdd_parser_cluster_handler)(void* context, sdd_state* holder, sdd_array* states);
 typedef void (*sdd_parser_transition_handler)(void* context, sdd_transition* transition);
-typedef void (*sdd_parser_completion_handler)(void* context, sdd_state* root_state);
+typedef void (*sdd_parser_topstate_handler)(void* context, sdd_state* top_state);
+typedef void (*sdd_parser_completion_handler)(void* context);
 
 typedef struct sdd_parser_callback {
 	void* context;
 	sdd_parser_state_handler      stateHandler;
 	sdd_parser_cluster_handler    clusterHandler;
 	sdd_parser_transition_handler transitionHandler;
+	sdd_parser_topstate_handler   topstateHandler;
 	sdd_parser_completion_handler completionHandler;
 } sdd_parser_callback;
 

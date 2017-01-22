@@ -84,6 +84,10 @@ void EXPMarkRootState(void* context, sdd_state* rootState) {
 	EXPMarkTag("top", rootState->name, FONT_CLR_RED);
 }
 
+void EXPMarkDSLFinish(void *context) {
+	printf(FONT_CLR_CYAN "Parsing Finish\n" COLOR_NONE);
+}
+
 int main() {
 	char* dsl = sdd_dsl
 	(
@@ -151,7 +155,8 @@ int main() {
 	callback.stateHandler      = &EXPMarkdownState;
 	callback.clusterHandler    = &EXPMarkdownCluster;
 	callback.transitionHandler = &EXPMarkdownTransition;
-	callback.completionHandler = &EXPMarkRootState;
+	callback.topstateHandler   = &EXPMarkRootState;
+	callback.completionHandler = &EXPMarkDSLFinish;
 
 	sdd_parse(dsl, &callback);
 	return 0;

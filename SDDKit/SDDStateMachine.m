@@ -97,23 +97,32 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
 @end
 
 @implementation SDDStateMachine {
-    NSMutableSet* _states;
-    SDDState*     _topState;
-    SDDState*     _currentState;
-    NSMutableDictionary* _parents;
-    NSMutableDictionary* _defaults;
-    NSMutableDictionary* _descendants;
-    NSMutableDictionary<SDDState*, SDDJumpTable*>* _jumpTables;
+    NSMutableSet *_states;
+    SDDState     *_rootState;
+    SDDState     *_topState;
+    SDDState     *_currentState;
+    SDDState     *_initialTarget;
+    
+    NSMutableDictionary *_parents;
+    NSMutableDictionary *_defaults;
+    NSMutableDictionary *_descendants;
+    NSMutableDictionary<SDDState *, SDDJumpTable *> *_jtables;
 }
 
 - (instancetype)initWithLogger:(id<SDDLogger>)logger {
     if (self = [super init]) {
+        _rootState   = [[SDDState alloc] initWithActivation:^(id<SDDEvent> _) {} deactivation:^(id<SDDEvent> _) {}];
+        _outterState = [[SDDState alloc] initWithActivation:^(id<SDDEvent> _) {} deactivation:^(id<SDDEvent> _) {}];
+        
         _logger      = logger ? logger : [SDDNilLogger new];
         _states      = [NSMutableSet set];
-        _jumpTables  = [NSMutableDictionary dictionary];
+        _jtables     = [NSMutableDictionary dictionary];
         _parents     = [NSMutableDictionary dictionary];
         _defaults    = [NSMutableDictionary dictionary];
         _descendants = [NSMutableDictionary dictionary];
+        
+        [self setParentState:_rootState forChildState:_outterState];
+        _defaults[_rootState] = _outterState;
     }
     return self;
 }
@@ -134,6 +143,8 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
 
 - (void)setTopState:(nonnull SDDState*)state {
     _topState = state;
+    
+    [self setParentState:_rootState forChildState:self.topState];
 }
 
 - (BOOL)state:(SDDState *)state isDescentantOfAnotherState:(SDDState *)anotherState {
@@ -156,23 +167,32 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
   postAction:(SDDAction)postAction
 {
     if ([signalName isEqualToString:@"$Initial"]) {
+        NSAssert(from == _outterState,  @"$Initial transition is only allowed triggering from outter state.");
+        NSAssert(_initialTarget == nil, @"$Initial transition already defined to [%@].", _initialTarget);
+        
+        _initialTarget = to;
+        return;
+    }
+    
+    if ([signalName isEqualToString:@"$Default"]) {
         NSAssert([self state:to isDescentantOfAnotherState:from], @"[%@] 必须是 [%@] 的后代状态", to, from);
+        NSAssert(_defaults[from] == nil, @"Already exist $Default transition from [%@] to [%@]", from, _defaults[from]);
         
         _defaults[from] = to;
         return;
     }
     
-    NSAssert([_states containsObject:from], @"[%@] SDDStateMachine尚未添加from状态:%@", NSStringFromSelector(_cmd), from);
-    NSAssert([_states containsObject:to],   @"[%@] SDDStateMachine尚未添加to状态:%@",   NSStringFromSelector(_cmd), to);
+    NSAssert(from == _outterState || [_states containsObject:from], @"[%@] SDDStateMachine尚未添加from状态:%@", NSStringFromSelector(_cmd), from);
+    NSAssert(to   == _outterState || [_states containsObject:to],   @"[%@] SDDStateMachine尚未添加to状态:%@",   NSStringFromSelector(_cmd), to);
     
     if (condition == NULL)  condition  = ^BOOL (id<SDDEvent> _) { return YES; };
     if (postAction == NULL) postAction = ^(id<SDDEvent> _) {};
     
-    NSMutableDictionary* table = _jumpTables[from];
-    if (_jumpTables[from] == nil) {
+    NSMutableDictionary* table = _jtables[from];
+    if (_jtables[from] == nil) {
         // 首次处理from状态时，需要为在跳转表中新增一个映射表
         table = [NSMutableDictionary dictionary];
-        _jumpTables[from] = table;
+        _jtables[from] = table;
     }
     
     NSMutableArray* transitions = table[signalName];
@@ -193,7 +213,7 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
     for (NSInteger i=path.count - 1; i>=0; --i) {
         trigger = path[i];
         
-        SDDJumpTable* jtable = _jumpTables[trigger];
+        SDDJumpTable* jtable = _jtables[trigger];
         if (!jtable)
             continue;
         
@@ -224,7 +244,9 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
     NSMutableArray* path = [NSMutableArray array];
     
     SDDState* next = state;
-    while (next) {
+    
+    // outterState should be excluded from the path since it is a pseudo state
+    while (next != _rootState) {
         [path insertObject:next atIndex:0];
         next = _parents[next];
     }
@@ -321,7 +343,18 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
     NSAssert(_topState != nil, @"[%@] topState不允许为nil", NSStringFromSelector(_cmd));
     NSAssert([_states containsObject:_topState], @"[%@] topState必须为已添加的状态之一", NSStringFromSelector(_cmd));
     
-    [self activateState:_topState triggerState:nil withEvent:SDDELiteral(SDDE_InitialTranition) completion:^(NSArray *_, NSArray *toPath) {
+    // None happens by activating root and outter states. But these have to be done to provide behavior consistances.
+    [_rootState   activate:nil];
+    [_outterState activate:nil];
+    _currentState = _outterState;
+    
+    SDDState *initialTarget = _initialTarget;
+    if (initialTarget == nil) {
+        // Using topState as default initial when "No one" provided.
+        initialTarget = self.topState;
+    }
+    
+    [self activateState:initialTarget triggerState:_outterState withEvent:SDDELiteral($Initial) completion:^(NSArray *_, NSArray *toPath) {
         [_logger stateMachine:self didStartWithPath:toPath];
     }];
 }
@@ -330,11 +363,13 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
 - (void)stop {
     NSAssert(_currentState!=nil, @"执行[SDDStateMachine stop]之前，请确保其已经运行");
     
-    [self activateState:nil triggerState:_currentState withEvent:SDDELiteral(SDDE_FinalTranition) completion:^(NSArray *fromPath, NSArray *_) {
+    [self activateState:_outterState triggerState:_currentState withEvent:SDDELiteral($Final) completion:^(NSArray *fromPath, NSArray *_) {
         [_logger stateMachine:self didStopFromPath:fromPath];
     }];
     
     _currentState = nil;
+    [_outterState deactivate:nil];
+    [_rootState   deactivate:nil];
 }
 
 @end

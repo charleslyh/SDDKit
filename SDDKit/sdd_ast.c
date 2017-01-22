@@ -409,12 +409,16 @@ void sdd_ast_make_signal(sdd_ast *ast, sdd_signal_type type) {
 	sdd_array_push(ast->signals, sig);
 }
 
-void sdd_ast_make_dsl(sdd_ast* ast, int mode) {
-	sdd_state* root_state = (sdd_state*)sdd_array_pop(ast->states);
-	ast->callback->completionHandler(ast->callback->context, root_state);
+void sdd_ast_make_top_state(sdd_ast *ast) {
+	sdd_state* topstate = (sdd_state*)sdd_array_pop(ast->states);
+	ast->callback->topstateHandler(ast->callback->context, topstate);
 
-	sdd_state_destruct(root_state);
-	free((void*)root_state);
+	sdd_state_destruct(topstate);
+	free((void*)topstate);
+}
+
+void sdd_ast_make_dsl(sdd_ast* ast, int mode) {
+	ast->callback->completionHandler(ast->callback->context);
 }
 
 void yyerror(char *msg) {

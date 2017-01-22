@@ -129,7 +129,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [.] -> [B]: $Initial
     );
     
     [self performTestWithDSL:dsl expectedFlows:@"ab21" customActions:nil];
@@ -143,7 +143,7 @@
       [C e:mc x:m3]
       ]
      
-     [A]->[B]: $Initial
+     [.]->[B]: $Initial
      [B]->[C]: E1
      );
     
@@ -160,7 +160,7 @@
       [C e:mc x:m3]
       ]
      
-     [A]->[B]: $Initial
+     [A]->[B]: $Default
      
      [B]->[C]: Forward
      [C]->[B]: Backward
@@ -184,7 +184,7 @@
         ]
      ]
      
-     [E]->[B]: $Initial
+     [E]->[B]: $Default
      
      [B]->[A]: E1
      [D]->[B]: E2
@@ -219,7 +219,7 @@
       [C e:mc x:m3]
       ]
      
-     [A]->[B]: $Initial
+     [A]->[B]: $Default
      [B]->[C]: E1 (yes)
     );
 
@@ -237,7 +237,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (no)
      );
     
@@ -254,7 +254,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (!no)
      );
     
@@ -271,7 +271,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (!yes)
      );
     
@@ -288,7 +288,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (no & no)
      );
     
@@ -305,7 +305,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (no & yes)
      );
     
@@ -322,7 +322,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (yes & no)
      );
     
@@ -339,7 +339,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (yes & yes)
      );
     
@@ -356,7 +356,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (no | no)
      );
     
@@ -373,7 +373,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (no | yes)
      );
     
@@ -390,7 +390,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (yes | no)
      );
     
@@ -407,7 +407,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (yes | yes)
      );
     
@@ -424,7 +424,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (no ^ no)
      );
     
@@ -441,7 +441,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (no ^ yes)
      );
     
@@ -458,7 +458,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (yes ^ no)
      );
     
@@ -475,7 +475,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (yes ^ yes)
      );
     
@@ -492,7 +492,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      
      // no & no | yes   => yes
      [B] -> [C]: E1 (no & no | yes)
@@ -511,7 +511,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      
      // no & no | yes   => yes
      // no & (no | yes) => no
@@ -532,7 +532,7 @@
       [C e:mc x:m3]
       ]
 
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 / p1
      );
 
@@ -549,7 +549,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 / p1 p2
      );
     
@@ -566,7 +566,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 / p1 p2
      [C] -> [B]: E2 / p3
      );
@@ -585,7 +585,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (no) / p1
      );
     
@@ -602,7 +602,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (yes) / p3
      );
     
@@ -619,7 +619,7 @@
       [C e:mc times3 x:p3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 / times4
      );
     
@@ -637,7 +637,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (isOdd)
      );
     
@@ -654,7 +654,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (isOdd)
      );
     
@@ -671,7 +671,7 @@
       [C e:mc x:m3]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1 (isOdd | yes)
      );
     
@@ -692,7 +692,7 @@
       [C]
       ]
      
-     [A] -> [B]: $Initial
+     [A] -> [B]: $Default
      [B] -> [C]: E1
      );
     
@@ -715,7 +715,7 @@
       [D e: md]
       ]
      
-     [Top] -> [A]: $Initial
+     [Top] -> [A]: $Default
      [A] -> [B]: E1 / scheduleE2
      [B] -> [C]: E2 / scheduleE3
      [C] -> [D]: E3 / scheduleE4
@@ -724,6 +724,82 @@
     [self performTestWithDSL:dsl expectedFlows:@"abcd" customActions:^{
         [_epool scheduleEvent:SDDELiteral(E1)];
     }];
+}
+
+- (void)testInitialTransitionFromOutterState {
+    NSString * const dsl = SDDOCLanguage
+    (
+    [Top
+     [A e: ma x: m1]
+     [B e: mb x: m2]
+     ]
+     
+     [.] -> [B]: $Initial
+    );
+    
+    [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:nil];
+}
+
+- (void)testInitialTransitionFromOutterStateIntoDeepDescendant {
+    NSString * const dsl = SDDOCLanguage
+    (
+     [Top
+      [A e: ma x: m1]
+      [B e: mb x: m2
+           [C e: mc x: m3]
+      ]
+     ]
+     
+     [.] -> [C]: $Initial
+     );
+    
+    [self performTestWithDSL:dsl expectedFlows:@"bc32" customActions:nil];
+}
+
+- (void)testInitialTransitionAlongWithTopStateDefaultTransition {
+    NSString * const dsl = SDDOCLanguage
+    (
+     [Top
+      [A e: ma x: m1]
+      [B e: mb x: m2]
+      ]
+     
+     [.]   -> [B]: $Initial
+     [Top] -> [A]: $Default
+     );
+    
+    [self performTestWithDSL:dsl expectedFlows:@"b2" customActions:nil];
+}
+
+- (void)testDuplicatedOutterInitialTransition {
+    NSString * const dsl = SDDOCLanguage
+    (
+     [Top
+      [A e: ma x: m1]
+      [B e: mb x: m2]
+      ]
+     
+     [.] -> [B]: $Initial
+     [.] -> [A]: $Initial
+     );
+    
+    XCTAssertThrows([self performTestWithDSL:dsl expectedFlows:@"" customActions:nil]);
+}
+
+
+- (void)testDuplicatedDefaultTransitions {
+    NSString * const dsl = SDDOCLanguage
+    (
+     [Top
+      [A e: ma x: m1]
+      [B e: mb x: m2]
+      ]
+     
+     [Top] -> [B]: $Initial
+     [Top] -> [A]: $Initial
+     );
+    
+    XCTAssertThrows([self performTestWithDSL:dsl expectedFlows:@"" customActions:nil]);
 }
 
 @end

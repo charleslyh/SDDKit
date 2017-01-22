@@ -90,13 +90,13 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
  [A [B]]
  [A] -> [B]: $Initial
  */
-- (void)testActivateHierarchicalStatesWithExplicitDefault {
+- (void)testActivateHierarchicalStatesWithExplicitInitial {
     [_hsm addState:A];
     [_hsm addState:B];
     [_hsm setParentState:A forChildState:B];
     [_hsm setTopState:A];
     
-    [_hsm when:@"$Initial" satisfied:nil transitFrom:A to:B postAction:nil];
+    [_hsm when:@"$Initial" satisfied:nil transitFrom:_hsm.outterState to:B postAction:nil];
     
     [_hsm start];
     XCTAssertEqualObjects(_flows, @"ab");
@@ -148,7 +148,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     [B]
     [C]
  ]
- [A] -> [B]: $Initial
+ [.] -> [B]: $Initial
  */
 - (void)testTransitFromParentToNoneDefaultChildState {
     [_hsm addState:A];
@@ -158,7 +158,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     [_hsm setParentState:A forChildState:C];
     [_hsm setTopState:A];
     
-    [_hsm when:@"$Initial" satisfied:nil transitFrom:A to:B postAction:nil];
+    [_hsm when:@"$Initial" satisfied:nil transitFrom:_hsm.outterState to:B postAction:nil];
     [_hsm when:@"E" satisfied:nil transitFrom:A to:C postAction:nil];
     
     [_hsm start];
@@ -198,7 +198,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     ]
  ]
 
- [B] -> [C]: $Initial
+ [B] -> [C]: $Default
  [A] -> [D]: E
  */
 - (void)testTransitFromRootWithCommonParentStates {
@@ -211,7 +211,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     [_hsm setParentState:B forChildState:D];
     [_hsm setTopState:A];
 
-    [_hsm when:@"$Initial" satisfied:nil transitFrom:B to:C postAction:nil];
+    [_hsm when:@"$Default" satisfied:nil transitFrom:B to:C postAction:nil];
     [_hsm when:@"E" satisfied:nil transitFrom:A to:D postAction:nil];
     
     [_hsm start];
@@ -241,7 +241,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
         [C]
     ]
  ]
- [A] -> [C]: $Initial
+ [.] -> [C]: $Initial
  */
 - (void)testActivateHierarchicalStatesWithExplicitInitialTransitionAcrossMultiLevels {
     [_hsm addState:A];
@@ -251,7 +251,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     [_hsm setParentState:B forChildState:C];
     [_hsm setTopState:A];
     
-    [_hsm when:@"$Initial" satisfied:nil transitFrom:A to:C postAction:nil];
+    [_hsm when:@"$Initial" satisfied:nil transitFrom:_hsm.outterState to:C postAction:nil];
     
     [_hsm start];
     XCTAssertEqualObjects(_flows, @"abc");
@@ -273,7 +273,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     [B]
     [C]
  ]
- [A] -> [B]: $Initial
+ [.] -> [B]: $Initial
  [B] -> [C]: E
  */
 - (void)testActivateHierachicalState1 {
@@ -284,7 +284,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     [_hsm setParentState:A forChildState:C];
     [_hsm setTopState:A];
     
-    [_hsm when:@"$Initial" satisfied:nil transitFrom:A to:B postAction:nil];
+    [_hsm when:@"$Initial" satisfied:nil transitFrom:_hsm.outterState to:B postAction:nil];
     [_hsm when:@"E" satisfied:nil transitFrom:B to:C postAction:nil];
     
     [_hsm start];
@@ -300,7 +300,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
         [D]
     ]
  ]
- [A] -> [B]: $Initial
+ [.] -> [B]: $Initial
  [B] -> [D]: E
  */
 - (void)testActivateHierachicalState2 {
@@ -313,7 +313,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     [_hsm setParentState:C forChildState:D];
     [_hsm setTopState:A];
 
-    [_hsm when:@"$Initial" satisfied:nil transitFrom:A to:B postAction:nil];
+    [_hsm when:@"$Initial" satisfied:nil transitFrom:_hsm.outterState to:B postAction:nil];
     [_hsm when:@"E" satisfied:nil transitFrom:B to:D postAction:nil];
     
     [_hsm start];
@@ -329,7 +329,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     ]
     [D]
  ]
- [A] -> [C]: $Initial
+ [A] -> [C]: $Default
  [C] -> [D]: E
  */
 - (void)testActivateHierachicalState3 {
@@ -342,7 +342,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     [_hsm setParentState:B forChildState:C];
     [_hsm setTopState:A];
 
-    [_hsm when:@"$Initial" satisfied:nil transitFrom:A to:C postAction:nil];
+    [_hsm when:@"$Default" satisfied:nil transitFrom:A to:C postAction:nil];
     [_hsm when:@"E" satisfied:nil transitFrom:C to:D postAction:nil];
     
     [_hsm start];
@@ -356,7 +356,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     [B [C]]
     [D [E]]
  ]
- [A] -> [B]: $Initial
+ [A] -> [B]: $Default
  [C] -> [E]: E
  */
 - (void)testActivateHierachicalState4 {
@@ -371,7 +371,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     [_hsm setParentState:D forChildState:E];
     [_hsm setTopState:A];
     
-    [_hsm when:@"$Initial" satisfied:nil transitFrom:A to:B postAction:nil];
+    [_hsm when:@"$Default" satisfied:nil transitFrom:A to:B postAction:nil];
     [_hsm when:@"E" satisfied:nil transitFrom:C to:E postAction:nil];
     
     [_hsm start];
@@ -386,7 +386,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     [B]
     [C]
  ]
- [A] -> [B]: $Initial
+ [A] -> [B]: $Default
  [A] -> [C]: E
  */
 - (void)testTransitFromSuperState {
@@ -397,7 +397,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     [_hsm setParentState:A forChildState:C];
     [_hsm setTopState:A];
     
-    [_hsm when:@"$Initial" satisfied:nil transitFrom:A to:B postAction:nil];
+    [_hsm when:@"$Default" satisfied:nil transitFrom:A to:B postAction:nil];
     [_hsm when:@"E" satisfied:nil transitFrom:A to:C postAction:nil];
     
     [_hsm start];
@@ -414,6 +414,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     ]
     [B]
  ]
+ [E] -> [B]: $Default
  [B] -> [A]: Alpha
  [D] -> [B]: Beta
  [A] -> [C]: Gama
@@ -431,7 +432,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     [_hsm setParentState:D forChildState:C];
     [_hsm setTopState:E];
     
-    [_hsm when:@"$Initial" satisfied:nil transitFrom:E to:B postAction:nil];
+    [_hsm when:@"$Default" satisfied:nil transitFrom:E to:B postAction:nil];
     [_hsm when:@"Alpha" satisfied:nil transitFrom:B to:A postAction:nil];
     [_hsm when:@"Beta"  satisfied:nil transitFrom:D to:B postAction:nil];
     [_hsm when:@"Gama"  satisfied:nil transitFrom:A to:C postAction:nil];
@@ -454,6 +455,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     ]
     [B]
  ]
+ [E] -> [B]: $Default
  [B] -> [A]: Alpha
  [D] -> [B]: Beta
  [A] -> [C]: Gama
@@ -471,7 +473,7 @@ static void* kTestSDDStateNameKey = &kTestSDDStateNameKey;
     [_hsm setParentState:D forChildState:C];
     [_hsm setTopState:E];
 
-    [_hsm when:@"$Initial" satisfied:nil transitFrom:E to:B postAction:nil];
+    [_hsm when:@"$Default" satisfied:nil transitFrom:E to:B postAction:nil];
     [_hsm when:@"Alpha" satisfied:nil transitFrom:B to:A postAction:nil];
     [_hsm when:@"Beta"  satisfied:nil transitFrom:D to:B postAction:nil];
     [_hsm when:@"Gama"  satisfied:nil transitFrom:A to:C postAction:nil];

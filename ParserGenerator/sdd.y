@@ -24,8 +24,12 @@
 
 
 sdd_dsl
-    : state                     { sdd_ast_make_dsl(&__ast, 0); }
-    | state transitions         { sdd_ast_make_dsl(&__ast, 1); }
+    : top_state                 { sdd_ast_make_dsl(&__ast, 0); }
+    | top_state transitions     { sdd_ast_make_dsl(&__ast, 1); }
+    ;
+
+top_state
+    : state                     { sdd_ast_make_top_state(&__ast); }
     ;
 
 transitions
@@ -50,7 +54,7 @@ post_actions
     ;
 
 beg_trans_act
-    : '/'           {}
+    : '/'                     {}
     ;
 
 conditions
