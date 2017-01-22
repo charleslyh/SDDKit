@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/charleslyh/SDDKit.svg?branch=master)](https://travis-ci.org/charleslyh/SDDKit)
+[![CocoaPods Version](https://img.shields.io/cocoapods/v/SDDKit.svg)](http://cocoadocs.org/docsets/SDDKit)
+
 # SDDKit - State Driven Development Kit
 Easiest way for implementing Hierarchical State Machine (HSM) based programs in Objective-C.
 
