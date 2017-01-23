@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:SDDProfiler.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:SDDExamples/SDDExamples.xcodeproj">
    </FileRef>
    <FileRef

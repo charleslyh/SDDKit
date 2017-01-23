@@ -11,10 +11,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--功能演示-->
+        <!--Examples-->
         <scene sceneID="DUz-H5-gbF">
             <objects>
-                <tableViewController title="功能演示" id="knq-kL-qqu" sceneMemberID="viewController">
+                <tableViewController title="Examples" id="knq-kL-qqu" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" rowHeight="64" sectionHeaderHeight="28" sectionFooterHeight="28" id="Vo2-Bf-HhQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -51,7 +51,7 @@
                             <outlet property="delegate" destination="knq-kL-qqu" id="KKc-lv-0bq"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Demo" id="TMp-V9-fnF"/>
+                    <navigationItem key="navigationItem" title="Examples" id="TMp-V9-fnF"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xBL-lG-Jpx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -75,10 +75,10 @@
             </objects>
             <point key="canvasLocation" x="294" y="297"/>
         </scene>
-        <!--登录验权-->
+        <!--Authorization-->
         <scene sceneID="O7J-uU-Ep4">
             <objects>
-                <viewController title="登录验权" id="YKu-ZN-XAO" customClass="LoginViewController" sceneMemberID="viewController">
+                <viewController title="Authorization" id="YKu-ZN-XAO" customClass="LoginViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Fge-XG-7MD"/>
                         <viewControllerLayoutGuide type="bottom" id="fMf-nO-AKA"/>
@@ -111,7 +111,7 @@
                                         <rect key="frame" x="0.0" y="1" width="331" height="44"/>
                                         <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.059999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入手机号" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TOd-jD-2L5">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mobile Number" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TOd-jD-2L5">
                                         <rect key="frame" x="8" y="1" width="323" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="17" id="v3m-Gh-O3S">
@@ -162,7 +162,7 @@
                                             </constraint>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <state key="normal" title="获取验证码">
+                                        <state key="normal" title="Request">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <variation key="default">
@@ -198,14 +198,11 @@
                                             </mask>
                                         </variation>
                                     </view>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nuv-e0-GyA">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Verification Code" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nuv-e0-GyA">
                                         <rect key="frame" x="8" y="46" width="233" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="YgJ-Pn-Wfw"/>
                                         </constraints>
-                                        <string key="placeholder" base64-UTF8="YES">
-6K+36L6T5YWlCOmqjOivgeeggQ
-</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                         <variation key="default">
@@ -387,10 +384,7 @@
                                         <variation key="heightClass=regular-widthClass=compact" constant="44"/>
                                     </constraint>
                                 </constraints>
-                                <state key="normal">
-                                    <string key="title" base64-UTF8="YES">
-COS4i+S4gOatpQ
-</string>
+                                <state key="normal" title="Login">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <state key="disabled">
@@ -414,7 +408,7 @@ COS4i+S4gOatpQ
                                 <rect key="frame" x="169" y="96" width="37" height="37"/>
                                 <color key="color" red="1" green="0.70588235290000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="登录失败" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iLz-QH-hCP">
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Failed" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iLz-QH-hCP">
                                 <rect key="frame" x="143.5" y="317.5" width="88" height="32"/>
                                 <color key="backgroundColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>

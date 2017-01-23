@@ -241,8 +241,11 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
 }
 
 - (NSArray*)pathOfState:(SDDState *)state {
-    NSMutableArray* path = [NSMutableArray array];
+    if (state == nil) {
+        return @[];
+    }
     
+    NSMutableArray* path = [NSMutableArray array];
     SDDState* next = state;
     
     // outterState should be excluded from the path since it is a pseudo state
