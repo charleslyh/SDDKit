@@ -7,17 +7,10 @@
 //
 
 #import "SDDEAppDelegate.h"
-#import "SDDEContext.h"
 
 @implementation SDDEAppDelegate
 
-- (void)setupGlobalContext {
-    globalContext = [[Context alloc] init];
-}
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [self setupGlobalContext];
-    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     return YES;
 }
 

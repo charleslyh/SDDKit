@@ -10,11 +10,8 @@
 		56A0439D1E0A128200130EC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56A0439C1E0A128200130EC1 /* Assets.xcassets */; };
 		56A043A01E0A128200130EC1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A0439E1E0A128200130EC1 /* LaunchScreen.storyboard */; };
 		56A043A91E0A136600130EC1 /* SDDKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56A043A81E0A136600130EC1 /* SDDKit.framework */; };
-		56A043AC1E0A13D400130EC1 /* SDDELBSServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A043AB1E0A13D400130EC1 /* SDDELBSServiceViewController.m */; };
 		56A043B51E0A13F500130EC1 /* SDDEAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A043AE1E0A13F500130EC1 /* SDDEAppDelegate.m */; };
-		56A043B61E0A13F500130EC1 /* SDDEContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A043B01E0A13F500130EC1 /* SDDEContext.m */; };
 		56A043B71E0A13F500130EC1 /* SDDELoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A043B21E0A13F500130EC1 /* SDDELoginViewController.m */; };
-		56A043B81E0A13F500130EC1 /* SDDEStringMatchingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A043B41E0A13F500130EC1 /* SDDEStringMatchingViewController.m */; };
 		56A043BA1E0A141500130EC1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A043B91E0A141500130EC1 /* main.m */; };
 		56A043BC1E0A142200130EC1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A043BB1E0A142200130EC1 /* Main.storyboard */; };
 /* End PBXBuildFile section */
@@ -25,16 +22,10 @@
 		56A0439F1E0A128200130EC1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56A043A11E0A128200130EC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		56A043A81E0A136600130EC1 /* SDDKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDDKit.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/SDDKit-bxmbxywovvkxpkazeacdulgwlaye/Build/Products/Debug-iphonesimulator/SDDKit.framework"; sourceTree = "<group>"; };
-		56A043AA1E0A13D400130EC1 /* SDDELBSServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDELBSServiceViewController.h; sourceTree = "<group>"; };
-		56A043AB1E0A13D400130EC1 /* SDDELBSServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDELBSServiceViewController.m; sourceTree = "<group>"; };
 		56A043AD1E0A13F500130EC1 /* SDDEAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDEAppDelegate.h; sourceTree = "<group>"; };
 		56A043AE1E0A13F500130EC1 /* SDDEAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDEAppDelegate.m; sourceTree = "<group>"; };
-		56A043AF1E0A13F500130EC1 /* SDDEContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDEContext.h; sourceTree = "<group>"; };
-		56A043B01E0A13F500130EC1 /* SDDEContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDEContext.m; sourceTree = "<group>"; };
 		56A043B11E0A13F500130EC1 /* SDDELoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDELoginViewController.h; sourceTree = "<group>"; };
 		56A043B21E0A13F500130EC1 /* SDDELoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDELoginViewController.m; sourceTree = "<group>"; };
-		56A043B31E0A13F500130EC1 /* SDDEStringMatchingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDEStringMatchingViewController.h; sourceTree = "<group>"; };
-		56A043B41E0A13F500130EC1 /* SDDEStringMatchingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDEStringMatchingViewController.m; sourceTree = "<group>"; };
 		56A043B91E0A141500130EC1 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		56A043BB1E0A142200130EC1 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,14 +64,8 @@
 			children = (
 				56A043AD1E0A13F500130EC1 /* SDDEAppDelegate.h */,
 				56A043AE1E0A13F500130EC1 /* SDDEAppDelegate.m */,
-				56A043AF1E0A13F500130EC1 /* SDDEContext.h */,
-				56A043B01E0A13F500130EC1 /* SDDEContext.m */,
 				56A043B11E0A13F500130EC1 /* SDDELoginViewController.h */,
 				56A043B21E0A13F500130EC1 /* SDDELoginViewController.m */,
-				56A043B31E0A13F500130EC1 /* SDDEStringMatchingViewController.h */,
-				56A043B41E0A13F500130EC1 /* SDDEStringMatchingViewController.m */,
-				56A043AA1E0A13D400130EC1 /* SDDELBSServiceViewController.h */,
-				56A043AB1E0A13D400130EC1 /* SDDELBSServiceViewController.m */,
 				56A0439C1E0A128200130EC1 /* Assets.xcassets */,
 				56A0439E1E0A128200130EC1 /* LaunchScreen.storyboard */,
 				56A043BB1E0A142200130EC1 /* Main.storyboard */,
@@ -177,10 +162,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				56A043B81E0A13F500130EC1 /* SDDEStringMatchingViewController.m in Sources */,
 				56A043B51E0A13F500130EC1 /* SDDEAppDelegate.m in Sources */,
-				56A043AC1E0A13D400130EC1 /* SDDELBSServiceViewController.m in Sources */,
-				56A043B61E0A13F500130EC1 /* SDDEContext.m in Sources */,
 				56A043BA1E0A141500130EC1 /* main.m in Sources */,
 				56A043B71E0A13F500130EC1 /* SDDELoginViewController.m in Sources */,
 			);

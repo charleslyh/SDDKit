@@ -7,19 +7,9 @@
 //
 
 #import "SDDELoginViewController.h"
-#import "SDDEContext.h"
-
 #import <SDDKit/SDDKit.h>
 
-static NSString* const kLVCTimesUp                  = @"TimesUp";
-static NSString* const kLVCDidTouchSMSCodeButton    = @"DidTouchSMSCodeButton";
-static NSString* const kLVCDidTouchVerifyButton     = @"DidTouchVerifyButton";
-static NSString* const kLVCDidChangeTextFields      = @"DidChangeTextFields";
-static NSString* const kLVCDidChangePhoneNumber     = @"DidChangePhoneNumber";
-static NSString* const kLVCDoneVerifying            = @"DoneVerifying";
-static NSString* const kLVCShouldHideFailureTip     = @"ShouldHideFailureTip";
-
-static NSString* const kLVCMockVerifyPhoneNumber    = @"15012345678";
+static NSString* const kLVCMockVerifyPhoneNumber    = @"12345678901";
 static NSString* const kLVCMockVerifySMSCode        = @"654321";
 static NSInteger const kLVCMockVerifyClue           = 88888888;
 
@@ -40,37 +30,19 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
 
 @interface LoginViewController()<UITextFieldDelegate>
 
-@property (nonatomic, weak) IBOutlet UIView *grayMaskView;
-@property (nonatomic, weak) IBOutlet UITextField *phoneNumberField;
-@property (nonatomic, weak) IBOutlet UIView *grayMaskView2;
-@property (nonatomic, weak) IBOutlet UITextField *SMSCodeField;
+@property (nonatomic, weak) IBOutlet UIView   *grayMaskView;
+@property (nonatomic, weak) IBOutlet UIView   *grayMaskView2;
+@property (nonatomic, weak) IBOutlet UILabel  *failureTip;
 @property (nonatomic, weak) IBOutlet UIButton *SMSCodeRequestingButton;
 @property (nonatomic, weak) IBOutlet UIButton *verifyButton;
+@property (nonatomic, weak) IBOutlet UITextField *phoneNumberField;
+@property (nonatomic, weak) IBOutlet UITextField *SMSCodeField;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *indicator;
-@property (nonatomic, weak) IBOutlet UILabel *failureTip;
 
 @end
 
 @implementation LoginViewController {
-    SDDBuilder *_domain;
-}
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-    NSMutableArray* views = [@[self.view] mutableCopy];
-    while( views.count > 0 ) {
-        UIView* v = views.firstObject;
-        [views removeObjectAtIndex:0];
-        [views addObjectsFromArray:v.subviews];
-        
-        NSArray* constraints = v.constraints;
-        for (NSLayoutConstraint* c in constraints) {
-            if ((c.firstAttribute == NSLayoutAttributeHeight || c.firstAttribute == NSLayoutAttributeWidth) && (fabs(c.constant - 1.0) < 0.05)) {
-                c.constant = 1.0 / UIScreen.mainScreen.scale;
-            }
-        }
-    }
+    SDDBuilder *_hsms;
 }
 
 -(void)disableSMSButton {
@@ -90,17 +62,19 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
 -(void)startCountDown {
     __weak typeof(self) wself = self;
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        int remainingTime = 10;
-        while (wself && remainingTime > 0) {
+        int remainingSeconds = 10;
+        while (wself && remainingSeconds > 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [wself.SMSCodeRequestingButton setTitle:[NSString stringWithFormat:@"%d秒后重试", remainingTime]
+                [wself.SMSCodeRequestingButton setTitle:[NSString stringWithFormat:@"%d秒后重试", remainingSeconds]
                                                forState:UIControlStateNormal];
             });
-            remainingTime--;
+            
+            remainingSeconds -= 1;
             sleep(1);
         }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
-            [_domain.epool scheduleEvent:kLVCTimesUp];
+            [[SDDEventsPool sharedPool] scheduleEvent:SDDELiteral(TimesUp)];
         });
     });
 }
@@ -170,10 +144,13 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
 -(void)performMockLogin {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         NSNumber *verify;
-        if ([self.phoneNumberField.text isEqualToString:kLVCMockVerifyPhoneNumber] && [self.SMSCodeField.text isEqualToString:kLVCMockVerifySMSCode]) {
+        
+        BOOL correctPhoneNumber = [self.phoneNumberField.text isEqualToString:kLVCMockVerifyPhoneNumber];
+        BOOL correctSMSCode     = [self.SMSCodeField.text isEqualToString:kLVCMockVerifySMSCode];
+        if (correctPhoneNumber && correctSMSCode) {
             verify = @(kLVCMockVerifyClue);
         }
-        [_domain.epool scheduleEvent:kLVCDoneVerifying withParam:verify];
+        [[SDDEventsPool sharedPool] scheduleEvent:SDDELiteral2(DoneVerifying, verify)];
     });
 }
 
@@ -181,8 +158,9 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
     [self performMockLogin];
 }
 
--(BOOL)isLoginSucceed:(NSNumber*)verify{
-    return [verify integerValue] > 0;
+-(BOOL)isLoginSucceed:(SDDELiteralEvent *)e {
+    NSNumber *number = e.param;
+    return [number integerValue] == kLVCMockVerifyClue;
 }
 
 -(void)handleLoginSuccess {
@@ -207,124 +185,118 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
     [UIView animateWithDuration:0.25 animations:^{
         self.failureTip.alpha = 1.0;
     }];
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [_domain.epool scheduleEvent:kLVCShouldHideFailureTip];
+        [[SDDEventsPool sharedPool] scheduleEvent:SDDELiteral(DoneFailureToasting)];
     });
 }
 
 -(void)setupSMSButtonState {
-    NSString* dsl = SDDOCLanguage
-    (
-        [SMSButton ~[Disabled]
+    [_hsms addStateMachineWithContext:self dsl:SDDOCLanguage
+     ([SMSButton
          [Disabled e:disableSMSButton]
          [Normal   e:enableSMSButton]
          [CountDown
-          e:disableSMSButton startCountDown requestSMSCode
-          x:restoreSMSButtonTitle
-          ]
+            e:disableSMSButton startCountDown requestSMSCode
+            x:restoreSMSButtonTitle
          ]
-         
-         [Disabled]     ->  [Normal]:       DidChangeTextFields(isPhoneNumber)
-         [Normal]       ->  [Disabled]:     DidChangeTextFields(!isPhoneNumber)
-         [Normal]       ->  [CountDown]:    DidTouchSMSCodeButton
-         [CountDown]    ->  [Normal]:       TimesUp(isPhoneNumber)
-         [CountDown]    ->  [Disabled]:     TimesUp(!isPhoneNumber)
-    );
-    
-    [_domain addStateMachineWithContext:self dsl:dsl];
+      ]
+      
+      [.] -> [Disabled]: $Initial
+      
+      [Disabled]  -> [Normal]:    DidChangeTextFields(isPhoneNumber)
+      [Normal]    -> [Disabled]:  DidChangeTextFields(!isPhoneNumber)
+      [Normal]    -> [CountDown]: DidTouchSMSCodeButton
+      [CountDown] -> [Normal]:    TimesUp(isPhoneNumber)
+      [CountDown] -> [Disabled]:  TimesUp(!isPhoneNumber)
+     )];
 }
 
 -(void)setupPhoneNumberFieldState {
-    NSString* dsl = SDDOCLanguage
-    (
-        [PhoneNumberField ~[Normal]
+    [_hsms addStateMachineWithContext:self dsl:SDDOCLanguage
+     ([PhoneNumberField
          [Normal    e:enablePhoneNumberField]
          [Disabled  e:disablePhoneNumberField]
-         ]
-     
-        [Normal]    ->  [Disabled]:    DidTouchSMSCodeButton
-        [Disabled]  ->  [Normal]:      TimesUp
-    );
-    
-    [_domain addStateMachineWithContext:self dsl:dsl];
+      ]
+      
+      [.] -> [Normal]:   $Initial
+      
+      [Normal]   -> [Disabled]: DidTouchSMSCodeButton
+      [Disabled] -> [Normal]:   TimesUp
+      )];
 }
 
 -(void)setupSMSCodeFieldState {
-    NSString* dsl = SDDOCLanguage
-    (
-        [SMSCodeField ~[Disabled]
-         [Disabled  e:disableSMSCodeField resetSMSCodeField]
-         [Normal    e:enableSMSCodeField resetSMSCodeField]
-         ]
-     
-        [Disabled]    ->  [Normal]:     DidTouchSMSCodeButton/focusOnSMSCodeField
-        [Normal]      ->  [Disabled]:   DidChangePhoneNumber
-    );
-    
-    [_domain addStateMachineWithContext:self dsl:dsl];
+    [_hsms addStateMachineWithContext:self dsl:SDDOCLanguage
+     ([SMSCodeField
+         [Disabled e:disableSMSCodeField resetSMSCodeField]
+         [Normal   e:enableSMSCodeField  resetSMSCodeField]
+       ]
+      
+      [.] -> [Normal]: $Initial
+      
+      [Disabled] -> [Normal]:   DidTouchSMSCodeButton / focusOnSMSCodeField
+      [Normal]   -> [Disabled]: DidChangePhoneNumber
+      )];
 }
 
 -(void)setupVerifyButtonState {
-    NSString* dsl = SDDOCLanguage
-    (
-        [VerifyButton ~[Disabled]
-         [Disabled      e:disableVerifyButton]
-         [Normal        e:enableVerifyButton]
-         [Verifying     e:disableVerifyButton dismissKeyboard]
-         [Success       e:disableVerifyButton handleLoginSuccess]
-         ]
-     
-        [Disabled]     ->  [Normal]:    DidChangeTextFields(isValidInput)
-        [Normal]       ->  [Disabled]:  DidChangeTextFields(!isValidInput)
-        [Normal]       ->  [Verifying]: DidTouchVerifyButton/performLogin
-        [Verifying]    ->  [Normal]:    DoneVerifying(!isLoginSucceed)
-        [Verifying]    ->  [Success]:   DoneVerifying(isLoginSucceed)
-    );
-    __weak typeof(self) wself = self;
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        NSError *err;
-        NSString *serverDSL = [NSString stringWithContentsOfURL:[NSURL URLWithString:@"http://localhost:5000/app/config/verifyButtonStateConfig"] encoding:NSUTF8StringEncoding error:&err];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSString *aDSL = (err || [serverDSL isEqualToString:@""]) ? dsl : serverDSL;
-            [_domain addStateMachineWithContext:wself dsl:aDSL];
-        });
-    });
+    [_hsms addStateMachineWithContext:self dsl:SDDOCLanguage
+     ( [VerifyButton
+          [Disabled  e:disableVerifyButton]
+          [Normal    e:enableVerifyButton]
+          [Verifying e:disableVerifyButton dismissKeyboard]
+          [Success   e:disableVerifyButton handleLoginSuccess]
+        ]
+      
+      [.] -> [Disabled]: $Initial
+      
+      [Disabled]  -> [Normal]:    DidChangeTextFields(isValidInput)
+      [Normal]    -> [Disabled]:  DidChangeTextFields(!isValidInput)
+      [Normal]    -> [Verifying]: DidTouchVerifyButton/performLogin
+      [Verifying] -> [Normal]:    DoneVerifying(!isLoginSucceed)
+      [Verifying] -> [Success]:   DoneVerifying(isLoginSucceed)
+      )];
 }
 
 -(void)setupActivityIndicatorState {
     NSString* dsl = SDDOCLanguage
-    (
-        [ActivityIndicator ~[Hidden]
-         [Hidden    e:hideActivityIndicator]
-         [Shown     e:showActivityIndicator]
-         ]
+    ( [ActivityIndicator
+        [Hidden    e:hideActivityIndicator]
+        [Shown     e:showActivityIndicator]
+       ]
      
-        [Hidden]    ->  [Shown]:   DidTouchVerifyButton
-        [Shown]     ->  [Hidden]:  DoneVerifying
+     [.] -> [Hidden]: $Initial
+     
+     [Hidden] -> [Shown]:  DidTouchVerifyButton
+     [Shown]  -> [Hidden]: DoneVerifying
     );
     
-    [_domain addStateMachineWithContext:self dsl:dsl];
+    [_hsms addStateMachineWithContext:self dsl:dsl];
 }
 
 -(void)setupFailureTipState {
     NSString* dsl = SDDOCLanguage
-    (
-        [FailureTip ~[Hidden]
-         [Hidden    e:hideFailureTip]
-         [Shown     e:showFailureTip]
+    ( [FailureTip
+         [Hidden]
+         [Shown
+            e: showFailureTip
+            x: hideFailureTip
          ]
+      ]
      
-        [Hidden]    ->  [Shown]:   DoneVerifying(!isLoginSucceed)
-        [Shown]     ->  [Hidden]:  ShouldHideFailureTip
+     [.] -> [Hidden]: $Initial
+     
+     [Hidden] -> [Shown]:  DoneVerifying(!isLoginSucceed)
+     [Shown]  -> [Hidden]: DoneFailureToasting
      );
     
-    [_domain addStateMachineWithContext:self dsl:dsl];
+    [_hsms addStateMachineWithContext:self dsl:dsl];
 }
 
 -(void)setupDomainWidgets {
-    _domain = [[SDDBuilder alloc] initWithNamespace:@"loginVC"
-                                                      logger:[[SDDConsoleLogger alloc] initWithMasks:SDDLogMaskAll]
-                                                       queue:[NSOperationQueue currentQueue]];
+    _hsms = [[SDDBuilder alloc] initWithLogger:[SDDConsoleLogger defaultLogger]
+                                         epool:[SDDEventsPool sharedPool]];
     
     [self setupSMSButtonState];
     [self setupPhoneNumberFieldState];
@@ -344,16 +316,16 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
 }
 
 - (IBAction)phoneNumberTextDidChange:(UITextField *)sender {
-    [_domain.epool scheduleEvent:kLVCDidChangeTextFields];
-    [_domain.epool scheduleEvent:kLVCDidChangePhoneNumber];
+    [[SDDEventsPool sharedPool] scheduleEvent:SDDELiteral(DidChangeTextFields)];
+    [[SDDEventsPool sharedPool] scheduleEvent:SDDELiteral(DidChangePhoneNumber)];
 }
 
 - (IBAction)SMSCodeTextDidChange:(UITextField *)sender {
-    [_domain.epool scheduleEvent:kLVCDidChangeTextFields];
+    [[SDDEventsPool sharedPool] scheduleEvent:SDDELiteral(DidChangeTextFields)];
 }
 
 - (IBAction)didTouchSMSButton:(id)sender {
-    [_domain.epool scheduleEvent:kLVCDidTouchSMSCodeButton];
+    [[SDDEventsPool sharedPool] scheduleEvent:SDDELiteral(DidTouchSMSCodeButton)];
 }
 
 - (IBAction)didTouchStopButton:(id)sender {
@@ -361,7 +333,7 @@ static NSInteger const kLVCMockVerifyClue           = 88888888;
 }
 
 - (IBAction)didTouchVerifyButton:(id)sender {
-    [_domain.epool scheduleEvent:kLVCDidTouchVerifyButton];
+    [[SDDEventsPool sharedPool] scheduleEvent:SDDELiteral(DidTouchVerifyButton)];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
