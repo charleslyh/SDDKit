@@ -20,12 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "SDDStateMachine.h"
 #import <Foundation/Foundation.h>
 
 #define SDDOCLanguage(dsl) @#dsl
 
 @class SDDEventsPool, SDDStateMachine;
-@protocol SDDLogger;
+@protocol SDDEvent, SDDLogger;
 
 @interface SDDBuilder : NSObject
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
@@ -33,4 +34,8 @@
 
 - (SDDStateMachine *)addStateMachineWithContext:(id)context dsl:(NSString *)dsl;
 - (void)removeStateMachine:(SDDStateMachine *)stateMachine;
+
+- (void)hookAction:(NSString *)action withBlock:(SDDAction)block;
+- (void)hookCondition:(NSString *)condition withBlock:(SDDCondition)block;
+
 @end

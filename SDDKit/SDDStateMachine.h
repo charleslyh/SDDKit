@@ -26,9 +26,8 @@
 
 typedef BOOL (^SDDCondition)(_Nullable id<SDDEvent> e);
 typedef void (^SDDAction)(_Nullable id<SDDEvent> e);
-typedef void (^SDDActivation)(_Nullable id<SDDEvent> e);
-typedef void (^SDDDeactivation)(_Nullable id<SDDEvent> e);
-
+typedef SDDAction SDDActivation;
+typedef SDDAction SDDDeactivation;
 
 @interface SDDState : NSObject
 - (nullable)init UNAVAILABLE_ATTRIBUTE;

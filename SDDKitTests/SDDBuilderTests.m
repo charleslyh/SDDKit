@@ -802,4 +802,175 @@
     XCTAssertThrows([self performTestWithDSL:dsl expectedFlows:@"" customActions:nil]);
 }
 
+- (void)testHookingSingleEntryAction {
+    NSString * const dsl = SDDOCLanguage
+    (
+     [Top
+      [A e: hook]
+      ]
+     );
+    
+    __block BOOL hooked = NO;
+    SDDBuilder *builder = [[SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool]];
+    [builder hookAction:@"hook" withBlock:^(id<SDDEvent> _) {
+        hooked = YES;
+    }];
+    
+    [builder addStateMachineWithContext:nil dsl:dsl];
+    XCTAssertEqual(hooked, YES, "Hooked action should be executed");
+}
+
+- (void)testHookingMultipleEntryActions {
+    NSString * const dsl = SDDOCLanguage
+    (
+     [Top
+      [A e: act1 act2]
+      ]
+     );
+
+    NSMutableArray *items = [NSMutableArray array];
+    SDDBuilder *builder = [[SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool]];
+    [builder hookAction:@"act1" withBlock:^(id<SDDEvent> _) {
+        [items addObject:@1];
+    }];
+
+    [builder hookAction:@"act2" withBlock:^(id<SDDEvent> _) {
+        [items addObject:@2];
+    }];
+    
+    [builder addStateMachineWithContext:nil dsl:dsl];
+    NSArray *expectedItems = @[@1, @2];
+    XCTAssertEqualObjects(items, expectedItems);
+}
+
+- (void)testHookingSingleExitAction {
+    NSString * const dsl = SDDOCLanguage
+    (
+     [Top
+      [A x: hook]
+      ]
+     );
+    
+    __block BOOL hooked = NO;
+    
+    // In order to trigger exit action, these should be wrapped in an autoreleasepool.
+    @autoreleasepool {
+        SDDBuilder *builder = [[SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool]];
+        [builder hookAction:@"hook" withBlock:^(id<SDDEvent> _) {
+            hooked = YES;
+        }];
+
+        [builder addStateMachineWithContext:nil dsl:dsl];
+    }
+    
+    XCTAssertEqual(hooked, YES, "Hooked action should be executed");
+}
+
+- (void)testHookingMultipleExitActions {
+    NSString * const dsl = SDDOCLanguage
+    (
+     [Top
+      [A x: act1 act2]
+      ]
+     );
+    
+    NSMutableArray *items = [NSMutableArray array];
+    @autoreleasepool {
+        SDDBuilder *builder = [[SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool]];
+        [builder hookAction:@"act1" withBlock:^(id<SDDEvent> _) {
+            [items addObject:@1];
+        }];
+        
+        [builder hookAction:@"act2" withBlock:^(id<SDDEvent> _) {
+            [items addObject:@2];
+        }];
+        
+        [builder addStateMachineWithContext:nil dsl:dsl];
+    }
+    
+    NSArray *expectedItems = @[@1, @2];
+    XCTAssertEqualObjects(items, expectedItems);
+}
+
+- (void)testHookingEntryAndExitActions {
+    NSString * const dsl = SDDOCLanguage
+    (
+     [Top
+        [A e: act1 x: act3]
+     ]
+     );
+    
+    NSMutableArray *items = [NSMutableArray array];
+    @autoreleasepool {
+        SDDBuilder *builder = [[SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool]];
+        [builder hookAction:@"act1" withBlock:^(id<SDDEvent> _) {
+            [items addObject:@1];
+        }];
+        
+        [builder hookAction:@"act3" withBlock:^(id<SDDEvent> _) {
+            [items addObject:@3];
+        }];
+        
+        [builder addStateMachineWithContext:nil dsl:dsl];
+    }
+    
+    NSArray *expectedItems = @[@1, @3];
+    XCTAssertEqualObjects(items, expectedItems);
+}
+
+- (void)testDuplicationActionHooking {
+    SDDBuilder *builder = [[SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool]];
+    [builder hookAction:@"act1" withBlock:^(id<SDDEvent> _) {}];
+    XCTAssertThrows([builder hookAction:@"act1" withBlock:^(id<SDDEvent> _) {}]);
+}
+
+- (void)testHookingCondition {
+    NSString * const dsl = SDDOCLanguage
+    (
+     [Top
+      [A e: act1]
+      [B e: act2]
+      ]
+     [.] -> [A]: $Initial
+     
+     [A] -> [B]: E1 (guardWithYES)
+     [B] -> [A]: E2 (!guardWithNO)
+     );
+    
+    NSMutableArray *items = [NSMutableArray array];
+    @autoreleasepool {
+        SDDBuilder *builder = [[SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool]];
+        [builder hookAction:@"act1" withBlock:^(id<SDDEvent> _) {
+            [items addObject:@1];
+        }];
+        
+        [builder hookAction:@"act2" withBlock:^(id<SDDEvent> _) {
+            [items addObject:@2];
+        }];
+        
+        [builder hookCondition:@"guardWithYES" withBlock:^BOOL(id<SDDEvent> e) {
+            return YES;
+        }];
+        
+        [builder hookCondition:@"guardWithNO" withBlock:^BOOL(id<SDDEvent> e) {
+            return NO;
+        }];
+        
+        [builder addStateMachineWithContext:nil dsl:dsl];
+        [[SDDEventsPool sharedPool] scheduleEvent:SDDELiteral(E1)];
+        [[SDDEventsPool sharedPool] scheduleEvent:SDDELiteral(E2)];
+    }
+    
+    NSArray *expectedItems = @[@1, @2, @1];
+    XCTAssertEqualObjects(items, expectedItems);
+}
+
+- (void)testHookingDuplicationCondition {
+    SDDBuilder *builder = [[SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool]];
+    [builder hookCondition:@"guard" withBlock:^BOOL(id<SDDEvent> e) { return YES; }];
+    XCTAssertThrows([builder hookCondition:@"guard" withBlock:^BOOL(id<SDDEvent> e) {
+        return YES;
+    }]);
+}
+
 @end

@@ -115,7 +115,9 @@ static const void* kSDDStateNameKey       = &kSDDStateNameKey;
 
 @interface SDDParserContext : NSObject 
 @property (nonatomic, weak) id runtimeContext;
-@property (nonatomic, weak) SDDStateMachine* stateMachine;
+@property (nonatomic, weak) NSDictionary    *actionBlocks;
+@property (nonatomic, weak) NSDictionary    *conditionBlocks;
+@property (nonatomic, weak) SDDStateMachine *stateMachine;
 @property (nonatomic, weak) NSMutableDictionary<NSString*, SDDState*>* states;
 @end
 
@@ -152,21 +154,25 @@ static SDDAugmentedActionImp SDDAugmentedAction = (SDDAugmentedActionImp)objc_ms
 void SDDBuilderAddState(void* contextObj, sdd_state* raw_state) {
     __weak SDDParserContext* pcontext = (__bridge SDDParserContext*)contextObj;
     __weak SDDStateMachine* stateMachine = pcontext.stateMachine;
+    __weak NSDictionary *actionBlocks = pcontext.actionBlocks;
     __weak id context = pcontext.runtimeContext;
     
     NSString* entries = [NSString stringWithCString:raw_state->entries encoding:NSUTF8StringEncoding];
     NSString* exits   = [NSString stringWithCString:raw_state->exits   encoding:NSUTF8StringEncoding];
     
-    SDDActivation activation = ^(id argument) {
+    SDDActivation activation = ^(id<SDDEvent> event) {
         NSArray* acts = [entries sddNamedComponents];
         for (NSString* act in acts) {
             SEL simpleSel    = NSSelectorFromString(act);
             SEL augmentedSel = NSSelectorFromString([NSString stringWithFormat:@"%@:", act]);
+            SDDAction action = actionBlocks[act];
             
-            if ([context respondsToSelector:simpleSel]) {
+            if (action) {
+                action(event);
+            } else if ([context respondsToSelector:simpleSel]) {
                 SDDSimpleAction(context, simpleSel);
             } else if ([context respondsToSelector:augmentedSel]) {
-                SDDAugmentedAction(context, augmentedSel, argument);
+                SDDAugmentedAction(context, augmentedSel, event);
             } else if (context != nil) {
                 [[NSException exceptionWithName:@"SDDBuilderException"
                                          reason:[NSString stringWithFormat:@"无法在上下文:%@ 对象中找到 %@ 方法", context, act]
@@ -182,16 +188,19 @@ void SDDBuilderAddState(void* contextObj, sdd_state* raw_state) {
         }
     };
 
-    SDDDeactivation deactivation = ^(id argument) {
+    SDDDeactivation deactivation = ^(id<SDDEvent> event) {
         NSArray* acts = [exits sddNamedComponents];
         for (NSString* act in acts) {
             SEL simpleSel    = NSSelectorFromString(act);
             SEL augmentedSel = NSSelectorFromString([NSString stringWithFormat:@"%@:", act]);
+            SDDAction action = actionBlocks[act];
 
-            if ([context respondsToSelector:simpleSel]) {
+            if (action) {
+                action(event);
+            } else if ([context respondsToSelector:simpleSel]) {
                 SDDSimpleAction(context, simpleSel);
             } else if ([context respondsToSelector:augmentedSel]) {
-                SDDAugmentedAction(context, augmentedSel, argument);
+                SDDAugmentedAction(context, augmentedSel, event);
             } else if (context != nil) {
                 [[NSException exceptionWithName:@"SDDBuilderException"
                                          reason:[NSString stringWithFormat:@"无法在上下文:%@ 对象中找到 %@ 方法", context, act]
@@ -227,8 +236,9 @@ void SDDBuilderSetDescendants(void* contextObj, sdd_state* raw_master, sdd_array
 }
 
 void SDDBuilderMakeTransition(void* contextObj, sdd_transition* t) {
-    __weak SDDParserContext* pcontext = (__bridge SDDParserContext*)contextObj;
-    __weak SDDStateMachine* stateMachine = pcontext.stateMachine;
+    __weak SDDParserContext *pcontext        = (__bridge SDDParserContext*)contextObj;
+    __weak SDDStateMachine  *stateMachine    = pcontext.stateMachine;
+    __weak NSDictionary     *conditionBlocks = pcontext.conditionBlocks;
     __weak id context = pcontext.runtimeContext;
     
     NSString* names = [NSString stringWithCString:t->actions encoding:NSUTF8StringEncoding];
@@ -258,7 +268,7 @@ void SDDBuilderMakeTransition(void* contextObj, sdd_transition* t) {
     };
     
     NSString* conditions = [NSString stringWithCString:t->conditions encoding:NSUTF8StringEncoding];
-    SDDCondition condition = ^BOOL (id argument) {
+    SDDCondition condition = ^BOOL (id<SDDEvent> event) {
         NSArray* components = [conditions sddNamedComponents];
         if (components.count == 0)
             return YES;
@@ -284,10 +294,14 @@ void SDDBuilderMakeTransition(void* contextObj, sdd_transition* t) {
             } else {
                 SEL simpleSel    = NSSelectorFromString(p);
                 SEL augmentedSel = NSSelectorFromString([NSString stringWithFormat:@"%@:", p]);
-                if ([context respondsToSelector:simpleSel]) {
+                SDDCondition conditionBlock = conditionBlocks[p];
+                
+                if (conditionBlock) {
+                    exprValue = conditionBlock(event);
+                } else if ([context respondsToSelector:simpleSel]) {
                     exprValue = SDDConditionMsgSend(context, simpleSel);
                 } else if ([context respondsToSelector:augmentedSel]) {
-                    exprValue = SDDConditionMsgSend2(context, augmentedSel, argument);
+                    exprValue = SDDConditionMsgSend2(context, augmentedSel, event);
                 } else if (context != nil) {
                     [[NSException exceptionWithName:@"SDDBuilderException"
                                              reason:[NSString stringWithFormat:@"无法在上下文:%@ 对象中找到 %@ 方法", context, p]
@@ -327,13 +341,17 @@ void SDDBuilderParsingFinishCompletion(void *contextObj) {
     id<SDDLogger>   _logger;
     SDDEventsPool  *_epool;
     NSMutableArray *_HSMs;  // Hierachical State Machine
+    NSMutableDictionary *_actionBlocks;
+    NSMutableDictionary *_conditionBlocks;
 }
 
 - (instancetype)initWithLogger:(id<SDDLogger>)logger epool:(SDDEventsPool *)epool {
     if (self = [super init]) {
-        _logger = logger;
-        _epool  = epool;
-        _HSMs   = [NSMutableArray array];
+        _logger       = logger;
+        _epool        = epool;
+        _HSMs         = [NSMutableArray array];
+        _actionBlocks    = [NSMutableDictionary dictionary];
+        _conditionBlocks = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -353,6 +371,8 @@ void SDDBuilderParsingFinishCompletion(void *contextObj) {
     pcontext.states         = states;
     pcontext.runtimeContext = context;
     pcontext.stateMachine   = stateMachine;
+    pcontext.actionBlocks    = _actionBlocks;
+    pcontext.conditionBlocks = _conditionBlocks;
     
     sdd_parser_callback callback;
     callback.context = (__bridge void*)pcontext;
@@ -387,6 +407,16 @@ void SDDBuilderParsingFinishCompletion(void *contextObj) {
         [_epool removeSubscriber:hsm];
         [_HSMs removeObject:hsm];
     }
+}
+
+- (void)hookAction:(NSString *)action withBlock:(SDDAction)block {
+    NSAssert(_actionBlocks[action] == nil, @"Can't override action %@", action);
+    _actionBlocks[action] = block;
+}
+
+- (void)hookCondition:(NSString *)condition withBlock:(SDDCondition)block {
+    NSAssert(_conditionBlocks[condition] == nil, @"Can't override condition %@", condition);
+    _conditionBlocks[condition] = block;
 }
 
 @end
