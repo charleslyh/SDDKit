@@ -2,9 +2,25 @@
 //  SDDLogger.m
 //  SDDKit
 //
-//  Created by Charles on 2017/1/13.
-//  Copyright © 2017年 CharlesLee. All rights reserved.
+// Copyright (c) 2016 CharlesLee
 //
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 #import "SDDLogger.h"
 #import "SDDStateMachine.h"
@@ -18,7 +34,8 @@
     static SDDConsoleLogger *loggerInstance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        loggerInstance = [[SDDConsoleLogger alloc] initWithMasks:SDDLogMaskAll];
+        // Method calling is stripped by default
+        loggerInstance = [[SDDConsoleLogger alloc] initWithMasks:(SDDLogMaskAll & ~SDDLogMaskCalls)];
     });
     return loggerInstance;
 }
@@ -39,28 +56,38 @@
     return [names componentsJoinedByString:@","];
 }
 
-- (void)stateMachine:(SDDStateMachine *)stateMachine didStartWithPath:(SDDPath *)path {
+void SDDLog(SDDStateMachine *hsm, char typeChar, NSString *format, ...) {
+    NSString *prefixString = [NSString stringWithFormat:@"[SDD][%@(%p)][%c]", hsm, hsm, typeChar];
+
+    va_list arg_ptr;
+    va_start(arg_ptr, format);
+    NSString *message = [[NSString alloc] initWithFormat:format arguments:arg_ptr];
+    va_end(arg_ptr);
+
+    NSLog(@"%@ %@", prefixString, message);
+}
+
+- (void)stateMachine:(SDDStateMachine *)hsm didStartWithPath:(SDDPath *)path {
     if (_masks & SDDLogMaskStart) {
-        NSLog(@"[SDD][%@(%p)][L] {%@}", stateMachine, stateMachine, [self pathString:path]);
+        SDDLog(hsm, 'L', @"{%@}", [self pathString:path]);
     }
 }
 
-- (void)stateMachine:(SDDStateMachine *)stateMachine didStopFromPath:(SDDPath *)path {
+- (void)stateMachine:(SDDStateMachine *)hsm didStopFromPath:(SDDPath *)path {
     if (_masks & SDDLogMaskStop) {
-        NSLog(@"[SDD][%@(%p)][S] {%@}", stateMachine, stateMachine, [self pathString:path]);
+        SDDLog(hsm, 'S', @"{%@}", [self pathString:path]);
     }
 }
 
-- (void)stateMachine:(SDDStateMachine *)stateMachine didTransitFromPath:(SDDPath *)from toPath:(SDDPath *)to byEvent:(id<SDDEvent>)event {
+- (void)stateMachine:(SDDStateMachine *)hsm didTransitFromPath:(SDDPath *)from toPath:(SDDPath *)to byEvent:(id<SDDEvent>)event {
     if ((_masks & SDDLogMaskTransition) && (!_stripRepeats || ![from isEqual:to])) {
-        NSLog(@"[SDD][%@(%p)][T] %@ | {%@} -> {%@}",
-              stateMachine, stateMachine, event, [self pathString:from], [self pathString:to]);
+        SDDLog(hsm, 'T', @"%@ | {%@} -> {%@}", event, [self pathString:from], [self pathString:to]);
     }
 }
 
-- (void)stateMachine:(nonnull SDDStateMachine *)stateMachine didCallMethod:(nonnull NSString *)method {
+- (void)stateMachine:(nonnull SDDStateMachine *)hsm didCallMethod:(nonnull NSString *)method {
     if (_masks & SDDLogMaskCalls && (!_stripRepeats || ![method isEqualToString:_lastMethod])) {
-        NSLog(@"[SDD][%@(%p)][C] %@", stateMachine, stateMachine, method);
+        SDDLog(hsm, 'C', @"%@", method);
         _lastMethod = [method copy];
     }
 }
