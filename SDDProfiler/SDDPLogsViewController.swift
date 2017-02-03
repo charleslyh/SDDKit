@@ -37,6 +37,19 @@ class SDDPLogsViewController: NSViewController {
         let patternStop = "\(namePrefix)\\[S\\] \\{(.*)\\}"
         let regexStop   = try! NSRegularExpression(pattern: patternStop, options: [])
 
+        var lastEvent:SDDPEvent = SDDPEvent(signal: "")
+        func addTransition(signal: NSString, transition: SDDPTransition) {
+            var event: SDDPEvent = lastEvent
+            if signal != lastEvent.signal {
+                event = SDDPEvent(signal: signal)
+                events.append(event)
+                
+                lastEvent = event
+            }
+            
+            event.add(transition: transition)
+        }
+        
         for line in lines {
             let matchesLaunching = regexLaunch.matches(in: line, options: [], range: NSRange(location: 0, length: line.characters.count))
             if matchesLaunching.count == 1 {
@@ -63,10 +76,7 @@ class SDDPLogsViewController: NSViewController {
                 
                 topState.addSubstate(state: toState)
                 
-                let event = SDDPEvent(signal: "")
-                event.add(transition: SDDPTransition(initiallyTo: toState))
-                events.append(event)
-                
+                addTransition(signal: "$Initial", transition: SDDPTransition(initiallyTo: toState))
                 continue
             }
             
@@ -101,9 +111,8 @@ class SDDPLogsViewController: NSViewController {
                     topState.addSubstate(state: targetState)
                 }
                 
-                let event = SDDPEvent(signal: signalName as NSString)
-                event.add(transition: SDDPTransition(fromState: sourceState, toState: targetState))
-                events.append(event)
+                addTransition(signal: signalName as NSString,
+                              transition: SDDPTransition(fromState: sourceState, toState: targetState))
                 
                 continue
             }
@@ -121,9 +130,7 @@ class SDDPLogsViewController: NSViewController {
                 let fullSourceName = "\(fullName).\(sourceName)"
                 let sourceState = name2state[fullSourceName]!
                 
-                let event = SDDPEvent(signal: "")
-                event.add(transition: SDDPTransition(finallyFrom: sourceState))
-                events.append(event)
+                addTransition(signal: "$Final", transition: SDDPTransition(finallyFrom: sourceState))
                 continue
            }
         }
