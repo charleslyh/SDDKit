@@ -74,7 +74,7 @@ class SDDPDrawer: NSObject {
     private func drawStateHeader() {
         let path = CGMutablePath()
         
-        path.addRect(NSMakeRect(0, 0, dirtyRect.maxX, layouts.headerHeight))
+        path.addRect(NSMakeRect(dirtyRect.minX, 0, dirtyRect.maxX, layouts.headerHeight))
         context.setLineWidth(0)
         context.setFillColor(NSColor(calibratedRed: 0, green: 0, blue: 0, alpha: 0.3).cgColor)
         context.setStrokeColor(NSColor.clear.cgColor)

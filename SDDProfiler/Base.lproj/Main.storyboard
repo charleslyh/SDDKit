@@ -689,14 +689,14 @@
                             <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R1t-fW-OTr">
                                 <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                                 <clipView key="contentView" id="OSn-Z1-1Jc">
-                                    <rect key="frame" x="0.0" y="0.0" width="435" height="300"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView importsGraphics="NO" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="W0b-QH-TXT">
-                                            <rect key="frame" x="0.0" y="0.0" width="435" height="300"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <size key="minSize" width="435" height="300"/>
+                                            <size key="minSize" width="450" height="300"/>
                                             <size key="maxSize" width="463" height="10000000"/>
                                             <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         </textView>
@@ -708,7 +708,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="cka-9m-Rp7">
-                                    <rect key="frame" x="435" y="0.0" width="15" height="300"/>
+                                    <rect key="frame" x="434" y="0.0" width="16" height="300"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
@@ -752,21 +752,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" id="1c5-J5-Fae">
-                            <rect key="frame" x="1" y="1" width="433" height="283"/>
+                            <rect key="frame" x="1" y="1" width="448" height="298"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lgM-Xb-xvQ" customClass="SDDPSequenceDiagramView" customModule="SDDProfiler" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="433" height="283"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <view translatesAutoresizingMaskIntoConstraints="NO" id="lgM-Xb-xvQ" customClass="SDDPSequenceDiagramView" customModule="SDDProfiler" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="448" height="298"/>
                                 </view>
                             </subviews>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="lgM-Xb-xvQ" secondAttribute="trailing" id="05R-fX-x5M"/>
+                                <constraint firstItem="lgM-Xb-xvQ" firstAttribute="top" secondItem="1c5-J5-Fae" secondAttribute="top" id="6m1-7r-Sd9"/>
+                                <constraint firstAttribute="bottom" secondItem="lgM-Xb-xvQ" secondAttribute="bottom" id="7wP-uH-Ksx"/>
+                                <constraint firstItem="lgM-Xb-xvQ" firstAttribute="leading" secondItem="1c5-J5-Fae" secondAttribute="leading" id="h1M-AQ-QpW"/>
+                            </constraints>
                         </clipView>
                         <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="PEt-jJ-f4J">
-                            <rect key="frame" x="1" y="284" width="433" height="15"/>
+                            <rect key="frame" x="1" y="283" width="448" height="16"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="OSZ-oP-zod">
-                            <rect key="frame" x="434" y="1" width="15" height="283"/>
+                            <rect key="frame" x="433" y="1" width="16" height="298"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
