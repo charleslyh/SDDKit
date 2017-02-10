@@ -12,12 +12,15 @@ class SDDPDiagramViewController: NSViewController {
     
     @IBOutlet var diagramView: SDDPSequenceDiagramView!
     @IBOutlet var scrollView:  NSScrollView!
+    @IBOutlet var diagramHeight: NSLayoutConstraint!
+    @IBOutlet var diagramWidth: NSLayoutConstraint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         diagramView.show(layouts: sddp.layouts!)
-        diagramView.frame = NSMakeRect(0, 0, sddp.layouts!.canvasSize.width, sddp.layouts!.canvasSize.height)
+        diagramHeight.constant = sddp.layouts!.canvasSize.height
+        diagramWidth.constant  = sddp.layouts!.canvasSize.width
         
         scrollView.documentView = diagramView
     }

@@ -366,8 +366,7 @@ void SDDBuilderParsingFinishCompletion(void *contextObj) {
     SDDStateMachine* stateMachine = [[SDDStateMachine alloc] initWithLogger:_logger];
     
     NSMutableDictionary* states = [NSMutableDictionary dictionary];
-    
-    SDDParserContext* pcontext = [[SDDParserContext alloc] init];
+    SDDParserContext* pcontext  = [[SDDParserContext alloc] init];
     pcontext.states         = states;
     pcontext.runtimeContext = context;
     pcontext.stateMachine   = stateMachine;
@@ -387,10 +386,10 @@ void SDDBuilderParsingFinishCompletion(void *contextObj) {
 }
 
 - (SDDStateMachine *)addStateMachineWithContext:(id)context dsl:(NSString *)dsl {
-    // Supports multithreading. underlying __secret_builder is global shared, thus machine building must be synchronized.
+    // Supports multithreading. underlying __secret_builder is a global variable, thus machine building must be synchronized.
     SDDStateMachine *hsm;
     @synchronized (_HSMs) {
-         hsm = [self stateMachineWithContext:context dsl:dsl];
+         hsm = [self stateMachineWithContext:context dsl:dsl]; 
     
         [_HSMs addObject:hsm];
         [_epool addSubscriber:hsm];

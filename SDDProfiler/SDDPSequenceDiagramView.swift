@@ -175,7 +175,7 @@ class SDDPDrawer: NSObject {
         context.drawPath(using: .fillStroke)
     }
     
-    private func drawTransitionLine(fromPoint: NSPoint, toPoint: NSPoint, withSignal signal: NSString) {
+    private func drawTransitionLine(fromPoint: NSPoint, toPoint: NSPoint) -> NSPoint {
         drawSolidDot(atPoint: fromPoint)
         
         let path = CGMutablePath()
@@ -189,13 +189,10 @@ class SDDPDrawer: NSObject {
         let fromLeft = fromPoint.x < toPoint.x
         drawTransitionArrow(atPoint: toPoint, leftToRight: fromLeft)
         
-        var textOrigin = fromLeft ? fromPoint : toPoint
-        let textSize = signal.size(withAttributes: SDDPLayouts.signalAttributes)
-        textOrigin.y -= (textSize.height + 2)
-        signal.draw(at: textOrigin, withAttributes: SDDPLayouts.signalAttributes)
+        return fromLeft ? fromPoint : toPoint
     }
     
-    private func drawSelfTransitionPolyline(aroundPoint point: NSPoint) {
+    private func drawSelfTransitionPolyline(aroundPoint point: NSPoint) -> NSPoint {
         let PolylineLength: CGFloat = SDDPLayouts.EventBarHeight / 2
         
         let fromPoint = NSMakePoint(point.x, point.y - PolylineLength / 2)
@@ -216,6 +213,8 @@ class SDDPDrawer: NSObject {
         context.drawPath(using: .fillStroke)
         
         drawTransitionArrow(atPoint: toPoint, leftToRight: false)
+        
+        return NSMakePoint(toPoint.x + PolylineLength + 4, toPoint.y)
     }
     
     private func drawTransitions() {
@@ -245,11 +244,16 @@ class SDDPDrawer: NSObject {
                     toPoint = NSMakePoint(topRect.minX + SDDPLayouts.Padding, barCenterY)
                 }
                 
+                var textOrigin: NSPoint!
                 if t.from != t.to {
-                    drawTransitionLine(fromPoint: fromPoint, toPoint: toPoint, withSignal: e.signal)
+                    textOrigin = drawTransitionLine(fromPoint: fromPoint, toPoint: toPoint)
                 } else {
-                    drawSelfTransitionPolyline(aroundPoint: fromPoint)
+                    textOrigin = drawSelfTransitionPolyline(aroundPoint: fromPoint)
                 }
+                
+                let textSize = e.signal.size(withAttributes: SDDPLayouts.signalAttributes)
+                textOrigin.y -= (textSize.height + 2)
+                e.signal.draw(at: textOrigin, withAttributes: SDDPLayouts.signalAttributes)
             }
         }
     }

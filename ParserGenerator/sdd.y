@@ -20,9 +20,9 @@
 %type<stval> id SDD_IDENTIFIER bool_expr
 %left  '|' '&' '^'
 %right '!'
+
+
 %% 
-
-
 sdd_dsl
     : top_state                 { sdd_ast_make_dsl(&__ast, 0); }
     | top_state transitions     { sdd_ast_make_dsl(&__ast, 1); }

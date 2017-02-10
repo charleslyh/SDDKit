@@ -28,6 +28,7 @@
 @implementation SDDConsoleLogger {
     NSString   *_lastMethod;
     SDDLogMasks _masks;
+    NSMutableDictionary *_hsmAlias;
 }
 
 + (instancetype)defaultLogger {
@@ -42,7 +43,9 @@
 
 - (nonnull instancetype)initWithMasks:(SDDLogMasks)masks {
     if (self = [super init]) {
-        _masks = masks;
+        _stripRepeats = YES;
+        _masks    = masks;
+        _hsmAlias = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -56,8 +59,8 @@
     return [names componentsJoinedByString:@","];
 }
 
-void SDDLog(SDDStateMachine *hsm, char typeChar, NSString *format, ...) {
-    NSString *prefixString = [NSString stringWithFormat:@"[SDD][%@(%p)][%c]", hsm, hsm, typeChar];
+void SDDLog(SDDStateMachine *hsm, NSString *alias, char typeChar, NSString *format, ...) {
+    NSString *prefixString = [NSString stringWithFormat:@"[SDD][%@(%@)][%c]", hsm, alias, typeChar];
 
     va_list arg_ptr;
     va_start(arg_ptr, format);
@@ -67,29 +70,41 @@ void SDDLog(SDDStateMachine *hsm, char typeChar, NSString *format, ...) {
     NSLog(@"%@ %@", prefixString, message);
 }
 
+- (NSString *)aliasForHSM:(SDDStateMachine *)hsm {
+    NSString *alias = _hsmAlias[[NSValue valueWithNonretainedObject:hsm]];
+    if (alias == nil) {
+        alias = [NSString stringWithFormat:@"%p", hsm];
+    }
+    return alias;
+}
+
 - (void)stateMachine:(SDDStateMachine *)hsm didStartWithPath:(SDDPath *)path {
     if (_masks & SDDLogMaskStart) {
-        SDDLog(hsm, 'L', @"{%@}", [self pathString:path]);
+        SDDLog(hsm, [self aliasForHSM:hsm], 'L', @"{%@}", [self pathString:path]);
     }
 }
 
 - (void)stateMachine:(SDDStateMachine *)hsm didStopFromPath:(SDDPath *)path {
     if (_masks & SDDLogMaskStop) {
-        SDDLog(hsm, 'S', @"{%@}", [self pathString:path]);
+        SDDLog(hsm, [self aliasForHSM:hsm], 'S', @"{%@}", [self pathString:path]);
     }
 }
 
 - (void)stateMachine:(SDDStateMachine *)hsm didTransitFromPath:(SDDPath *)from toPath:(SDDPath *)to byEvent:(id<SDDEvent>)event {
     if ((_masks & SDDLogMaskTransition) && (!_stripRepeats || ![from isEqual:to])) {
-        SDDLog(hsm, 'T', @"%@ | {%@} -> {%@}", event, [self pathString:from], [self pathString:to]);
+        SDDLog(hsm, [self aliasForHSM:hsm], 'T', @"<%@> | {%@} -> {%@}", event, [self pathString:from], [self pathString:to]);
     }
 }
 
 - (void)stateMachine:(nonnull SDDStateMachine *)hsm didCallMethod:(nonnull NSString *)method {
     if (_masks & SDDLogMaskCalls && (!_stripRepeats || ![method isEqualToString:_lastMethod])) {
-        SDDLog(hsm, 'C', @"%@", method);
+        SDDLog(hsm, [self aliasForHSM:hsm], 'C', @"%@", method);
         _lastMethod = [method copy];
     }
+}
+
+- (void)setAlias:(NSString *)alias forHSM:(SDDStateMachine *)hsm {
+    _hsmAlias[[NSValue valueWithNonretainedObject:hsm]] = alias;
 }
 
 @end

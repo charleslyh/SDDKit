@@ -26,12 +26,12 @@ class SDDPLogsViewController: NSViewController {
         var name2state: [String: SDDPState] = [:]
         var existedSubNames: Set<String> = []
         
-        let namePrefix = "\\[SDD\\]\\[((.*)\\(0x[\\da-f]+\\))\\]"
+        let namePrefix = "\\[SDD\\]\\[((.*)\\(.+\\))\\]"
         
         let patternLaunch = "\(namePrefix)\\[L\\] \\{(.*)\\}"
         let regexLaunch   = try! NSRegularExpression(pattern: patternLaunch, options: [])
         
-        let patternTrans  = "\(namePrefix)\\[T\\] <(.*)> \\| \\{(.*)\\} -> \\{(.*)\\}"
+        let patternTrans  = "\(namePrefix)\\[T\\] <([^|]+)> \\| \\{(.*)\\} -> \\{(.*)\\}"
         let regexTrans    = try! NSRegularExpression(pattern: patternTrans, options: [])
         
         let patternStop = "\(namePrefix)\\[S\\] \\{(.*)\\}"
@@ -40,7 +40,7 @@ class SDDPLogsViewController: NSViewController {
         var lastEvent:SDDPEvent = SDDPEvent(signal: "")
         func addTransition(signal: NSString, transition: SDDPTransition) {
             var event: SDDPEvent = lastEvent
-            if signal != lastEvent.signal {
+            if !(signal == lastEvent.signal && (signal == "$Initial" || signal == "$Final")) {
                 event = SDDPEvent(signal: signal)
                 events.append(event)
                 
@@ -56,10 +56,10 @@ class SDDPLogsViewController: NSViewController {
                 let result = matchesLaunching.first!
                 let rangeFull  = result.rangeAt(1)
                 let fullName  = (line as NSString).substring(with: rangeFull)
-                let rangeShort = result.rangeAt(2)
-                let shortName = (line as NSString).substring(with: rangeShort)
                 
-                let topState = SDDPState(name: shortName as NSString)
+                // index 2 is for sub name
+                
+                let topState = SDDPState(name: fullName as NSString)
                 name2state[fullName] = topState
                 states.append(topState)
                 

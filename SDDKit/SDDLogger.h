@@ -40,5 +40,7 @@ typedef NS_OPTIONS(NSInteger, SDDLogMasks) {
 - (nullable)init UNAVAILABLE_ATTRIBUTE;
 - (nonnull instancetype)initWithMasks:(SDDLogMasks)masks;
 + (nonnull instancetype)defaultLogger;
+
+- (void)setAlias:(nonnull NSString *)alias forHSM:(nonnull SDDStateMachine *)hsm;
 @end
 

@@ -50,7 +50,7 @@ typedef NSArray<SDDState *> SDDPath;
 
 @property (strong, nonatomic, readonly) id<SDDLogger> __nullable logger;
 
-- (nullable instancetype)init UNAVAILABLE_ATTRIBUTE;
+- (nullable instancetype)init NS_UNAVAILABLE;
 - (nonnull instancetype)initWithLogger:(nullable id<SDDLogger>)logger;
 
 - (void)addState:(nonnull SDDState*)state;
