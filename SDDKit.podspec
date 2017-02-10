@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "SDDKit"
-  s.version      = "1.4.0"
+  s.version      = "1.4.1"
   s.license      = "MIT"
   s.summary      = "Easiest way for implementing hierarchical state machine(HSM) based programs in Objective-C."
   s.homepage     = "https://github.com/charleslyh/SDDKit"
