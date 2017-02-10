@@ -35,7 +35,8 @@ typedef NS_OPTIONS(NSInteger, SDDLogMasks) {
 // It is used for console logging
 
 @interface SDDConsoleLogger : NSObject <SDDLogger>
-@property (assign,   nonatomic) BOOL stripRepeats;
+@property (assign, nonatomic) BOOL groupRepeatCalls;
+@property (assign, nonatomic) BOOL stripSelfTransitions;
 
 - (nullable)init UNAVAILABLE_ATTRIBUTE;
 - (nonnull instancetype)initWithMasks:(SDDLogMasks)masks;

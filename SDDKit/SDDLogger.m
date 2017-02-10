@@ -43,7 +43,8 @@
 
 - (nonnull instancetype)initWithMasks:(SDDLogMasks)masks {
     if (self = [super init]) {
-        _stripRepeats = YES;
+        _groupRepeatCalls     = YES;
+        _stripSelfTransitions = NO;
         _masks    = masks;
         _hsmAlias = [NSMutableDictionary dictionary];
     }
@@ -91,13 +92,13 @@ void SDDLog(SDDStateMachine *hsm, NSString *alias, char typeChar, NSString *form
 }
 
 - (void)stateMachine:(SDDStateMachine *)hsm didTransitFromPath:(SDDPath *)from toPath:(SDDPath *)to byEvent:(id<SDDEvent>)event {
-    if (_masks & SDDLogMaskTransition) {
+    if ((_masks & SDDLogMaskTransition) && (!_stripSelfTransitions || ![from isEqual:to]) {
         SDDLog(hsm, [self aliasForHSM:hsm], 'T', @"<%@> | {%@} -> {%@}", event, [self pathString:from], [self pathString:to]);
     }
 }
 
 - (void)stateMachine:(nonnull SDDStateMachine *)hsm didCallMethod:(nonnull NSString *)method {
-    if (_masks & SDDLogMaskCalls && (!_stripRepeats || ![method isEqualToString:_lastMethod])) {
+    if (_masks & SDDLogMaskCalls && (!_groupRepeatCalls || ![method isEqualToString:_lastMethod])) {
         SDDLog(hsm, [self aliasForHSM:hsm], 'C', @"%@", method);
         _lastMethod = [method copy];
     }
