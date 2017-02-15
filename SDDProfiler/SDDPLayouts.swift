@@ -97,7 +97,11 @@ class SDDPLayouts: NSObject {
     private(set) var eventBarRectMakers: [SDDPEvent: SDDPMakeEventBarRect] = [:]
     
     var headerHeight: CGFloat {
-        return stateRects[self.states.first!]!.maxY + SDDPLayouts.Margin
+        guard let firstState = self.states.first else {
+            return 0
+        }
+        
+        return stateRects[firstState]!.maxY + SDDPLayouts.Margin
     }
     
     var canvasSize: NSSize {

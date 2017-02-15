@@ -11,6 +11,8 @@
 		5622C43D1E37568F0039AF51 /* SDDPContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5622C43C1E37568F0039AF51 /* SDDPContext.swift */; };
 		5622C43F1E3880600039AF51 /* SDDPLayouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5622C43E1E3880600039AF51 /* SDDPLayouts.swift */; };
 		5622C4411E3880AA0039AF51 /* SDDPTerms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5622C4401E3880AA0039AF51 /* SDDPTerms.swift */; };
+		56728E3B1E5435B000F6B144 /* SDDPFiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56728E3A1E5435B000F6B144 /* SDDPFiltersViewController.swift */; };
+		56728E3D1E543E7600F6B144 /* SDDPSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56728E3C1E543E7600F6B144 /* SDDPSplitViewController.swift */; };
 		56F9A4151E35B5340042D1E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F9A4141E35B5340042D1E6 /* AppDelegate.swift */; };
 		56F9A4171E35B5340042D1E6 /* SDDPDiagramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F9A4161E35B5340042D1E6 /* SDDPDiagramViewController.swift */; };
 		56F9A4191E35B5340042D1E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56F9A4181E35B5340042D1E6 /* Assets.xcassets */; };
@@ -23,6 +25,8 @@
 		5622C43C1E37568F0039AF51 /* SDDPContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDDPContext.swift; sourceTree = "<group>"; };
 		5622C43E1E3880600039AF51 /* SDDPLayouts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDDPLayouts.swift; sourceTree = "<group>"; };
 		5622C4401E3880AA0039AF51 /* SDDPTerms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDDPTerms.swift; sourceTree = "<group>"; };
+		56728E3A1E5435B000F6B144 /* SDDPFiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDDPFiltersViewController.swift; sourceTree = "<group>"; };
+		56728E3C1E543E7600F6B144 /* SDDPSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDDPSplitViewController.swift; sourceTree = "<group>"; };
 		56F9A4111E35B5340042D1E6 /* SDDProfiler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDDProfiler.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56F9A4141E35B5340042D1E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		56F9A4161E35B5340042D1E6 /* SDDPDiagramViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDDPDiagramViewController.swift; sourceTree = "<group>"; };
@@ -71,7 +75,9 @@
 				5622C43C1E37568F0039AF51 /* SDDPContext.swift */,
 				56F9A4231E35B5530042D1E6 /* SDDPSequenceDiagramView.swift */,
 				56F9A4161E35B5340042D1E6 /* SDDPDiagramViewController.swift */,
+				56728E3A1E5435B000F6B144 /* SDDPFiltersViewController.swift */,
 				5622C43A1E37557C0039AF51 /* SDDPLogsViewController.swift */,
+				56728E3C1E543E7600F6B144 /* SDDPSplitViewController.swift */,
 			);
 			path = SDDProfiler;
 			sourceTree = "<group>";
@@ -150,8 +156,10 @@
 				56F9A4171E35B5340042D1E6 /* SDDPDiagramViewController.swift in Sources */,
 				56F9A4151E35B5340042D1E6 /* AppDelegate.swift in Sources */,
 				5622C43B1E37557C0039AF51 /* SDDPLogsViewController.swift in Sources */,
+				56728E3D1E543E7600F6B144 /* SDDPSplitViewController.swift in Sources */,
 				5622C4411E3880AA0039AF51 /* SDDPTerms.swift in Sources */,
 				5622C43D1E37568F0039AF51 /* SDDPContext.swift in Sources */,
+				56728E3B1E5435B000F6B144 /* SDDPFiltersViewController.swift in Sources */,
 				5622C43F1E3880600039AF51 /* SDDPLayouts.swift in Sources */,
 				56F9A4241E35B5530042D1E6 /* SDDPSequenceDiagramView.swift in Sources */,
 			);

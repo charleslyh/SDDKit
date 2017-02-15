@@ -692,12 +692,12 @@
                                     <rect key="frame" x="0.0" y="0.0" width="785" height="600"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textView importsGraphics="NO" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="W0b-QH-TXT">
+                                        <textView importsGraphics="NO" richText="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="W0b-QH-TXT">
                                             <rect key="frame" x="0.0" y="0.0" width="785" height="600"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <size key="minSize" width="785" height="600"/>
-                                            <size key="maxSize" width="785" height="10000000"/>
+                                            <size key="maxSize" width="800" height="10000000"/>
                                             <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         </textView>
                                     </subviews>
@@ -723,7 +723,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <segue destination="XfG-lQ-9wD" kind="modal" identifier="Diagram" id="LVq-Mr-G0M"/>
+                                    <segue destination="Amc-FQ-Kls" kind="modal" identifier="Diagram" id="bNf-9I-Ze1"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -744,49 +744,179 @@
             </objects>
             <point key="canvasLocation" x="75" y="1004"/>
         </scene>
-        <!--Diagram View Controller-->
-        <scene sceneID="hIz-AP-VOD">
+        <!--Split View Controller-->
+        <scene sceneID="d0G-Px-3pu">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="SDDPDiagramViewController" customModule="SDDProfiler" customModuleProvider="target" sceneMemberID="viewController">
-                    <scrollView key="view" wantsLayer="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="QG7-Ck-Zgv">
+                <splitViewController showSeguePresentationStyle="single" id="Amc-FQ-Kls" customClass="SDDPSplitViewController" customModule="SDDProfiler" customModuleProvider="target" sceneMemberID="viewController">
+                    <splitViewItems>
+                        <splitViewItem id="KTU-lf-Mjo"/>
+                        <splitViewItem holdingPriority="251" id="QLB-Rr-bSJ"/>
+                    </splitViewItems>
+                    <splitView key="splitView" misplaced="YES" dividerStyle="thin" vertical="YES" id="lTK-vn-iW4">
                         <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <clipView key="contentView" id="1c5-J5-Fae">
-                            <rect key="frame" x="1" y="1" width="783" height="583"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <subviews>
-                                <view translatesAutoresizingMaskIntoConstraints="NO" id="lgM-Xb-xvQ" customClass="SDDPSequenceDiagramView" customModule="SDDProfiler" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="15" width="783" height="583"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="583" id="5U1-Cu-t0r"/>
-                                        <constraint firstAttribute="width" constant="783" id="Ij1-Bc-8Tw"/>
-                                    </constraints>
-                                </view>
-                            </subviews>
-                            <constraints>
-                                <constraint firstItem="lgM-Xb-xvQ" firstAttribute="top" secondItem="1c5-J5-Fae" secondAttribute="top" id="6m1-7r-Sd9"/>
-                                <constraint firstItem="lgM-Xb-xvQ" firstAttribute="leading" secondItem="1c5-J5-Fae" secondAttribute="leading" id="h1M-AQ-QpW"/>
-                            </constraints>
-                        </clipView>
-                        <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="PEt-jJ-f4J">
-                            <rect key="frame" x="1" y="584" width="783" height="15"/>
-                            <autoresizingMask key="autoresizingMask"/>
-                        </scroller>
-                        <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="OSZ-oP-zod">
-                            <rect key="frame" x="784" y="1" width="15" height="583"/>
-                            <autoresizingMask key="autoresizingMask"/>
-                        </scroller>
-                    </scrollView>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </splitView>
                     <connections>
-                        <outlet property="diagramHeight" destination="5U1-Cu-t0r" id="P8S-Dj-xng"/>
-                        <outlet property="diagramView" destination="lgM-Xb-xvQ" id="vkm-Lv-24H"/>
-                        <outlet property="diagramWidth" destination="Ij1-Bc-8Tw" id="o16-dh-fkx"/>
-                        <outlet property="scrollView" destination="QG7-Ck-Zgv" id="7qZ-hu-3EB"/>
+                        <outlet property="diagramViewItem" destination="QLB-Rr-bSJ" id="ZSP-fo-Cvs"/>
+                        <outlet property="filtersViewItem" destination="KTU-lf-Mjo" id="ile-nl-e7G"/>
+                        <segue destination="Orj-p5-Ag3" kind="relationship" relationship="splitItems" id="jgn-2I-7kx"/>
+                        <segue destination="J7R-dY-zqz" kind="relationship" relationship="splitItems" id="5pz-Nk-hUZ"/>
+                    </connections>
+                </splitViewController>
+                <customObject id="0Un-TX-IUu" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1062" y="1004"/>
+        </scene>
+        <!--Filters View Controller-->
+        <scene sceneID="ZHe-9x-4g2">
+            <objects>
+                <viewController id="Orj-p5-Ag3" customClass="SDDPFiltersViewController" customModule="SDDProfiler" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="Y7p-4Z-peS">
+                        <rect key="frame" x="0.0" y="0.0" width="200" height="600"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="24" horizontalPageScroll="10" verticalLineScroll="24" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EJq-Ih-AnO">
+                                <rect key="frame" x="0.0" y="0.0" width="200" height="600"/>
+                                <clipView key="contentView" id="7kB-xI-yAr">
+                                    <rect key="frame" x="0.0" y="0.0" width="200" height="600"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" alternatingRowBackgroundColors="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" viewBased="YES" floatsGroupRows="NO" id="w4Q-ZF-WYp">
+                                            <rect key="frame" x="0.0" y="0.0" width="200" height="600"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                            <tableColumns>
+                                                <tableColumn width="195" minWidth="195" maxWidth="195" id="2f6-ZH-JQO">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="States">
+                                                        <font key="font" metaFont="smallSystem"/>
+                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                    </tableHeaderCell>
+                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="Omm-R9-oe2">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                    <prototypeCellViews>
+                                                        <tableCellView identifier="StateCell" id="EKc-aG-yRB" customClass="SDDPFiltersStateCellView" customModule="SDDProfiler" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="0.0" width="195" height="17"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                            <subviews>
+                                                                <button translatesAutoresizingMaskIntoConstraints="NO" id="scn-Ul-U3Y">
+                                                                    <rect key="frame" x="2" y="0.0" width="191" height="18"/>
+                                                                    <buttonCell key="cell" type="check" title="Check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="IhY-tl-gX1">
+                                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                        <font key="font" metaFont="system"/>
+                                                                    </buttonCell>
+                                                                    <connections>
+                                                                        <action selector="didTouchCheckButton:" target="EKc-aG-yRB" id="IK1-Hr-0Xb"/>
+                                                                    </connections>
+                                                                </button>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstAttribute="trailing" secondItem="scn-Ul-U3Y" secondAttribute="trailing" constant="4" id="AjF-pI-Hdl"/>
+                                                                <constraint firstItem="scn-Ul-U3Y" firstAttribute="centerY" secondItem="EKc-aG-yRB" secondAttribute="centerY" id="cgm-u3-3oL"/>
+                                                                <constraint firstItem="scn-Ul-U3Y" firstAttribute="leading" secondItem="EKc-aG-yRB" secondAttribute="leading" constant="4" id="cxQ-L6-cXx"/>
+                                                            </constraints>
+                                                            <connections>
+                                                                <outlet property="checkButton" destination="scn-Ul-U3Y" id="jKd-sT-TJD"/>
+                                                            </connections>
+                                                        </tableCellView>
+                                                    </prototypeCellViews>
+                                                </tableColumn>
+                                            </tableColumns>
+                                            <connections>
+                                                <outlet property="dataSource" destination="Orj-p5-Ag3" id="wa1-1I-tNy"/>
+                                                <outlet property="delegate" destination="Orj-p5-Ag3" id="qcm-IX-y1L"/>
+                                            </connections>
+                                        </tableView>
+                                    </subviews>
+                                </clipView>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="Aoc-5P-hXK"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="SOK-Ea-AHM"/>
+                                </constraints>
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="wiT-Bn-dfl">
+                                    <rect key="frame" x="0.0" y="585" width="200" height="15"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="IlT-HI-AhI">
+                                    <rect key="frame" x="224" y="17" width="15" height="102"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="EJq-Ih-AnO" secondAttribute="bottom" id="DSM-qw-k5V"/>
+                            <constraint firstItem="EJq-Ih-AnO" firstAttribute="leading" secondItem="Y7p-4Z-peS" secondAttribute="leading" id="DVU-jr-hxM"/>
+                            <constraint firstItem="EJq-Ih-AnO" firstAttribute="top" secondItem="Y7p-4Z-peS" secondAttribute="top" id="Kgh-7v-prv"/>
+                            <constraint firstAttribute="trailing" secondItem="EJq-Ih-AnO" secondAttribute="trailing" id="Vyy-Ad-EE8"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="w4Q-ZF-WYp" id="jMz-UK-3Fa"/>
                     </connections>
                 </viewController>
-                <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <customObject id="kcz-hZ-c7b" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1058" y="1004"/>
+            <point key="canvasLocation" x="762" y="1804"/>
+        </scene>
+        <!--Diagram View Controller-->
+        <scene sceneID="Glq-nv-M8a">
+            <objects>
+                <viewController id="J7R-dY-zqz" customClass="SDDPDiagramViewController" customModule="SDDProfiler" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="XQd-NQ-z62">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a8J-CX-kaj">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <clipView key="contentView" id="UsT-sQ-NEy">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <view translatesAutoresizingMaskIntoConstraints="NO" id="3Zd-Uk-OIg" customClass="SDDPSequenceDiagramView" customModule="SDDProfiler" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="332" width="418" height="268"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="268" id="NdT-GP-rPL"/>
+                                                <constraint firstAttribute="width" constant="418" id="cKa-QF-OLS"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="3Zd-Uk-OIg" firstAttribute="leading" secondItem="UsT-sQ-NEy" secondAttribute="leading" id="Rkt-yq-ZYx"/>
+                                        <constraint firstItem="3Zd-Uk-OIg" firstAttribute="top" secondItem="UsT-sQ-NEy" secondAttribute="top" id="cwk-15-rsO"/>
+                                    </constraints>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="jeq-G4-dHu">
+                                    <rect key="frame" x="1" y="284" width="433" height="15"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="Avi-fs-Gky">
+                                    <rect key="frame" x="-100" y="-100" width="15" height="283"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="a8J-CX-kaj" secondAttribute="bottom" id="5lr-XA-LIE"/>
+                            <constraint firstItem="a8J-CX-kaj" firstAttribute="leading" secondItem="XQd-NQ-z62" secondAttribute="leading" id="7Ki-Gl-VGJ"/>
+                            <constraint firstItem="a8J-CX-kaj" firstAttribute="top" secondItem="XQd-NQ-z62" secondAttribute="top" id="b3P-cu-0Tj"/>
+                            <constraint firstAttribute="trailing" secondItem="a8J-CX-kaj" secondAttribute="trailing" id="flv-Io-q1R"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="diagramHeight" destination="NdT-GP-rPL" id="TAp-Gd-T1O"/>
+                        <outlet property="diagramView" destination="3Zd-Uk-OIg" id="crq-KC-68H"/>
+                        <outlet property="diagramWidth" destination="cKa-QF-OLS" id="RUu-PO-BKd"/>
+                        <outlet property="scrollView" destination="a8J-CX-kaj" id="HUP-gK-rjF"/>
+                    </connections>
+                </viewController>
+                <customObject id="Nfr-E6-GoN" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1162" y="1804"/>
         </scene>
     </scenes>
 </document>

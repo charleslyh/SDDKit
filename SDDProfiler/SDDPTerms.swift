@@ -15,12 +15,16 @@ class SDDPState: NSObject {
     private(set)
     var substates: [SDDPState] = []
     
+    weak private(set)
+    var parentState: SDDPState?
+    
     init(name: NSString) {
         self.name = name
         super.init()
     }
     
     func addSubstate(state: SDDPState) {
+        state.parentState = self
         substates.append(state)
     }
     
@@ -74,9 +78,8 @@ class SDDPEvent: NSObject {
 }
 
 class SDDPDiagram: NSObject {
-    private(set)
-    var states: [SDDPState]
-    var events: [SDDPEvent]
+    private(set) var states: [SDDPState]
+    private(set) var events: [SDDPEvent]
     
     init(states: [SDDPState], events: [SDDPEvent]) {
         self.states = states

@@ -14,13 +14,24 @@ class SDDPDiagramViewController: NSViewController {
     @IBOutlet var scrollView:  NSScrollView!
     @IBOutlet var diagramHeight: NSLayoutConstraint!
     @IBOutlet var diagramWidth: NSLayoutConstraint!
+    
+    weak var diagramSet: SDDPDiagramSet! {
+        didSet {
+            diagramSet.addObserver(self, forKeyPath: "layouts", options: [.initial, .new], context: nil)
+        }
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "layouts" {
+            let layouts = diagramSet.layouts!
+            diagramView.show(layouts: layouts)
+            diagramHeight.constant = layouts.canvasSize.height
+            diagramWidth.constant  = layouts.canvasSize.width
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        diagramView.show(layouts: sddp.layouts!)
-        diagramHeight.constant = sddp.layouts!.canvasSize.height
-        diagramWidth.constant  = sddp.layouts!.canvasSize.width
         
         scrollView.documentView = diagramView
     }

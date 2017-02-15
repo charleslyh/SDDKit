@@ -11,13 +11,8 @@ import Foundation
 class SDDPContext {
     var diagram: SDDPDiagram? {
         didSet {
-            self.layouts = SDDPLayouts(states: diagram!.states, events: diagram!.events)
-            self.layouts?.layoutDiagram()
         }
     }
-    
-    private(set)
-    var layouts: SDDPLayouts?
 }
 
 let sddp = SDDPContext()
