@@ -98,7 +98,6 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
 
 @implementation SDDStateMachine {
     NSMutableSet *_states;
-    SDDState     *_rootState;
     SDDState     *_topState;
     SDDState     *_currentState;
     SDDState     *_initialTarget;
@@ -112,7 +111,7 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
 - (instancetype)initWithLogger:(id<SDDLogger>)logger {
     if (self = [super init]) {
         _rootState   = [[SDDState alloc] initWithActivation:^(id<SDDEvent> _) {} deactivation:^(id<SDDEvent> _) {}];
-        _outterState = [[SDDState alloc] initWithActivation:^(id<SDDEvent> _) {} deactivation:^(id<SDDEvent> _) {}];
+        _outterState = [[SDDState alloc] initWithActivation:^(id<SDDEvent> _) {} deactivation:^(id<SDDEvent> _) {}];       
         
         _logger      = logger ? logger : [SDDNilLogger new];
         _states      = [NSMutableSet set];
@@ -320,7 +319,7 @@ typedef NSMutableDictionary<NSString *, NSMutableArray<SDDTransition*> *> SDDJum
     
     NSMutableArray *activates = [NSMutableArray array];
     NSMutableArray *deactivates = [NSMutableArray array];
-    
+        
     for (int i = ((int)currentPath.count - 1); i > lastSolidIdx; i -= 1) {
         SDDState* s = currentPath[i];
         [s deactivate:event];

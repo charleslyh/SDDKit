@@ -239,19 +239,23 @@ void SDDBuilderMakeTransition(void* contextObj, sdd_transition* t) {
     __weak SDDParserContext *pcontext        = (__bridge SDDParserContext*)contextObj;
     __weak SDDStateMachine  *stateMachine    = pcontext.stateMachine;
     __weak NSDictionary     *conditionBlocks = pcontext.conditionBlocks;
+    __weak NSDictionary     *actionBlocks    = pcontext.actionBlocks;
     __weak id context = pcontext.runtimeContext;
     
     NSString* names = [NSString stringWithCString:t->actions encoding:NSUTF8StringEncoding];
-    SDDAction postAction = ^(id argument) {
+    SDDAction postAction = ^(id<SDDEvent> e) {
         NSArray* acts = [names sddNamedComponents];
         for (NSString* act in acts) {
             SEL simpleSel    = NSSelectorFromString(act);
             SEL augmentedSel = NSSelectorFromString([NSString stringWithFormat:@"%@:", act]);
-            
-            if ([context respondsToSelector:simpleSel]) {
+            SDDAction action = actionBlocks[act];
+
+            if (action) {
+                action(e);
+            } else if ([context respondsToSelector:simpleSel]) {
                 SDDSimpleAction(context, simpleSel);
             } else if ([context respondsToSelector:augmentedSel]) {
-                SDDAugmentedAction(context, augmentedSel, argument);
+                SDDAugmentedAction(context, augmentedSel, e);
             } else if (context != nil) {
                 [[NSException exceptionWithName:@"SDDBuilderException"
                                          reason:[NSString stringWithFormat:@"无法在上下文:%@ 对象中找到 %@ 方法", context, act]
@@ -331,6 +335,9 @@ void SDDBuilderTopStateCompletion(void *contextObj, sdd_state *raw_state) {
     SDDState *topState = [pcontext stateWithCName:raw_state->name];
     [pcontext.stateMachine setTopState:topState];
     pcontext.stateMachine.sddName = [NSString stringWithUTF8String:raw_state->name];
+    
+    pcontext.stateMachine.rootState.sddName   = @"$Root";
+    pcontext.stateMachine.outterState.sddName = @"$Outter";
 }
 
 void SDDBuilderParsingFinishCompletion(void *contextObj) {
@@ -388,7 +395,15 @@ void SDDBuilderParsingFinishCompletion(void *contextObj) {
 - (SDDStateMachine *)addStateMachineWithContext:(id)context dsl:(NSString *)dsl {
     // Supports multithreading. underlying __secret_builder is a global variable, thus machine building must be synchronized.
     SDDStateMachine *hsm;
-    @synchronized (_HSMs) {
+    
+    // The only parser is shared for all scripts parsing. Otherwise, asynchronizing could lead to crashes. Thus, a global lock is used to prevent it's happening.
+    static NSObject *globalLock;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        globalLock = [[NSObject alloc] init];
+    });
+    
+    @synchronized (globalLock) {
          hsm = [self stateMachineWithContext:context dsl:dsl]; 
     
         [_HSMs addObject:hsm];

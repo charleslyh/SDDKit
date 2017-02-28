@@ -45,6 +45,7 @@ typedef NSArray<SDDState *> SDDPath;
 @class SDDStateMachine;
 
 @interface SDDStateMachine : NSObject <SDDEventSubscriber>
+@property (strong, nonatomic, readonly) SDDState *    __nonnull  rootState;
 @property (strong, nonatomic, readonly) SDDState *    __nonnull  outterState;
 @property (strong, nonatomic, readonly) SDDState *    __nonnull  topState;
 
