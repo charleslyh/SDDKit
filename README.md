@@ -103,7 +103,7 @@ int main() {
 			[Asleep e: goToBed]
 		]
 	
-		[.] .    -> [Awake]  : $Initial
+		[.]      -> [Awake]  : $Initial
 		[Awake]  -> [Asleep] : Sunset
 		[Asleep] -> [Awake]  : Sunrise
 	)];
