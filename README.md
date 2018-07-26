@@ -9,7 +9,6 @@ Clone or download source codes directly, or by using [CocoaPods](https://cocoapo
 
 ```
 pod 'SDDKit'
-
 ```
 
 ## High Level Aspects
@@ -46,7 +45,7 @@ A string parsing based SDDStateMachine builder. It provides the easiest way for 
 ## Examples
 ### Simple
 ```obj-c
-SDDBuilder *builder = [SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool];
+SDDBuilder *builder = [[SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool]];
 
 [builder addStateMachineWithContext:nil dsl:SDDOCLanguage(
 	// Every statemachine can and must have one topstate
@@ -93,7 +92,7 @@ A statemachine with **nil** context helps nothing. Something has to be done that
 int main() {
 	Charles *charles = [[Charles alloc] init];
 
-	SDDBuilder *builder = [SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool];
+	SDDBuilder *builder = [[SDDBuilder alloc] initWithLogger:nil epool:[SDDEventsPool sharedPool]];
 
 	[builder addStateMachineWithContext:charles dsl:SDDOCLanguage(
 		[Me
@@ -104,7 +103,7 @@ int main() {
 			[Asleep e: goToBed]
 		]
 	
-		[.]	     -> [Awake]  : $Initial
+		[.] .    -> [Awake]  : $Initial
 		[Awake]  -> [Asleep] : Sunset
 		[Asleep] -> [Awake]  : Sunrise
 	)];
@@ -118,5 +117,5 @@ int main() {
 	// Outputs 'Good morning.' for entering state [Awake]
 
 	return 0;
-)
+}
 ```
